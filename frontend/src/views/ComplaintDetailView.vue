@@ -160,8 +160,8 @@ async function handleTransferBureau() {
             <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4] font-mono">
               {{ store.currentComplaint.case_number }}
             </h1>
-            <StatusBadge :status="store.currentComplaint.status" />
-            <PriorityBadge :priority="store.currentComplaint.priority" />
+            <StatusBadge :status="store.currentComplaint.status" variant="tag" />
+            <PriorityBadge :priority="store.currentComplaint.priority" variant="tag" />
             <span
               v-if="store.currentComplaint.is_overdue"
               class="rounded bg-[#f48771]/20 text-[#f48771] border border-[#f48771]/30 text-xs font-medium px-2 py-0.5"

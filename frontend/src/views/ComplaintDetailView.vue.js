@@ -161,17 +161,21 @@ if (__VLS_ctx.store.currentComplaint) {
     // @ts-ignore
     const __VLS_8 = __VLS_asFunctionalComponent(StatusBadge, new StatusBadge({
         status: (__VLS_ctx.store.currentComplaint.status),
+        variant: "tag",
     }));
     const __VLS_9 = __VLS_8({
         status: (__VLS_ctx.store.currentComplaint.status),
+        variant: "tag",
     }, ...__VLS_functionalComponentArgsRest(__VLS_8));
     /** @type {[typeof PriorityBadge, ]} */ ;
     // @ts-ignore
     const __VLS_11 = __VLS_asFunctionalComponent(PriorityBadge, new PriorityBadge({
         priority: (__VLS_ctx.store.currentComplaint.priority),
+        variant: "tag",
     }));
     const __VLS_12 = __VLS_11({
         priority: (__VLS_ctx.store.currentComplaint.priority),
+        variant: "tag",
     }, ...__VLS_functionalComponentArgsRest(__VLS_11));
     if (__VLS_ctx.store.currentComplaint.is_overdue) {
         __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
