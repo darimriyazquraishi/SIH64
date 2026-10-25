@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
 import AppLayout from '@/layouts/AppLayout.vue';
 import LoginView from '@/views/LoginView.vue';
 import DashboardView from '@/views/DashboardView.vue';
@@ -87,16 +86,7 @@ const router = createRouter({
     routes,
 });
 router.beforeEach((to, from, next) => {
-    const authStore = useAuthStore();
-    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-        return next({ name: 'login' });
-    }
-    if (to.meta.guestOnly && authStore.isAuthenticated) {
-        return next({ name: 'dashboard' });
-    }
-    if (to.meta.requiresRole && authStore.user?.role !== to.meta.requiresRole) {
-        return next({ name: 'dashboard' });
-    }
+    // Login is not forced: allow direct access to all views
     next();
 });
 export default router;

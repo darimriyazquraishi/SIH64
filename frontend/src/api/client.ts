@@ -21,14 +21,7 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Token expired or invalid
-      localStorage.removeItem('aicte_token')
-      localStorage.removeItem('aicte_user')
-      if (window.location.pathname !== '/login') {
-        window.location.href = '/login'
-      }
-    }
+    // Login not forced: pass error through without forced redirect to /login
     return Promise.reject(error)
   }
 )
