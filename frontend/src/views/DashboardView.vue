@@ -3,27 +3,30 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import apiClient from '@/api/client'
 import { useAuthStore } from '@/stores/auth'
-import StatCard from '@/components/StatCard.vue'
 import StatusBadge from '@/components/StatusBadge.vue'
 import PriorityBadge from '@/components/PriorityBadge.vue'
+import DemostackIcon from '@/components/demostack/DemostackIcon.vue'
 import type { KPIs, Complaint } from '@/types'
 import {
-  AlertTriangle,
   GitCompare,
+  Building2,
+  ArrowRight,
+  ArrowUpRight,
+  ChevronRight,
+  RefreshCw,
+  X,
   Clock,
   CheckCircle2,
-  FileText,
-  Building,
-  ArrowRight,
-  Filter,
-  RefreshCw,
-  PlusCircle,
+  FileText
 } from 'lucide-vue-next'
 
 const authStore = useAuthStore()
 const router = useRouter()
 
 const loading = ref(true)
+const isTipsVisible = ref(true)
+const tipsScrollRef = ref<HTMLDivElement | null>(null)
+
 const kpis = ref<KPIs>({
   total_complaints: 0,
   open_cases: 0,
@@ -36,6 +39,97 @@ const kpis = ref<KPIs>({
 
 const recentComplaints = ref<Complaint[]>([])
 const bureauWorkload = ref<any[]>([])
+
+const actionCards = [
+  {
+    title: 'Lodge Institutional Grievance',
+    description: 'Record an intake dossier and assign statutory SLA deadlines in under 2 minutes',
+    route: '/complaints?action=new',
+    iconName: 'DashboardFolderPlusIcon',
+    badgeClass: 'bg-slate-900 dark:bg-[#007acc] text-white',
+  },
+  {
+    title: 'Cross-Bureau Overlap Engine',
+    description: 'Review duplicate filings and multi-forum petitions across 6 central bureaus',
+    route: '/overlaps',
+    iconName: 'DashboardVideoIcon',
+    badgeClass: 'bg-slate-800 dark:bg-[#252526] text-amber-500 dark:text-[#cca700] border border-slate-700 dark:border-[#3e3e42]',
+  },
+  {
+    title: 'Explore Institution Directory',
+    description: 'Search 24,000+ AICTE-approved colleges, aliases, and regulatory inspection profiles',
+    route: '/institutions',
+    iconName: 'DashboardImagesIcon',
+    badgeClass: 'bg-slate-800 dark:bg-[#252526] text-emerald-500 dark:text-[#89d185] border border-slate-700 dark:border-[#3e3e42]',
+  },
+]
+
+const operationalProtocols = [
+  {
+    title: 'Cross-Bureau De-duplication Protocol',
+    category: 'DEDUPLICATION',
+    description: 'Similarity matching across Permanent IDs, aliases, and court docket references.',
+    accentColor: '#007acc',
+  },
+  {
+    title: 'Statutory SLA Escalation Timelines',
+    category: 'SLA COMPLIANCE',
+    description: 'Critical grievances trigger automated alerts and Member Secretary review upon statutory breaches.',
+    accentColor: '#c72e2e',
+  },
+  {
+    title: 'Institutional Aliasing Engine',
+    category: 'CANONICAL RESOLUTION',
+    description: 'Resolves acronyms, legacy campus renames, and polytechnic wings to single legal entities.',
+    accentColor: '#89d185',
+  },
+  {
+    title: 'Court Writs & Inquiries Coordination',
+    category: 'LEGAL COORDINATION',
+    description: 'Synchronize pending High Court writ responses with regional bureau inspection records.',
+    accentColor: '#cca700',
+  },
+]
+
+const bureauResources = [
+  {
+    code: 'PGRC',
+    name: 'Public Grievance Redressal',
+    description: 'Student, faculty, and administrative grievance intake',
+    iconName: 'FigLightbulbIcon',
+    folderColor: '#007acc',
+  },
+  {
+    code: 'AB',
+    name: 'Approval Bureau',
+    description: 'Institutional affiliation, EOA, faculty deficiencies',
+    iconName: 'FigGraduationIcon',
+    folderColor: '#1e3a8a',
+  },
+  {
+    code: 'PAPB',
+    name: 'Policy & Planning',
+    description: 'Faculty pay scale norms and governance standards',
+    iconName: 'FigSparkleIcon',
+    folderColor: '#0369a1',
+  },
+  {
+    code: 'RPC',
+    name: 'Ragging Prevention Cell',
+    description: 'Anti-ragging statutory compliance and FIR tracking',
+    iconName: 'FigPlayIcon',
+    folderColor: '#0f766e',
+  },
+]
+
+function scrollTipsRight() {
+  if (tipsScrollRef.value) {
+    tipsScrollRef.value.scrollBy({
+      left: 300,
+      behavior: 'smooth',
+    })
+  }
+}
 
 async function loadDashboardData() {
   loading.value = true
@@ -62,384 +156,319 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="space-y-6">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-      <div>
-        <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">
-          Operations Dashboard
-        </h1>
-        <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
-          Active cases, deadlines, and bureau workloads
-        </p>
-      </div>
+  <div class="mx-auto w-full max-w-6xl space-y-10">
+    <!-- Top Action Cards Grid (Demostack 3-Column Layout) -->
+    <section class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div
+        v-for="action in actionCards"
+        :key="action.title"
+        class="group flex w-full flex-col items-start justify-between gap-6 rounded-2xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5 transition-all hover:bg-slate-50 dark:hover:bg-[#2a2d2e] hover:border-slate-300 dark:hover:border-[#3e3e42] cursor-pointer"
+        @click="router.push(action.route)"
+      >
+        <div :class="['relative flex size-12 items-center justify-center overflow-hidden rounded-xl shadow-sm', action.badgeClass]">
+          <DemostackIcon :name="action.iconName" class-name="size-6 text-current" />
+        </div>
 
-      <div class="flex items-center gap-2">
+        <div class="flex w-full flex-col gap-1.5">
+          <p class="font-medium text-sm text-slate-900 dark:text-[#d4d4d4] group-hover:text-blue-600 dark:group-hover:text-[#4fc1ff] transition-colors">
+            {{ action.title }}
+          </p>
+          <p class="text-xs text-slate-500 dark:text-[#989898] leading-relaxed [text-wrap:pretty]">
+            {{ action.description }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demostack Operational Guidance Carousel (Demostack Tips) -->
+    <section v-if="isTipsVisible" class="flex flex-col gap-5">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div class="min-w-0 flex-1">
+          <h2 class="text-lg font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
+            Operational Protocols & Guidance
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-1 max-w-prose [text-wrap:pretty]">
+            Standardized operational procedures for cross-bureau coordination, statutory escalation SLAs, and judicial proceedings
+          </p>
+        </div>
+
         <button
           type="button"
-          class="inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition-colors"
-          @click="loadDashboardData"
+          class="h-auto shrink-0 self-start rounded-full border border-slate-200 dark:border-[#3e3e42] bg-slate-50 dark:bg-[#252526] px-4 py-2 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#2e2e30] transition flex items-center gap-1.5"
+          @click="isTipsVisible = false"
         >
-          <RefreshCw :class="['w-3.5 h-3.5', loading ? 'animate-spin' : '']" aria-hidden="true" />
-          Refresh
+          <span>Dismiss</span>
+          <X class="w-3.5 h-3.5" />
         </button>
+      </div>
 
-        <router-link
-          v-if="!authStore.isSeniorAuthority"
-          to="/complaints?action=new"
-          class="inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] transition-colors"
+      <div class="relative overflow-hidden">
+        <div
+          ref="tipsScrollRef"
+          class="flex gap-5 overflow-x-auto scroll-smooth pb-2 no-scrollbar px-3 pt-1"
         >
-          <PlusCircle class="w-3.5 h-3.5" aria-hidden="true" />
-          Lodge Complaint
-        </router-link>
-      </div>
-    </div>
+          <article
+            v-for="tip in operationalProtocols"
+            :key="tip.title"
+            class="group flex w-72 shrink-0 flex-col items-start gap-3 cursor-pointer"
+          >
+            <div class="relative aspect-[3/2] w-72 overflow-hidden rounded-2xl border border-slate-200 dark:border-[#2d2d2d] bg-slate-100 dark:bg-[#252526] p-4 flex flex-col justify-between shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="rounded bg-slate-200 dark:bg-[#1c1c1c] px-2 py-0.5 text-xs font-mono font-semibold text-slate-800 dark:text-[#cccccc] tracking-wider border border-slate-300 dark:border-[#383838]">
+                  {{ tip.category }}
+                </span>
+                <span class="size-2 rounded-full" :style="{ backgroundColor: tip.accentColor }" />
+              </div>
+              <div class="space-y-1">
+                <p class="text-xs font-semibold text-slate-800 dark:text-[#d4d4d4]">AICTE Core Standard</p>
+                <div class="h-1 w-8 rounded-full" :style="{ backgroundColor: tip.accentColor }" />
+              </div>
+            </div>
 
-    <!-- Urgent Alerts: Cross-Bureau Overlaps -->
-    <div
-      v-if="kpis.unreviewed_overlaps > 0"
-      class="rounded-md border border-amber-300 dark:border-[#554400] bg-amber-50 dark:bg-[#332b00] p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
-      role="region"
-      aria-label="Pending overlaps alert"
-    >
-      <div class="flex items-start gap-3">
-        <div class="p-1.5 rounded bg-amber-100 dark:bg-[#4d3800] text-amber-800 dark:text-[#cca700] mt-0.5">
-          <GitCompare class="w-4 h-4" aria-hidden="true" />
+            <div class="flex w-full flex-col gap-1">
+              <h3 class="font-medium text-xs text-slate-900 dark:text-[#d4d4d4] group-hover:text-blue-600 dark:group-hover:text-[#4fc1ff] transition-colors">
+                {{ tip.title }}
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-[#989898] leading-relaxed [text-wrap:pretty]">
+                {{ tip.description }}
+              </p>
+            </div>
+          </article>
         </div>
-        <div>
-          <h2 class="text-xs font-semibold text-amber-950 dark:text-[#e5b567] uppercase tracking-wider">
-            Overlapping Cases Pending Review
-          </h2>
-          <p class="text-xs text-amber-900 dark:text-[#d7ba7d] mt-0.5">
-            {{ kpis.unreviewed_overlaps }} case pair(s) flagged across bureaus for matching institutions or docket numbers.
+
+        <button
+          type="button"
+          class="rounded-full size-9 bg-white dark:bg-[#252526] border border-slate-200 dark:border-[#3e3e42] shadow-md flex items-center justify-center text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#2d2d2d] absolute right-2 top-16 z-10 transition"
+          aria-label="Scroll right"
+          @click="scrollTipsRight"
+        >
+          <ChevronRight class="w-4 h-4" />
+        </button>
+      </div>
+    </section>
+
+    <!-- Key Metrics Row (Demostack Minimal KPI Layout) -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="rounded-2xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-[#989898]">
+          <span>Total Complaints</span>
+          <FileText class="w-4 h-4 text-slate-400 dark:text-[#989898]" />
+        </div>
+        <div class="mt-3">
+          <p class="text-2xl font-semibold text-slate-900 dark:text-[#d4d4d4] font-mono">
+            {{ kpis.total_complaints }}
+          </p>
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
+            {{ kpis.open_cases }} currently active
           </p>
         </div>
       </div>
-      <router-link
-        to="/overlaps"
-        class="inline-flex items-center justify-center gap-1.5 rounded bg-amber-700 dark:bg-[#cca700] px-3.5 py-1.5 text-xs font-medium text-white dark:text-[#1e1e1e] hover:bg-amber-800 dark:hover:bg-[#e5b567] transition-colors"
-      >
-        Review Overlaps
-        <ArrowRight class="w-3.5 h-3.5" aria-hidden="true" />
-      </router-link>
-    </div>
 
-    <!-- Urgent Alerts: Overdue Cases -->
-    <div
-      v-if="kpis.overdue_cases > 0"
-      class="rounded-md border border-red-300 dark:border-[#5c1c20] bg-red-50 dark:bg-[#3b1214] p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
-      role="region"
-      aria-label="Overdue cases alert"
-    >
-      <div class="flex items-start gap-3">
-        <div class="p-1.5 rounded bg-red-100 dark:bg-[#5c1c20] text-red-800 dark:text-[#f48771] mt-0.5">
-          <AlertTriangle class="w-4 h-4" aria-hidden="true" />
+      <div class="rounded-2xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-[#989898]">
+          <span>Cross-Bureau Overlaps</span>
+          <GitCompare class="w-4 h-4 text-amber-500 dark:text-[#cca700]" />
         </div>
-        <div>
-          <h2 class="text-xs font-semibold text-red-950 dark:text-[#f48771] uppercase tracking-wider">
-            Overdue Cases
-          </h2>
-          <p class="text-xs text-red-900 dark:text-[#f48771] mt-0.5">
-            {{ kpis.overdue_cases }} active case(s) past statutory response deadline.
+        <div class="mt-3">
+          <p class="text-2xl font-semibold text-amber-600 dark:text-[#cca700] font-mono">
+            {{ kpis.unreviewed_overlaps }}
+          </p>
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
+            Flagged for joint review
           </p>
         </div>
       </div>
-      <router-link
-        to="/complaints?is_overdue=true"
-        class="inline-flex items-center justify-center gap-1.5 rounded bg-red-700 dark:bg-[#c72e2e] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-red-800 dark:hover:bg-[#b02222] transition-colors"
-      >
-        View Overdue Cases
-        <ArrowRight class="w-3.5 h-3.5" aria-hidden="true" />
-      </router-link>
-    </div>
 
-    <!-- KPIs Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-      <StatCard
-        title="Total Cases"
-        :value="kpis.total_complaints"
-        subtitle="In registry"
-        :loading="loading"
-      />
-      <StatCard
-        title="Open Cases"
-        :value="kpis.open_cases"
-        variant="info"
-        subtitle="Under processing"
-        :loading="loading"
-      />
-      <StatCard
-        title="Action Required"
-        :value="kpis.action_required"
-        variant="warning"
-        subtitle="Awaiting input"
-        :loading="loading"
-      />
-      <StatCard
-        title="Overdue"
-        :value="kpis.overdue_cases"
-        variant="danger"
-        subtitle="Past deadline"
-        :loading="loading"
-      />
-      <StatCard
-        title="Escalated"
-        :value="kpis.escalated_cases"
-        subtitle="Senior review"
-        :loading="loading"
-      />
-      <StatCard
-        title="Disposed"
-        :value="kpis.disposed_cases"
-        variant="success"
-        subtitle="Resolved"
-        :loading="loading"
-      />
-      <StatCard
-        title="Pending Overlaps"
-        :value="kpis.unreviewed_overlaps"
-        variant="warning"
-        subtitle="To review"
-        :loading="loading"
-      />
-    </div>
+      <div class="rounded-2xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-[#989898]">
+          <span>Disposed Cases</span>
+          <CheckCircle2 class="w-4 h-4 text-emerald-500 dark:text-[#89d185]" />
+        </div>
+        <div class="mt-3">
+          <p class="text-2xl font-semibold text-emerald-600 dark:text-[#89d185] font-mono">
+            {{ kpis.disposed_cases }}
+          </p>
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
+            Resolved within SLA
+          </p>
+        </div>
+      </div>
 
-    <!-- Two-Column Section: Bureau Workload & Quick Navigation -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-      <!-- Bureau Distribution Card -->
-      <div class="lg:col-span-2 rounded-md border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4">
-        <div class="flex items-center justify-between border-b border-slate-100 dark:border-[#2d2d2d] pb-3">
-          <div>
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-800 dark:text-white">
-              Bureau Workload
-            </h2>
-            <p class="text-xs text-slate-500 dark:text-[#989898]">
-              Open vs disposed cases across AICTE bureaus
-            </p>
-          </div>
-          <router-link to="/reports" class="text-xs font-medium text-blue-600 hover:text-blue-800 dark:text-[#4fc1ff] dark:hover:underline">
-            Detailed reports
+      <div class="rounded-2xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex flex-col justify-between">
+        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-[#989898]">
+          <span>Statutory Overdue</span>
+          <Clock class="w-4 h-4 text-red-500 dark:text-[#f48771]" />
+        </div>
+        <div class="mt-3">
+          <p class="text-2xl font-semibold text-red-600 dark:text-[#f48771] font-mono">
+            {{ kpis.overdue_cases }}
+          </p>
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
+            Exceeded statutory SLA
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-Column Split (Resources & Priority Tasks) -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Left: Demostack Resources (Autonomous Bureaus & Cells) -->
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base font-semibold text-slate-900 dark:text-[#d4d4d4]">
+            Autonomous Bureaus & Cells
+          </h2>
+          <router-link to="/reports" class="text-xs font-medium text-blue-600 dark:text-[#4fc1ff] hover:underline flex items-center gap-1">
+            Workload Analytics <ArrowRight class="w-3 h-3" />
           </router-link>
         </div>
 
-        <div class="mt-3.5 space-y-2.5">
+        <div class="grid grid-cols-2 gap-3.5">
           <div
-            v-for="bureau in bureauWorkload"
-            :key="bureau.bureau_id"
-            class="flex items-center justify-between p-2.5 rounded border border-slate-100 dark:border-[#2d2d2d] hover:bg-slate-50 dark:hover:bg-[#2a2d2e] transition-colors"
+            v-for="bureau in bureauResources"
+            :key="bureau.code"
+            class="group flex flex-col items-start gap-2.5 rounded-2xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-3.5 hover:border-slate-300 dark:hover:border-[#3e3e42] transition cursor-pointer"
+            @click="router.push(`/complaints?bureau=${bureau.code}`)"
           >
-            <div class="flex items-center gap-3">
-              <span class="flex h-6 w-11 items-center justify-center rounded bg-slate-100 dark:bg-[#1e1e1e] text-xs font-bold text-slate-700 dark:text-[#4fc1ff] border border-slate-200 dark:border-[#3e3e42]">
-                {{ bureau.code }}
-              </span>
-              <div>
-                <p class="text-xs font-medium text-slate-800 dark:text-[#cccccc]">{{ bureau.name }}</p>
-                <p class="text-xs text-slate-500 dark:text-[#989898]">
-                  {{ bureau.open }} open, {{ bureau.disposed }} disposed
+            <div class="bg-slate-100 dark:bg-[#1c1c1c] flex h-24 w-full items-center justify-center overflow-hidden rounded-xl">
+              <div class="relative flex size-16 items-center justify-center transition-transform duration-200 ease-out group-hover:-translate-y-1">
+                <DemostackIcon name="BgFolderVector" class-name="absolute inset-0 size-full" :fill0="bureau.folderColor" />
+                <DemostackIcon :name="bureau.iconName" class-name="relative z-10 mt-3 size-5 text-white transition-transform duration-200 group-hover:scale-110" />
+              </div>
+            </div>
+            <div class="w-full">
+              <div class="flex items-center justify-between">
+                <h3 class="font-medium text-xs text-slate-900 dark:text-[#d4d4d4] group-hover:text-blue-600 dark:group-hover:text-[#4fc1ff] transition-colors truncate">
+                  {{ bureau.code }}
+                </h3>
+                <span class="text-xs text-slate-400 dark:text-[#989898] font-mono">BUREAU</span>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-[#989898] truncate mt-0.5">
+                {{ bureau.name }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Demostack Inspiration / Priority Tasks -->
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base font-semibold text-slate-900 dark:text-[#d4d4d4]">
+            Urgent Operational Cases
+          </h2>
+          <router-link to="/complaints" class="text-xs font-medium text-blue-600 dark:text-[#4fc1ff] hover:underline flex items-center gap-1">
+            View All <ArrowRight class="w-3 h-3" />
+          </router-link>
+        </div>
+
+        <div class="flex flex-col gap-2.5">
+          <div
+            v-for="c in recentComplaints.slice(0, 4)"
+            :key="c.id"
+            class="group flex items-center justify-between rounded-2xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-3.5 hover:border-slate-300 dark:hover:border-[#3e3e42] transition cursor-pointer"
+            @click="router.push(`/complaints/${c.id}`)"
+          >
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="size-8 rounded-xl bg-slate-100 dark:bg-[#1c1c1c] flex items-center justify-center shrink-0 border border-slate-200 dark:border-[#2d2d2d]">
+                <FileText class="w-4 h-4 text-slate-600 dark:text-[#cccccc]" />
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-xs font-semibold text-blue-600 dark:text-[#4fc1ff]">
+                    {{ c.case_number }}
+                  </span>
+                  <PriorityBadge :priority="c.priority" size="sm" />
+                </div>
+                <p class="text-xs text-slate-700 dark:text-[#cccccc] truncate mt-0.5">
+                  {{ c.institution_name }}
                 </p>
               </div>
             </div>
 
-            <div class="flex items-center gap-3">
-              <div class="w-32 bg-slate-100 dark:bg-[#1e1e1e] h-2 rounded overflow-hidden hidden sm:block">
-                <div
-                  class="bg-blue-600 dark:bg-[#007acc] h-full rounded"
-                  :style="{
-                    width: bureau.total > 0 ? `${Math.round((bureau.open / bureau.total) * 100)}%` : '0%',
-                  }"
-                />
-              </div>
-              <span class="text-xs font-semibold text-slate-800 dark:text-white w-8 text-right tabular-nums">
-                {{ bureau.total }}
-              </span>
+            <div class="flex items-center gap-3 shrink-0 ml-2">
+              <StatusBadge :status="c.status" size="sm" />
+              <ArrowUpRight class="w-4 h-4 text-slate-400 dark:text-[#989898] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-blue-600 dark:group-hover:text-[#4fc1ff]" />
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Institutional Oversight Links -->
-      <div class="rounded-md border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex flex-col justify-between">
+    <!-- Case Table Section (Demostack Dense Operational Records) -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
         <div>
-          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-800 dark:text-white border-b border-slate-100 dark:border-[#2d2d2d] pb-3">
-            Institutional Oversight
-          </h2>
-          <p class="text-xs text-slate-600 dark:text-[#989898] mt-2.5 leading-relaxed">
-            Search any college to view all complaints filed against it regardless of the receiving bureau.
-          </p>
-
-          <div class="mt-3.5 divide-y divide-slate-100 dark:divide-[#2d2d2d]">
-            <router-link
-              to="/institutions"
-              class="flex items-center justify-between py-2.5 px-1.5 rounded hover:bg-slate-50 dark:hover:bg-[#2a2d2e] transition-colors group"
-            >
-              <div class="flex items-center gap-2 text-xs font-medium text-slate-800 dark:text-[#cccccc]">
-                <Building class="w-4 h-4 text-slate-500 group-hover:text-slate-900 dark:text-[#989898] dark:group-hover:text-white" aria-hidden="true" />
-                Institutions Directory
-              </div>
-              <ArrowRight class="w-3.5 h-3.5 text-slate-400 dark:text-[#989898]" aria-hidden="true" />
-            </router-link>
-
-            <router-link
-              to="/overlaps"
-              class="flex items-center justify-between py-2.5 px-1.5 rounded hover:bg-slate-50 dark:hover:bg-[#2a2d2e] transition-colors group"
-            >
-              <div class="flex items-center gap-2 text-xs font-medium text-slate-800 dark:text-[#cccccc]">
-                <GitCompare class="w-4 h-4 text-amber-600 dark:text-[#cca700]" aria-hidden="true" />
-                Overlap Review Queue
-              </div>
-              <span class="rounded bg-amber-100 dark:bg-[#4d3800] text-amber-800 dark:text-[#cca700] px-1.5 py-0.5 text-xs font-semibold tabular-nums">
-                {{ kpis.unreviewed_overlaps }}
-              </span>
-            </router-link>
-
-            <router-link
-              to="/imports"
-              class="flex items-center justify-between py-2.5 px-1.5 rounded hover:bg-slate-50 dark:hover:bg-[#2a2d2e] transition-colors group"
-            >
-              <div class="flex items-center gap-2 text-xs font-medium text-slate-800 dark:text-[#cccccc]">
-                <FileText class="w-4 h-4 text-slate-500 group-hover:text-slate-900 dark:text-[#989898] dark:group-hover:text-white" aria-hidden="true" />
-                Import Case Batch
-              </div>
-              <ArrowRight class="w-3.5 h-3.5 text-slate-400 dark:text-[#989898]" aria-hidden="true" />
-            </router-link>
-          </div>
-        </div>
-
-        <p class="mt-4 pt-3 border-t border-slate-100 dark:border-[#2d2d2d] text-xs text-slate-500 dark:text-[#989898]">
-          Transfers and coordination notes are recorded in the audit log.
-        </p>
-      </div>
-    </div>
-
-    <!-- Recent Complaints Table -->
-    <div class="rounded-md border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] overflow-hidden">
-      <div class="flex items-center justify-between border-b border-slate-200 dark:border-[#2d2d2d] px-5 py-3.5">
-        <div>
-          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white">
-            Recent Complaints
+          <h2 class="text-base font-semibold text-slate-900 dark:text-[#d4d4d4]">
+            Recent Grievance Filings
           </h2>
           <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
-            Active and pending cases filed across all bureaus
+            Live multi-bureau intake feed with automated SLA monitoring
           </p>
         </div>
 
-        <router-link
-          to="/complaints"
-          class="text-xs font-medium text-blue-600 hover:text-blue-800 dark:text-[#4fc1ff] dark:hover:underline transition-colors"
+        <button
+          type="button"
+          class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-[#3e3e42] bg-white dark:bg-[#252526] px-3.5 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#2d2d2d] transition"
+          @click="loadDashboardData"
         >
-          View all complaints ({{ kpis.total_complaints }})
-        </router-link>
+          <RefreshCw :class="['w-3.5 h-3.5', loading ? 'animate-spin' : '']" />
+          <span>Refresh</span>
+        </button>
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="border-b border-slate-200 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#2d2d2d] text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[#989898]">
-              <th scope="col" class="py-2.5 px-4">Case #</th>
-              <th scope="col" class="py-2.5 px-4">Institution</th>
-              <th scope="col" class="py-2.5 px-4">Bureau</th>
-              <th scope="col" class="py-2.5 px-4">Category</th>
-              <th scope="col" class="py-2.5 px-4">Priority</th>
-              <th scope="col" class="py-2.5 px-4">Status</th>
-              <th scope="col" class="py-2.5 px-4">Due Date</th>
-              <th scope="col" class="py-2.5 px-4 text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100 dark:divide-[#2d2d2d] text-xs">
-            <tr
-              v-for="comp in recentComplaints"
-              :key="comp.id"
-              class="hover:bg-slate-50 dark:hover:bg-[#2a2d2e] transition-colors"
-            >
-              <!-- Case Number -->
-              <td class="py-3 px-4 font-mono font-medium text-slate-900 dark:text-[#cccccc] whitespace-nowrap">
-                <router-link
-                  :to="`/complaints/${comp.id}`"
-                  class="text-blue-600 hover:underline hover:text-blue-800 dark:text-[#4fc1ff] dark:hover:text-[#9cdcfe]"
-                >
-                  {{ comp.case_number }}
-                </router-link>
-                <div v-if="comp.external_reference" class="text-xs text-slate-400 dark:text-[#989898] font-sans">
-                  Ref: {{ comp.external_reference }}
-                </div>
-              </td>
-
-              <!-- Institution -->
-              <td class="py-3 px-4 max-w-xs">
-                <router-link
-                  :to="`/institutions/${comp.institution_id}`"
-                  class="font-medium text-slate-900 dark:text-[#cccccc] hover:text-blue-600 dark:hover:text-[#4fc1ff] line-clamp-1"
-                >
-                  {{ comp.institution_name }}
-                </router-link>
-                <div class="text-xs text-slate-400 dark:text-[#989898] font-mono">
-                  {{ comp.institution_code }} · {{ comp.institution_state }}
-                </div>
-              </td>
-
-              <!-- Bureau -->
-              <td class="py-3 px-4 whitespace-nowrap">
-                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 dark:bg-[#1e1e1e] text-slate-700 dark:text-[#cccccc] border border-slate-200 dark:border-[#3e3e42]">
-                  {{ comp.current_bureau_code }}
-                </span>
-              </td>
-
-              <!-- Category -->
-              <td class="py-3 px-4 max-w-[180px] truncate text-slate-600 dark:text-[#989898]" :title="comp.category">
-                {{ comp.category }}
-              </td>
-
-              <!-- Priority -->
-              <td class="py-3 px-4 whitespace-nowrap">
-                <PriorityBadge :priority="comp.priority" size="sm" />
-              </td>
-
-              <!-- Status -->
-              <td class="py-3 px-4 whitespace-nowrap">
-                <StatusBadge :status="comp.status" size="sm" />
-              </td>
-
-              <!-- Due Date -->
-              <td class="py-3 px-4 whitespace-nowrap">
-                <div class="flex items-center gap-1.5">
-                  <span
-                    :class="[
-                      comp.is_overdue
-                        ? 'text-red-700 dark:text-[#f48771] font-semibold bg-red-50 dark:bg-[#3b1214] px-1.5 py-0.5 rounded border border-red-200 dark:border-[#5c1c20]'
-                        : 'text-slate-600 dark:text-[#cccccc]',
-                    ]"
-                  >
-                    {{ comp.due_at ? comp.due_at.slice(0, 10) : 'N/A' }}
+      <div class="rounded-2xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-slate-200 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1c1c1c] text-xs font-semibold text-slate-600 dark:text-[#cccccc]">
+                <th class="py-3 px-4">Case #</th>
+                <th class="py-3 px-4">Institution</th>
+                <th class="py-3 px-4">Subject</th>
+                <th class="py-3 px-4">Bureau</th>
+                <th class="py-3 px-4">Priority</th>
+                <th class="py-3 px-4">Status</th>
+                <th class="py-3 px-4 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-[#2d2d2d] text-xs">
+              <tr
+                v-for="c in recentComplaints"
+                :key="c.id"
+                class="hover:bg-slate-50/80 dark:hover:bg-[#2a2d2e] transition cursor-pointer"
+                @click="router.push(`/complaints/${c.id}`)"
+              >
+                <td class="py-3 px-4 font-mono font-medium text-blue-600 dark:text-[#4fc1ff] whitespace-nowrap">
+                  {{ c.case_number }}
+                </td>
+                <td class="py-3 px-4 max-w-[200px] truncate text-slate-900 dark:text-[#cccccc]" :title="c.institution_name">
+                  {{ c.institution_name }}
+                </td>
+                <td class="py-3 px-4 max-w-[220px] truncate text-slate-600 dark:text-[#989898]" :title="c.subject">
+                  {{ c.subject }}
+                </td>
+                <td class="py-3 px-4 whitespace-nowrap">
+                  <span class="rounded bg-slate-100 dark:bg-[#1c1c1c] border border-slate-200 dark:border-[#383838] px-2 py-0.5 text-xs font-medium text-slate-700 dark:text-[#cccccc]">
+                    {{ c.current_bureau_code }}
                   </span>
-                  <span
-                    v-if="comp.is_overdue"
-                    class="rounded bg-red-100 text-red-800 dark:bg-[#3b1214] dark:text-[#f48771] border border-red-300 dark:border-[#5c1c20] text-xs font-semibold px-1.5 py-0.5 uppercase tracking-wide"
-                  >
-                    Overdue
+                </td>
+                <td class="py-3 px-4 whitespace-nowrap">
+                  <PriorityBadge :priority="c.priority" size="sm" />
+                </td>
+                <td class="py-3 px-4 whitespace-nowrap">
+                  <StatusBadge :status="c.status" size="sm" />
+                </td>
+                <td class="py-3 px-4 text-right whitespace-nowrap">
+                  <span class="inline-flex items-center gap-1 text-xs font-medium text-slate-700 dark:text-[#cccccc] group-hover:text-blue-600">
+                    View
+                    <ArrowRight class="w-3 h-3" />
                   </span>
-                </div>
-              </td>
-
-              <!-- Action Link -->
-              <td class="py-3 px-4 text-right whitespace-nowrap">
-                <router-link
-                  :to="`/complaints/${comp.id}`"
-                  class="inline-flex items-center gap-1 text-xs font-medium text-slate-700 hover:text-slate-900 dark:text-[#cccccc] dark:hover:text-white"
-                >
-                  Open
-                  <ArrowRight class="w-3 h-3" aria-hidden="true" />
-                </router-link>
-              </td>
-            </tr>
-
-            <tr v-if="recentComplaints.length === 0">
-              <td colspan="8" class="py-8 text-center text-xs text-slate-400 dark:text-[#989898]">
-                No complaint records found.
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
