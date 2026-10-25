@@ -13,8 +13,14 @@ import ReportsView from '@/views/ReportsView.vue'
 import NotificationsView from '@/views/NotificationsView.vue'
 import ImportDataView from '@/views/ImportDataView.vue'
 import AdminView from '@/views/AdminView.vue'
+import LandingPageView from '@/views/LandingPageView.vue'
 
 const routes: RouteRecordRaw[] = [
+  {
+    path: '/landing',
+    name: 'landing',
+    component: LandingPageView,
+  },
   {
     path: '/login',
     name: 'login',

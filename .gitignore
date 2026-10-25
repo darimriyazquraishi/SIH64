@@ -37,6 +37,7 @@ frontend/dist/
 *.tsbuildinfo
 *.vue.js
 *.vue.d.ts
+frontend/src/**/*.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

@@ -3,8 +3,9 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useNotificationsStore } from '@/stores/notifications'
+import SihLogo from '@/components/SihLogo.vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
-import { Bell, LogOut, Search } from 'lucide-vue-next'
+import { Bell, LogOut, Search, Compass, ChevronDown } from 'lucide-vue-next'
 
 const authStore = useAuthStore()
 const notifStore = useNotificationsStore()
@@ -59,19 +60,17 @@ function handleNotificationClick(notif: any) {
     <!-- Brand / Title -->
     <div class="flex items-center gap-3">
       <router-link to="/" class="flex items-center gap-3 group">
-        <div class="flex h-8 w-8 items-center justify-center rounded bg-slate-900 dark:bg-[#007acc] text-white font-bold text-sm shadow-sm">
-          AI
-        </div>
-        <div>
+        <SihLogo size="md" :show-subtitle="false" />
+        <div class="hidden sm:block border-l border-slate-200 dark:border-[#383838] pl-3">
           <div class="flex items-center gap-2">
-            <h1 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">
-              AICTE Case Monitoring & Coordination Portal
-            </h1>
-            <span class="rounded bg-slate-100 dark:bg-[#1e1e1e] px-1.5 py-0.5 text-xs font-medium text-slate-600 dark:text-[#989898] border border-slate-200 dark:border-[#3e3e42]">
+            <span class="text-xs font-semibold text-slate-800 dark:text-white">
+              AICTE Complaint Monitoring Portal
+            </span>
+            <span class="rounded bg-orange-100 dark:bg-[#33200a] text-orange-700 dark:text-[#f97316] px-1.5 py-0.5 text-xs font-bold border border-orange-200 dark:border-[#522900]">
               SIH 2026
             </span>
           </div>
-          <p class="text-xs text-slate-500 dark:text-[#989898] hidden sm:block">
+          <p class="text-xs text-slate-400 dark:text-[#989898] leading-tight">
             All India Council for Technical Education
           </p>
         </div>
@@ -97,6 +96,15 @@ function handleNotificationClick(notif: any) {
 
     <!-- Right Actions -->
     <div class="flex items-center gap-2.5">
+      <!-- Public Landing Page Link -->
+      <router-link
+        to="/landing"
+        class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#333336] border border-transparent hover:border-slate-200 dark:hover:border-[#3e3e42] transition-colors"
+      >
+        <Compass class="w-3.5 h-3.5 text-[#f97316]" aria-hidden="true" />
+        <span>Landing Page</span>
+      </router-link>
+
       <!-- Theme Switcher -->
       <ThemeToggle />
 

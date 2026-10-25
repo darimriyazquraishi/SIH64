@@ -144,32 +144,39 @@ async function handleTransferBureau() {
 
 <template>
   <div v-if="store.currentComplaint" class="space-y-6">
-    <!-- Back button & Header -->
-    <div>
-      <router-link
-        to="/complaints"
-        class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#989898] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3"
-      >
-        <ArrowLeft class="w-3.5 h-3.5" />
-        Back to complaints
-      </router-link>
+    <!-- Breadcrumbs (Mockup Style) -->
+    <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#989898] font-medium">
+      <router-link to="/" class="hover:text-blue-600 dark:hover:text-[#38bdf8] transition-colors">Dashboard</router-link>
+      <span class="text-slate-400">/</span>
+      <router-link to="/complaints" class="hover:text-blue-600 dark:hover:text-[#38bdf8] transition-colors">Complaints</router-link>
+      <span class="text-slate-400">/</span>
+      <span class="text-slate-900 dark:text-white font-mono font-semibold">{{ store.currentComplaint.case_number }}</span>
+    </div>
 
+    <!-- Header Section -->
+    <div>
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <div class="flex items-center gap-2.5">
-            <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4] font-mono">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-mono">
               {{ store.currentComplaint.case_number }}
             </h1>
+            <span class="rounded-lg bg-blue-50 dark:bg-[#142e4e] text-blue-700 dark:text-[#38bdf8] border border-blue-200 dark:border-[#1d4370] px-2.5 py-0.5 text-xs font-semibold">
+              {{ store.currentComplaint.category }}
+            </span>
+            <span class="rounded-lg bg-slate-100 dark:bg-[#1e1e1e] text-slate-700 dark:text-[#cccccc] border border-slate-200 dark:border-[#383838] px-2 py-0.5 text-xs font-mono font-medium">
+              {{ store.currentComplaint.current_bureau_code }}
+            </span>
             <StatusBadge :status="store.currentComplaint.status" variant="tag" />
             <PriorityBadge :priority="store.currentComplaint.priority" variant="tag" />
             <span
               v-if="store.currentComplaint.is_overdue"
-              class="rounded bg-[#f48771]/20 text-[#f48771] border border-[#f48771]/30 text-xs font-medium px-2 py-0.5"
+              class="rounded-lg bg-red-100 text-red-800 dark:bg-[#3b1214] dark:text-[#f48771] border border-red-300 dark:border-[#5c1c20] text-xs font-bold px-2 py-0.5"
             >
               Overdue
             </span>
           </div>
-          <p class="text-xs text-slate-500 dark:text-[#989898] mt-1">
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-1.5 [text-wrap:pretty]">
             Registered on {{ store.currentComplaint.received_at?.slice(0, 10) }} · Last action on {{ store.currentComplaint.last_action_at?.slice(0, 10) }}
           </p>
         </div>
@@ -178,7 +185,7 @@ async function handleTransferBureau() {
         <div v-if="canEdit" class="flex flex-wrap items-center gap-2">
           <button
             type="button"
-            class="inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition shadow-sm"
             @click="isAssignModalOpen = true"
           >
             <UserCheck class="w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" />
@@ -187,7 +194,7 @@ async function handleTransferBureau() {
 
           <button
             type="button"
-            class="inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition shadow-sm"
             @click="isTransferModalOpen = true"
           >
             <Send class="w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" />
@@ -196,7 +203,7 @@ async function handleTransferBureau() {
 
           <button
             type="button"
-            class="inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] transition"
+            class="inline-flex items-center gap-1.5 rounded-lg bg-[#f97316] hover:bg-[#ea580c] px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-all"
             @click="isStatusModalOpen = true"
           >
             <FileCheck2 class="w-3.5 h-3.5" />
