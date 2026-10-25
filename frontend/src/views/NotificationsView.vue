@@ -43,7 +43,7 @@ function handleNotificationClick(notif: any) {
         <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
           Notifications
         </h1>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
           Updates for related case overlaps, deadlines, and assignments
         </p>
       </div>
@@ -54,7 +54,7 @@ function handleNotificationClick(notif: any) {
           class="inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition"
           @click="notifStore.checkDeadlines()"
         >
-          <Clock class="w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" />
+          <Clock class="w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" />
           Check Deadlines
         </button>
 
@@ -82,7 +82,7 @@ function handleNotificationClick(notif: any) {
         Show unread only
       </label>
 
-      <span class="text-xs text-slate-500 dark:text-[#858585]">
+      <span class="text-xs text-slate-500 dark:text-[#989898]">
         {{ notifStore.unreadCount }} unread
       </span>
     </div>
@@ -129,7 +129,7 @@ function handleNotificationClick(notif: any) {
           </div>
 
           <div class="flex flex-col items-end gap-1.5 flex-shrink-0">
-            <span class="text-xs text-slate-400 dark:text-[#858585]">
+            <span class="text-xs text-slate-400 dark:text-[#989898]">
               {{ notif.created_at?.slice(0, 16).replace('T', ' ') }}
             </span>
             <span class="text-xs font-medium text-blue-600 dark:text-[#4fc1ff] hover:underline inline-flex items-center gap-1">

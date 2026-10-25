@@ -95,7 +95,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1
     ...{ class: "text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-xs text-slate-500 dark:text-[#858585] mt-0.5" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#989898] mt-0.5" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
     ...{ onClick: (__VLS_ctx.downloadTemplate) },
@@ -106,10 +106,10 @@ const __VLS_0 = {}.Download;
 /** @type {[typeof __VLS_components.Download, ]} */ ;
 // @ts-ignore
 const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
-    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" },
 }));
 const __VLS_2 = __VLS_1({
-    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_1));
 if (__VLS_ctx.commitResult) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -161,11 +161,11 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.d
             'rounded border-2 border-dashed p-8 text-center transition flex flex-col items-center justify-center',
             __VLS_ctx.isDragging
                 ? 'border-[#007acc] bg-[#007acc]/10'
-                : 'border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#252526] hover:border-slate-400 dark:hover:border-[#858585]'
+                : 'border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#252526] hover:border-slate-400 dark:hover:border-[#989898]'
         ]) },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "w-10 h-10 rounded-full bg-slate-100 dark:bg-[#1e1e1e] flex items-center justify-center text-slate-500 dark:text-[#858585] mb-3 border dark:border-[#2d2d2d]" },
+    ...{ class: "w-10 h-10 rounded-full bg-slate-100 dark:bg-[#1e1e1e] flex items-center justify-center text-slate-500 dark:text-[#989898] mb-3 border dark:border-[#2d2d2d]" },
 });
 const __VLS_12 = {}.UploadCloud;
 /** @type {[typeof __VLS_components.UploadCloud, ]} */ ;
@@ -180,7 +180,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.h2, __VLS_intrinsicElements.h2
     ...{ class: "text-xs font-semibold text-slate-800 dark:text-[#cccccc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-xs text-slate-500 dark:text-[#858585] mt-1 max-w-sm" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#989898] mt-1 max-w-sm" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.label, __VLS_intrinsicElements.label)({
     ...{ class: "mt-4 inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-4 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] cursor-pointer transition" },
@@ -232,7 +232,7 @@ if (__VLS_ctx.previewData) {
         ...{ class: "rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#858585]" },
+        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#989898]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
         ...{ class: "text-2xl font-semibold text-slate-900 dark:text-[#d4d4d4] mt-1" },
@@ -374,7 +374,7 @@ if (__VLS_ctx.previewData) {
         });
         (__VLS_ctx.previewData.valid_count);
         __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-            ...{ class: "text-xs text-slate-500 dark:text-[#858585]" },
+            ...{ class: "text-xs text-slate-500 dark:text-[#989898]" },
         });
         __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
             ...{ class: "overflow-x-auto" },
@@ -418,7 +418,7 @@ if (__VLS_ctx.previewData) {
             });
             (v.bureau_code);
             __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-                ...{ class: "py-2 px-4 text-slate-600 dark:text-[#858585]" },
+                ...{ class: "py-2 px-4 text-slate-600 dark:text-[#989898]" },
             });
             (v.category);
             __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
@@ -445,10 +445,10 @@ const __VLS_24 = {}.History;
 /** @type {[typeof __VLS_components.History, ]} */ ;
 // @ts-ignore
 const __VLS_25 = __VLS_asFunctionalComponent(__VLS_24, new __VLS_24({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }));
 const __VLS_26 = __VLS_25({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_25));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "overflow-x-auto" },
@@ -503,11 +503,11 @@ for (const [b] of __VLS_getVForSourceType((__VLS_ctx.importHistory))) {
     });
     (b.failed_rows);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-2.5 px-4 text-slate-600 dark:text-[#858585]" },
+        ...{ class: "py-2.5 px-4 text-slate-600 dark:text-[#989898]" },
     });
     (b.created_by_name);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-2.5 px-4 text-slate-400 dark:text-[#858585] font-mono" },
+        ...{ class: "py-2.5 px-4 text-slate-400 dark:text-[#989898] font-mono" },
     });
     (b.created_at?.slice(0, 16).replace('T', ' '));
 }
@@ -515,7 +515,7 @@ if (__VLS_ctx.importHistory.length === 0) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.tr, __VLS_intrinsicElements.tr)({});
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
         colspan: "6",
-        ...{ class: "py-6 text-center text-xs text-slate-400 dark:text-[#858585]" },
+        ...{ class: "py-6 text-center text-xs text-slate-400 dark:text-[#989898]" },
     });
 }
 /** @type {__VLS_StyleScopedClasses['space-y-6']} */ ;
@@ -532,7 +532,7 @@ if (__VLS_ctx.importHistory.length === 0) {
 /** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['inline-flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
@@ -555,7 +555,7 @@ if (__VLS_ctx.importHistory.length === 0) {
 /** @type {__VLS_StyleScopedClasses['w-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-emerald-300']} */ ;
@@ -597,7 +597,7 @@ if (__VLS_ctx.importHistory.length === 0) {
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mb-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
@@ -609,7 +609,7 @@ if (__VLS_ctx.importHistory.length === 0) {
 /** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['max-w-sm']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-4']} */ ;
@@ -667,7 +667,7 @@ if (__VLS_ctx.importHistory.length === 0) {
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-2xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
@@ -844,7 +844,7 @@ if (__VLS_ctx.importHistory.length === 0) {
 /** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-x-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-left']} */ ;
@@ -886,7 +886,7 @@ if (__VLS_ctx.importHistory.length === 0) {
 /** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-800']} */ ;
@@ -919,7 +919,7 @@ if (__VLS_ctx.importHistory.length === 0) {
 /** @type {__VLS_StyleScopedClasses['w-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-x-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-left']} */ ;
@@ -974,17 +974,17 @@ if (__VLS_ctx.importHistory.length === 0) {
 /** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-mono']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-6']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

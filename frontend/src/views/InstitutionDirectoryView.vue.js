@@ -72,7 +72,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1
     ...{ class: "text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-xs text-slate-500 dark:text-[#858585] mt-0.5" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#989898] mt-0.5" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "grid grid-cols-1 md:grid-cols-3 gap-3 rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-3.5" },
@@ -84,17 +84,17 @@ const __VLS_0 = {}.Search;
 /** @type {[typeof __VLS_components.Search, ]} */ ;
 // @ts-ignore
 const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
-    ...{ class: "w-4 h-4 text-slate-400 dark:text-[#858585] absolute left-3 top-2.5 pointer-events-none" },
+    ...{ class: "w-4 h-4 text-slate-400 dark:text-[#989898] absolute left-3 top-2.5 pointer-events-none" },
 }));
 const __VLS_2 = __VLS_1({
-    ...{ class: "w-4 h-4 text-slate-400 dark:text-[#858585] absolute left-3 top-2.5 pointer-events-none" },
+    ...{ class: "w-4 h-4 text-slate-400 dark:text-[#989898] absolute left-3 top-2.5 pointer-events-none" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_1));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.input)({
     value: (__VLS_ctx.search),
     type: "text",
     'aria-label': "Search institutions",
     placeholder: "Search by name, permanent ID, or alias...",
-    ...{ class: "w-full pl-9 pr-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] placeholder-slate-400 dark:placeholder-[#858585] transition" },
+    ...{ class: "w-full pl-9 pr-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] placeholder-slate-400 dark:placeholder-[#aaaaaa] transition" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.select, __VLS_intrinsicElements.select)({
@@ -158,15 +158,15 @@ for (const [inst] of __VLS_getVForSourceType((__VLS_ctx.institutions))) {
     });
     (inst.institution_code);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-        ...{ class: "text-xs font-medium text-slate-500 dark:text-[#858585]" },
+        ...{ class: "text-xs font-medium text-slate-500 dark:text-[#989898]" },
     });
     (inst.institution_type);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.h2, __VLS_intrinsicElements.h2)({
-        ...{ class: "font-medium text-sm text-slate-900 dark:text-[#d4d4d4] mt-2 line-clamp-2" },
+        ...{ class: "font-medium text-sm text-slate-900 dark:text-[#d4d4d4] mt-2 line-clamp-2 [text-wrap:balance]" },
     });
     (inst.name);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs text-slate-500 dark:text-[#858585] mt-1" },
+        ...{ class: "text-xs text-slate-500 dark:text-[#989898] mt-1" },
     });
     (inst.district ? `${inst.district}, ` : '');
     (inst.state);
@@ -177,7 +177,7 @@ for (const [inst] of __VLS_getVForSourceType((__VLS_ctx.institutions))) {
         for (const [a] of __VLS_getVForSourceType((inst.aliases))) {
             __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
                 key: (a),
-                ...{ class: "rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-[#2d2d2d] px-1.5 py-0.5 text-xs text-slate-600 dark:text-[#858585]" },
+                ...{ class: "rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-[#2d2d2d] px-1.5 py-0.5 text-xs text-slate-600 dark:text-[#989898]" },
             });
             (a);
         }
@@ -186,7 +186,7 @@ for (const [inst] of __VLS_getVForSourceType((__VLS_ctx.institutions))) {
         ...{ class: "mt-5 pt-3 border-t border-slate-100 dark:border-[#2d2d2d] flex items-center justify-between" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "text-xs text-slate-600 dark:text-[#858585]" },
+        ...{ class: "text-xs text-slate-600 dark:text-[#989898]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
         ...{ class: "font-medium text-slate-900 dark:text-[#cccccc]" },
@@ -225,7 +225,7 @@ for (const [inst] of __VLS_getVForSourceType((__VLS_ctx.institutions))) {
 }
 if (__VLS_ctx.institutions.length === 0 && !__VLS_ctx.loading) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-8 text-center text-xs text-slate-500 dark:text-[#858585]" },
+        ...{ class: "rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-8 text-center text-xs text-slate-500 dark:text-[#989898]" },
     });
 }
 if (__VLS_ctx.pages > 1) {
@@ -233,7 +233,7 @@ if (__VLS_ctx.pages > 1) {
         ...{ class: "flex items-center justify-between border-t border-slate-200 dark:border-[#2d2d2d] pt-4" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "text-xs text-slate-500 dark:text-[#858585]" },
+        ...{ class: "text-xs text-slate-500 dark:text-[#989898]" },
     });
     (__VLS_ctx.page);
     (__VLS_ctx.pages);
@@ -278,7 +278,7 @@ if (__VLS_ctx.pages > 1) {
 /** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid-cols-1']} */ ;
@@ -295,7 +295,7 @@ if (__VLS_ctx.pages > 1) {
 /** @type {__VLS_StyleScopedClasses['w-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['absolute']} */ ;
 /** @type {__VLS_StyleScopedClasses['left-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['top-2.5']} */ ;
@@ -317,7 +317,7 @@ if (__VLS_ctx.pages > 1) {
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['placeholder-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:placeholder-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:placeholder-[#aaaaaa]']} */ ;
 /** @type {__VLS_StyleScopedClasses['transition']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3']} */ ;
@@ -389,16 +389,17 @@ if (__VLS_ctx.pages > 1) {
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-sm']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['line-clamp-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['[text-wrap:balance]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
@@ -414,7 +415,7 @@ if (__VLS_ctx.pages > 1) {
 /** @type {__VLS_StyleScopedClasses['py-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-5']} */ ;
 /** @type {__VLS_StyleScopedClasses['pt-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-t']} */ ;
@@ -425,7 +426,7 @@ if (__VLS_ctx.pages > 1) {
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
@@ -453,7 +454,7 @@ if (__VLS_ctx.pages > 1) {
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
@@ -463,7 +464,7 @@ if (__VLS_ctx.pages > 1) {
 /** @type {__VLS_StyleScopedClasses['pt-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;

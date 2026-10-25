@@ -44,11 +44,11 @@ if (__VLS_ctx.institution) {
     // @ts-ignore
     const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
         to: "/institutions",
-        ...{ class: "inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3" },
+        ...{ class: "inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#989898] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3" },
     }));
     const __VLS_2 = __VLS_1({
         to: "/institutions",
-        ...{ class: "inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3" },
+        ...{ class: "inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#989898] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3" },
     }, ...__VLS_functionalComponentArgsRest(__VLS_1));
     __VLS_3.slots.default;
     const __VLS_4 = {}.ArrowLeft;
@@ -81,7 +81,7 @@ if (__VLS_ctx.institution) {
     });
     (__VLS_ctx.institution.name);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "mt-2 flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-[#858585]" },
+        ...{ class: "mt-2 flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-[#989898]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
         ...{ class: "flex items-center gap-1" },
@@ -90,10 +90,10 @@ if (__VLS_ctx.institution) {
     /** @type {[typeof __VLS_components.MapPin, ]} */ ;
     // @ts-ignore
     const __VLS_9 = __VLS_asFunctionalComponent(__VLS_8, new __VLS_8({
-        ...{ class: "w-3.5 h-3.5 text-slate-400 dark:text-[#858585]" },
+        ...{ class: "w-3.5 h-3.5 text-slate-400 dark:text-[#989898]" },
     }));
     const __VLS_10 = __VLS_9({
-        ...{ class: "w-3.5 h-3.5 text-slate-400 dark:text-[#858585]" },
+        ...{ class: "w-3.5 h-3.5 text-slate-400 dark:text-[#989898]" },
     }, ...__VLS_functionalComponentArgsRest(__VLS_9));
     (__VLS_ctx.institution.address || `${__VLS_ctx.institution.district}, ${__VLS_ctx.institution.state}`);
     if (__VLS_ctx.institution.website) {
@@ -104,10 +104,10 @@ if (__VLS_ctx.institution) {
         /** @type {[typeof __VLS_components.Globe, ]} */ ;
         // @ts-ignore
         const __VLS_13 = __VLS_asFunctionalComponent(__VLS_12, new __VLS_12({
-            ...{ class: "w-3.5 h-3.5 text-slate-400 dark:text-[#858585]" },
+            ...{ class: "w-3.5 h-3.5 text-slate-400 dark:text-[#989898]" },
         }));
         const __VLS_14 = __VLS_13({
-            ...{ class: "w-3.5 h-3.5 text-slate-400 dark:text-[#858585]" },
+            ...{ class: "w-3.5 h-3.5 text-slate-400 dark:text-[#989898]" },
         }, ...__VLS_functionalComponentArgsRest(__VLS_13));
         __VLS_asFunctionalElement(__VLS_intrinsicElements.a, __VLS_intrinsicElements.a)({
             href: (__VLS_ctx.institution.website),
@@ -121,7 +121,7 @@ if (__VLS_ctx.institution) {
             ...{ class: "mt-3 flex items-center gap-2" },
         });
         __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-            ...{ class: "text-xs font-medium text-slate-400 dark:text-[#858585]" },
+            ...{ class: "text-xs font-medium text-slate-400 dark:text-[#989898]" },
         });
         __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
             ...{ class: "flex flex-wrap gap-1" },
@@ -141,7 +141,7 @@ if (__VLS_ctx.institution) {
         ...{ class: "text-center" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#858585]" },
+        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#989898]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
         ...{ class: "text-2xl font-semibold text-slate-900 dark:text-[#d4d4d4]" },
@@ -151,7 +151,7 @@ if (__VLS_ctx.institution) {
         ...{ class: "text-center" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#858585]" },
+        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#989898]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
         ...{ class: "text-2xl font-semibold text-amber-600 dark:text-[#cca700]" },
@@ -161,7 +161,7 @@ if (__VLS_ctx.institution) {
         ...{ class: "text-center" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#858585]" },
+        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#989898]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
         ...{ class: "text-2xl font-semibold text-emerald-600 dark:text-[#89d185]" },
@@ -171,7 +171,7 @@ if (__VLS_ctx.institution) {
         ...{ class: "text-center" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#858585]" },
+        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#989898]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
         ...{ class: "text-2xl font-semibold text-red-600 dark:text-[#f48771]" },
@@ -247,7 +247,7 @@ if (__VLS_ctx.institution) {
         });
         (count);
         __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-            ...{ class: "text-xs text-slate-500 dark:text-[#858585]" },
+            ...{ class: "text-xs text-slate-500 dark:text-[#989898]" },
         });
     }
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -260,7 +260,7 @@ if (__VLS_ctx.institution) {
         ...{ class: "text-xs font-semibold text-slate-900 dark:text-[#cccccc]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs text-slate-500 dark:text-[#858585] mt-0.5" },
+        ...{ class: "text-xs text-slate-500 dark:text-[#989898] mt-0.5" },
     });
     (__VLS_ctx.institution.name);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -330,7 +330,7 @@ if (__VLS_ctx.institution) {
         });
         (c.subject);
         __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-            ...{ class: "text-xs text-slate-500 dark:text-[#858585] line-clamp-1 mt-0.5" },
+            ...{ class: "text-xs text-slate-500 dark:text-[#989898] line-clamp-1 mt-0.5" },
         });
         (c.description);
         __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
@@ -341,7 +341,7 @@ if (__VLS_ctx.institution) {
         });
         (c.current_bureau_code);
         __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-            ...{ class: "py-3 px-4 text-slate-600 dark:text-[#858585]" },
+            ...{ class: "py-3 px-4 text-slate-600 dark:text-[#989898]" },
         });
         (c.category);
         __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
@@ -371,7 +371,7 @@ if (__VLS_ctx.institution) {
             size: "sm",
         }, ...__VLS_functionalComponentArgsRest(__VLS_35));
         __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-            ...{ class: "py-3 px-4 whitespace-nowrap text-slate-500 dark:text-[#858585]" },
+            ...{ class: "py-3 px-4 whitespace-nowrap text-slate-500 dark:text-[#989898]" },
         });
         (c.received_at?.slice(0, 10));
         __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
@@ -395,7 +395,7 @@ if (__VLS_ctx.institution) {
         __VLS_asFunctionalElement(__VLS_intrinsicElements.tr, __VLS_intrinsicElements.tr)({});
         __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
             colspan: "8",
-            ...{ class: "py-8 text-center text-xs text-slate-400 dark:text-[#858585]" },
+            ...{ class: "py-8 text-center text-xs text-slate-400 dark:text-[#989898]" },
         });
     }
 }
@@ -406,7 +406,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:text-slate-800']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:hover:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['transition']} */ ;
@@ -467,21 +467,21 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['gap-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-blue-600']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:text-[#4fc1ff]']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:underline']} */ ;
@@ -492,7 +492,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-wrap']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-1']} */ ;
@@ -522,7 +522,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-2xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
@@ -531,7 +531,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-2xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-amber-600']} */ ;
@@ -540,7 +540,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-2xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-emerald-600']} */ ;
@@ -549,7 +549,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-2xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-red-600']} */ ;
@@ -646,7 +646,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
@@ -665,7 +665,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-x-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
@@ -723,7 +723,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['line-clamp-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['line-clamp-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-3']} */ ;
@@ -746,7 +746,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['py-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['whitespace-nowrap']} */ ;
@@ -757,7 +757,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['whitespace-nowrap']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-right']} */ ;
@@ -771,7 +771,7 @@ if (__VLS_ctx.institution) {
 /** @type {__VLS_StyleScopedClasses['text-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

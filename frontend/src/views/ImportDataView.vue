@@ -103,7 +103,7 @@ async function commitValidRows() {
         <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
           Import Complaints
         </h1>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
           Upload CSV files, preview validation errors, and import records
         </p>
       </div>
@@ -113,7 +113,7 @@ async function commitValidRows() {
         class="inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition"
         @click="downloadTemplate"
       >
-        <Download class="w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" />
+        <Download class="w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" />
         Download Template
       </button>
     </div>
@@ -148,20 +148,20 @@ async function commitValidRows() {
         'rounded border-2 border-dashed p-8 text-center transition flex flex-col items-center justify-center',
         isDragging
           ? 'border-[#007acc] bg-[#007acc]/10'
-          : 'border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#252526] hover:border-slate-400 dark:hover:border-[#858585]'
+          : 'border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#252526] hover:border-slate-400 dark:hover:border-[#989898]'
       ]"
       @dragover.prevent="isDragging = true"
       @dragleave.prevent="isDragging = false"
       @drop.prevent="handleFileDrop"
     >
-      <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#1e1e1e] flex items-center justify-center text-slate-500 dark:text-[#858585] mb-3 border dark:border-[#2d2d2d]">
+      <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#1e1e1e] flex items-center justify-center text-slate-500 dark:text-[#989898] mb-3 border dark:border-[#2d2d2d]">
         <UploadCloud class="w-5 h-5" />
       </div>
 
       <h2 class="text-xs font-semibold text-slate-800 dark:text-[#cccccc]">
         Upload CSV File
       </h2>
-      <p class="text-xs text-slate-500 dark:text-[#858585] mt-1 max-w-sm">
+      <p class="text-xs text-slate-500 dark:text-[#989898] mt-1 max-w-sm">
         Drag and drop your file here, or select browse to inspect rows before importing.
       </p>
 
@@ -197,7 +197,7 @@ async function commitValidRows() {
       <!-- Summary Stats Header -->
       <div class="grid grid-cols-3 gap-4">
         <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4">
-          <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">Total Rows</p>
+          <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">Total Rows</p>
           <p class="text-2xl font-semibold text-slate-900 dark:text-[#d4d4d4] mt-1">{{ previewData.total_rows }}</p>
         </div>
 
@@ -280,7 +280,7 @@ async function commitValidRows() {
           <span class="text-xs font-semibold text-slate-800 dark:text-[#cccccc]">
             Valid Rows ({{ previewData.valid_count }})
           </span>
-          <span class="text-xs text-slate-500 dark:text-[#858585]">Ready to import</span>
+          <span class="text-xs text-slate-500 dark:text-[#989898]">Ready to import</span>
         </div>
 
         <div class="overflow-x-auto">
@@ -298,7 +298,7 @@ async function commitValidRows() {
               <tr v-for="v in previewData.valid_rows" :key="v.row_index" class="hover:bg-slate-50 dark:hover:bg-[#2a2d2e]">
                 <td class="py-2 px-4 font-medium text-slate-900 dark:text-[#cccccc]">{{ v.institution_name }}</td>
                 <td class="py-2 px-4 font-mono text-slate-800 dark:text-[#cccccc]">{{ v.bureau_code }}</td>
-                <td class="py-2 px-4 text-slate-600 dark:text-[#858585]">{{ v.category }}</td>
+                <td class="py-2 px-4 text-slate-600 dark:text-[#989898]">{{ v.category }}</td>
                 <td class="py-2 px-4 text-slate-800 dark:text-[#cccccc]">{{ v.priority }}</td>
                 <td class="py-2 px-4 truncate max-w-sm text-slate-800 dark:text-[#cccccc]">{{ v.subject }}</td>
               </tr>
@@ -312,7 +312,7 @@ async function commitValidRows() {
     <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] overflow-hidden">
       <div class="border-b border-slate-200 dark:border-[#2d2d2d] px-4 py-3">
         <h2 class="text-xs font-semibold text-slate-900 dark:text-[#cccccc] flex items-center gap-2">
-          <History class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+          <History class="w-4 h-4 text-slate-500 dark:text-[#989898]" />
           Import History
         </h2>
       </div>
@@ -335,12 +335,12 @@ async function commitValidRows() {
               <td class="py-2.5 px-4 font-medium text-slate-900 dark:text-[#d4d4d4]">{{ b.filename }}</td>
               <td class="py-2.5 px-4 text-emerald-700 dark:text-[#89d185] font-medium">{{ b.success_rows }} rows</td>
               <td class="py-2.5 px-4 text-red-600 dark:text-[#f48771] font-medium">{{ b.failed_rows }} rows</td>
-              <td class="py-2.5 px-4 text-slate-600 dark:text-[#858585]">{{ b.created_by_name }}</td>
-              <td class="py-2.5 px-4 text-slate-400 dark:text-[#858585] font-mono">{{ b.created_at?.slice(0, 16).replace('T', ' ') }}</td>
+              <td class="py-2.5 px-4 text-slate-600 dark:text-[#989898]">{{ b.created_by_name }}</td>
+              <td class="py-2.5 px-4 text-slate-400 dark:text-[#989898] font-mono">{{ b.created_at?.slice(0, 16).replace('T', ' ') }}</td>
             </tr>
 
             <tr v-if="importHistory.length === 0">
-              <td colspan="6" class="py-6 text-center text-xs text-slate-400 dark:text-[#858585]">
+              <td colspan="6" class="py-6 text-center text-xs text-slate-400 dark:text-[#989898]">
                 No past import records found.
               </td>
             </tr>

@@ -55,7 +55,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1
     ...{ class: "text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-xs text-slate-500 dark:text-[#858585] mt-0.5" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#989898] mt-0.5" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
     ...{ onClick: (__VLS_ctx.triggerCsvExport) },
@@ -87,13 +87,13 @@ const __VLS_4 = {}.Layers;
 /** @type {[typeof __VLS_components.Layers, ]} */ ;
 // @ts-ignore
 const __VLS_5 = __VLS_asFunctionalComponent(__VLS_4, new __VLS_4({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }));
 const __VLS_6 = __VLS_5({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_5));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-    ...{ class: "text-xs text-slate-400 dark:text-[#858585]" },
+    ...{ class: "text-xs text-slate-400 dark:text-[#989898]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "mt-4 space-y-4" },
@@ -112,7 +112,7 @@ for (const [b] of __VLS_getVForSourceType((__VLS_ctx.analytics.bureau_workload))
     (b.code);
     (b.name);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-        ...{ class: "font-mono text-slate-500 dark:text-[#858585]" },
+        ...{ class: "font-mono text-slate-500 dark:text-[#989898]" },
     });
     (b.open);
     (b.total);
@@ -143,28 +143,28 @@ const __VLS_8 = {}.PieChart;
 /** @type {[typeof __VLS_components.PieChart, ]} */ ;
 // @ts-ignore
 const __VLS_9 = __VLS_asFunctionalComponent(__VLS_8, new __VLS_8({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }));
 const __VLS_10 = __VLS_9({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_9));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-    ...{ class: "text-xs text-slate-400 dark:text-[#858585]" },
+    ...{ class: "text-xs text-slate-400 dark:text-[#989898]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "mt-4 grid grid-cols-2 gap-3" },
+    ...{ class: "mt-4 grid grid-cols-2 divide-x divide-y divide-slate-100 dark:divide-[#2d2d2d]" },
 });
 for (const [count, status] of __VLS_getVForSourceType((__VLS_ctx.analytics.status_distribution))) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         key: (status),
-        ...{ class: "p-3 rounded border border-slate-100 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e]" },
+        ...{ class: "p-3" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs font-medium text-slate-500 dark:text-[#858585]" },
+        ...{ class: "text-xs font-medium text-slate-500 dark:text-[#989898]" },
     });
     (status);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xl font-semibold text-slate-900 dark:text-[#d4d4d4] mt-1" },
+        ...{ class: "text-xl font-semibold text-slate-900 dark:text-[#d4d4d4] mt-1 tabular-nums" },
     });
     (count);
 }
@@ -181,25 +181,25 @@ const __VLS_12 = {}.BarChart3;
 /** @type {[typeof __VLS_components.BarChart3, ]} */ ;
 // @ts-ignore
 const __VLS_13 = __VLS_asFunctionalComponent(__VLS_12, new __VLS_12({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }));
 const __VLS_14 = __VLS_13({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_13));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "mt-4 space-y-2.5" },
+    ...{ class: "mt-4 divide-y divide-slate-100 dark:divide-[#2d2d2d]" },
 });
 for (const [cat] of __VLS_getVForSourceType((__VLS_ctx.analytics.category_distribution))) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         key: (cat.category),
-        ...{ class: "flex items-center justify-between p-2 rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-100 dark:border-[#2d2d2d]" },
+        ...{ class: "flex items-center justify-between py-2.5 px-1" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
         ...{ class: "text-xs font-medium text-slate-800 dark:text-[#cccccc] truncate max-w-xs" },
     });
     (cat.category);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-        ...{ class: "rounded bg-slate-900 dark:bg-[#2d2d2d] px-2 py-0.5 text-xs font-medium text-amber-400 dark:text-[#cca700] border dark:border-[#3e3e42]" },
+        ...{ class: "font-mono text-xs font-semibold text-amber-500 dark:text-[#cca700] tabular-nums" },
     });
     (cat.count);
 }
@@ -213,25 +213,25 @@ const __VLS_16 = {}.MapPin;
 /** @type {[typeof __VLS_components.MapPin, ]} */ ;
 // @ts-ignore
 const __VLS_17 = __VLS_asFunctionalComponent(__VLS_16, new __VLS_16({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }));
 const __VLS_18 = __VLS_17({
-    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#989898]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_17));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "mt-4 space-y-2.5" },
+    ...{ class: "mt-4 divide-y divide-slate-100 dark:divide-[#2d2d2d]" },
 });
 for (const [st] of __VLS_getVForSourceType((__VLS_ctx.analytics.state_distribution))) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         key: (st.state),
-        ...{ class: "flex items-center justify-between p-2 rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-100 dark:border-[#2d2d2d]" },
+        ...{ class: "flex items-center justify-between py-2.5 px-1" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
         ...{ class: "text-xs font-medium text-slate-800 dark:text-[#cccccc]" },
     });
     (st.state);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-        ...{ class: "rounded bg-blue-100 dark:bg-[#007acc]/15 px-2 py-0.5 text-xs font-medium text-blue-800 dark:text-[#4fc1ff] border dark:border-[#007acc]/30" },
+        ...{ class: "font-mono text-xs font-semibold text-blue-600 dark:text-[#4fc1ff] tabular-nums" },
     });
     (st.count);
 }
@@ -249,7 +249,7 @@ for (const [st] of __VLS_getVForSourceType((__VLS_ctx.analytics.state_distributi
 /** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['inline-flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
@@ -295,10 +295,10 @@ for (const [st] of __VLS_getVForSourceType((__VLS_ctx.analytics.state_distributi
 /** @type {__VLS_StyleScopedClasses['w-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-1.5']} */ ;
@@ -310,7 +310,7 @@ for (const [st] of __VLS_getVForSourceType((__VLS_ctx.analytics.state_distributi
 /** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-mono']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-slate-100']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:bg-[#1e1e1e]']} */ ;
@@ -348,30 +348,28 @@ for (const [st] of __VLS_getVForSourceType((__VLS_ctx.analytics.state_distributi
 /** @type {__VLS_StyleScopedClasses['w-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid-cols-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['gap-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['divide-x']} */ ;
+/** @type {__VLS_StyleScopedClasses['divide-y']} */ ;
+/** @type {__VLS_StyleScopedClasses['divide-slate-100']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:divide-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['p-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
-/** @type {__VLS_StyleScopedClasses['border']} */ ;
-/** @type {__VLS_StyleScopedClasses['border-slate-100']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-slate-50']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:bg-[#1e1e1e]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xl']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['tabular-nums']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid-cols-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['lg:grid-cols-2']} */ ;
@@ -397,36 +395,28 @@ for (const [st] of __VLS_getVForSourceType((__VLS_ctx.analytics.state_distributi
 /** @type {__VLS_StyleScopedClasses['w-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['space-y-2.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['divide-y']} */ ;
+/** @type {__VLS_StyleScopedClasses['divide-slate-100']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:divide-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
-/** @type {__VLS_StyleScopedClasses['p-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-slate-50']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:bg-[#1e1e1e]']} */ ;
-/** @type {__VLS_StyleScopedClasses['border']} */ ;
-/** @type {__VLS_StyleScopedClasses['border-slate-100']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-800']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['truncate']} */ ;
 /** @type {__VLS_StyleScopedClasses['max-w-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:bg-[#2d2d2d]']} */ ;
-/** @type {__VLS_StyleScopedClasses['px-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-0.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-mono']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-amber-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-amber-500']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:text-[#cca700]']} */ ;
-/** @type {__VLS_StyleScopedClasses['border']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
+/** @type {__VLS_StyleScopedClasses['tabular-nums']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
@@ -448,34 +438,26 @@ for (const [st] of __VLS_getVForSourceType((__VLS_ctx.analytics.state_distributi
 /** @type {__VLS_StyleScopedClasses['w-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['space-y-2.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['divide-y']} */ ;
+/** @type {__VLS_StyleScopedClasses['divide-slate-100']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:divide-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
-/** @type {__VLS_StyleScopedClasses['p-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-slate-50']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:bg-[#1e1e1e]']} */ ;
-/** @type {__VLS_StyleScopedClasses['border']} */ ;
-/** @type {__VLS_StyleScopedClasses['border-slate-100']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-800']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-blue-100']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:bg-[#007acc]/15']} */ ;
-/** @type {__VLS_StyleScopedClasses['px-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-0.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-mono']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-blue-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-blue-600']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:text-[#4fc1ff]']} */ ;
-/** @type {__VLS_StyleScopedClasses['border']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:border-[#007acc]/30']} */ ;
+/** @type {__VLS_StyleScopedClasses['tabular-nums']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

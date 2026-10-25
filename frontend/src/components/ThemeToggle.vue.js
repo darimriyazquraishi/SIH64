@@ -8,7 +8,7 @@ let __VLS_directives;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
     ...{ onClick: (__VLS_ctx.toggleTheme) },
     type: "button",
-    ...{ class: "relative rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-800 dark:text-[#858585] dark:hover:bg-[#2d2d2d] dark:hover:text-[#cccccc] transition-colors focus:outline-none focus:ring-1 focus:ring-[#007acc]" },
+    ...{ class: "relative rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-800 dark:text-[#989898] dark:hover:bg-[#2d2d2d] dark:hover:text-[#cccccc] transition-colors focus:outline-none focus:ring-1 focus:ring-[#007acc]" },
     title: (__VLS_ctx.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'),
     'aria-label': "Toggle color theme",
 });
@@ -40,7 +40,7 @@ else {
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-slate-100']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:text-slate-800']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:hover:bg-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:hover:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['transition-colors']} */ ;

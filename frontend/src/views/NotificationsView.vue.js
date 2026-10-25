@@ -36,7 +36,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1
     ...{ class: "text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-xs text-slate-500 dark:text-[#858585] mt-0.5" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#989898] mt-0.5" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "flex items-center gap-2" },
@@ -52,10 +52,10 @@ const __VLS_0 = {}.Clock;
 /** @type {[typeof __VLS_components.Clock, ]} */ ;
 // @ts-ignore
 const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
-    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" },
 }));
 const __VLS_2 = __VLS_1({
-    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" },
+    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_1));
 if (__VLS_ctx.notifStore.unreadCount > 0) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
@@ -90,7 +90,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.input)({
 });
 (__VLS_ctx.unreadOnly);
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-    ...{ class: "text-xs text-slate-500 dark:text-[#858585]" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#989898]" },
 });
 (__VLS_ctx.notifStore.unreadCount);
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -177,7 +177,7 @@ for (const [notif] of __VLS_getVForSourceType((__VLS_ctx.notifStore.notification
         ...{ class: "flex flex-col items-end gap-1.5 flex-shrink-0" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-        ...{ class: "text-xs text-slate-400 dark:text-[#858585]" },
+        ...{ class: "text-xs text-slate-400 dark:text-[#989898]" },
     });
     (notif.created_at?.slice(0, 16).replace('T', ' '));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
@@ -220,7 +220,7 @@ if (__VLS_ctx.notifStore.notifications.length === 0 && !__VLS_ctx.notifStore.loa
 /** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
@@ -246,7 +246,7 @@ if (__VLS_ctx.notifStore.notifications.length === 0 && !__VLS_ctx.notifStore.loa
 /** @type {__VLS_StyleScopedClasses['w-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['inline-flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-1.5']} */ ;
@@ -290,7 +290,7 @@ if (__VLS_ctx.notifStore.notifications.length === 0 && !__VLS_ctx.notifStore.loa
 /** @type {__VLS_StyleScopedClasses['dark:bg-[#3c3c3c]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-start']} */ ;
@@ -324,7 +324,7 @@ if (__VLS_ctx.notifStore.notifications.length === 0 && !__VLS_ctx.notifStore.loa
 /** @type {__VLS_StyleScopedClasses['flex-shrink-0']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-blue-600']} */ ;

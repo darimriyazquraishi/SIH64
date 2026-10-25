@@ -47,11 +47,11 @@ function handleNotificationClick(notif: any) {
           <h1 class="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">
             AICTE Case Monitoring & Coordination Portal
           </h1>
-          <span class="rounded bg-slate-100 dark:bg-[#1e1e1e] px-1.5 py-0.5 text-xs font-medium text-slate-600 dark:text-[#858585] border border-slate-200 dark:border-[#3e3e42]">
+          <span class="rounded bg-slate-100 dark:bg-[#1e1e1e] px-1.5 py-0.5 text-xs font-medium text-slate-600 dark:text-[#989898] border border-slate-200 dark:border-[#3e3e42]">
             SIH 2026
           </span>
         </div>
-        <p class="text-xs text-slate-500 dark:text-[#858585] hidden sm:block">
+        <p class="text-xs text-slate-500 dark:text-[#989898] hidden sm:block">
           All India Council for Technical Education
         </p>
       </div>
@@ -80,14 +80,14 @@ function handleNotificationClick(notif: any) {
       <div class="relative">
         <button
           type="button"
-          class="relative rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-800 dark:text-[#858585] dark:hover:bg-[#2a2d2e] dark:hover:text-white transition-colors"
+          class="relative rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-800 dark:text-[#989898] dark:hover:bg-[#2a2d2e] dark:hover:text-white transition-colors"
           aria-label="View notifications"
           @click="isNotifOpen = !isNotifOpen"
         >
-          <Bell class="h-4.5 w-4.5" aria-hidden="true" />
+          <Bell class="h-4 w-4" aria-hidden="true" />
           <span
             v-if="notifStore.unreadCount > 0"
-            class="absolute top-0.5 right-0.5 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-red-600 dark:bg-[#f14c4c] text-xs font-bold text-white"
+            class="absolute top-0.5 right-0.5 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-red-700 dark:bg-[#c72e2e] text-xs font-bold text-white"
           >
             {{ notifStore.unreadCount > 9 ? '9+' : notifStore.unreadCount }}
           </span>
@@ -130,12 +130,12 @@ function handleNotificationClick(notif: any) {
                 </p>
                 <span v-if="!notif.is_read" class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-[#4fc1ff] flex-shrink-0 mt-1"></span>
               </div>
-              <p class="mt-1 text-xs text-slate-500 dark:text-[#858585] line-clamp-2">
+              <p class="mt-1 text-xs text-slate-500 dark:text-[#989898] line-clamp-2">
                 {{ notif.message }}
               </p>
             </div>
 
-            <div v-if="notifStore.notifications.length === 0" class="p-6 text-center text-xs text-slate-400 dark:text-[#858585]">
+            <div v-if="notifStore.notifications.length === 0" class="p-6 text-center text-xs text-slate-400 dark:text-[#989898]">
               No unread notifications
             </div>
           </div>
@@ -167,7 +167,7 @@ function handleNotificationClick(notif: any) {
             <p class="text-xs font-medium text-slate-900 dark:text-white leading-none">
               {{ authStore.user?.name }}
             </p>
-            <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+            <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
               {{ authStore.user?.designation || authStore.user?.role }}
             </p>
           </div>
@@ -180,7 +180,7 @@ function handleNotificationClick(notif: any) {
         >
           <div class="px-3 py-2 border-b border-slate-100 dark:border-[#2d2d2d]">
             <p class="text-xs font-semibold text-slate-900 dark:text-white">{{ authStore.user?.name }}</p>
-            <p class="text-xs text-slate-500 dark:text-[#858585] truncate">{{ authStore.user?.email }}</p>
+            <p class="text-xs text-slate-500 dark:text-[#989898] truncate">{{ authStore.user?.email }}</p>
           </div>
           <button
             type="button"

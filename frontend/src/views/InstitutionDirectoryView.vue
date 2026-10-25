@@ -78,7 +78,7 @@ onMounted(() => {
         <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
           Institutions
         </h1>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
           Browse institutions, view aliases, and inspect complaint records across bureaus
         </p>
       </div>
@@ -88,13 +88,13 @@ onMounted(() => {
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-3.5">
       <!-- Search -->
       <div class="relative">
-        <Search class="w-4 h-4 text-slate-400 dark:text-[#858585] absolute left-3 top-2.5 pointer-events-none" />
+        <Search class="w-4 h-4 text-slate-400 dark:text-[#989898] absolute left-3 top-2.5 pointer-events-none" />
         <input
           v-model="search"
           type="text"
           aria-label="Search institutions"
           placeholder="Search by name, permanent ID, or alias..."
-          class="w-full pl-9 pr-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] placeholder-slate-400 dark:placeholder-[#858585] transition"
+          class="w-full pl-9 pr-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] placeholder-slate-400 dark:placeholder-[#aaaaaa] transition"
         />
       </div>
 
@@ -142,16 +142,16 @@ onMounted(() => {
             <span class="rounded bg-slate-100 dark:bg-[#1e1e1e] px-2 py-0.5 text-xs font-mono font-medium text-slate-700 dark:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]">
               ID: {{ inst.institution_code }}
             </span>
-            <span class="text-xs font-medium text-slate-500 dark:text-[#858585]">
+            <span class="text-xs font-medium text-slate-500 dark:text-[#989898]">
               {{ inst.institution_type }}
             </span>
           </div>
 
-          <h2 class="font-medium text-sm text-slate-900 dark:text-[#d4d4d4] mt-2 line-clamp-2">
+          <h2 class="font-medium text-sm text-slate-900 dark:text-[#d4d4d4] mt-2 line-clamp-2 [text-wrap:balance]">
             {{ inst.name }}
           </h2>
 
-          <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-1">
             {{ inst.district ? `${inst.district}, ` : '' }}{{ inst.state }}
           </p>
 
@@ -160,7 +160,7 @@ onMounted(() => {
             <span
               v-for="a in inst.aliases"
               :key="a"
-              class="rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-[#2d2d2d] px-1.5 py-0.5 text-xs text-slate-600 dark:text-[#858585]"
+              class="rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-[#2d2d2d] px-1.5 py-0.5 text-xs text-slate-600 dark:text-[#989898]"
             >
               {{ a }}
             </span>
@@ -168,7 +168,7 @@ onMounted(() => {
         </div>
 
         <div class="mt-5 pt-3 border-t border-slate-100 dark:border-[#2d2d2d] flex items-center justify-between">
-          <div class="text-xs text-slate-600 dark:text-[#858585]">
+          <div class="text-xs text-slate-600 dark:text-[#989898]">
             <span class="font-medium text-slate-900 dark:text-[#cccccc]">{{ inst.total_complaints || 0 }}</span> total
             · <span class="font-medium text-[#cca700]">{{ inst.open_complaints || 0 }}</span> active
             · <span class="font-medium text-[#89d185]">{{ inst.disposed_complaints || 0 }}</span> resolved
@@ -186,13 +186,13 @@ onMounted(() => {
     </div>
 
     <!-- Empty State -->
-    <div v-if="institutions.length === 0 && !loading" class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-8 text-center text-xs text-slate-500 dark:text-[#858585]">
+    <div v-if="institutions.length === 0 && !loading" class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-8 text-center text-xs text-slate-500 dark:text-[#989898]">
       No institutions match the current search filters.
     </div>
 
     <!-- Pagination -->
     <div v-if="pages > 1" class="flex items-center justify-between border-t border-slate-200 dark:border-[#2d2d2d] pt-4">
-      <div class="text-xs text-slate-500 dark:text-[#858585]">
+      <div class="text-xs text-slate-500 dark:text-[#989898]">
         Page {{ page }} of {{ pages }} ({{ total }} institutions)
       </div>
       <div class="flex items-center gap-2">

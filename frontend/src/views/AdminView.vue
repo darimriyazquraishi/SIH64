@@ -95,7 +95,7 @@ async function toggleUserActive(u: User) {
         <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
           Administration
         </h1>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
           Manage user accounts, roles, and review system audit records
         </p>
       </div>
@@ -117,9 +117,9 @@ async function toggleUserActive(u: User) {
           <Database class="w-4 h-4" />
         </div>
         <div>
-          <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">Database</p>
+          <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">Database</p>
           <p class="text-xs font-medium text-slate-900 dark:text-[#d4d4d4]">{{ systemStatus.database }}</p>
-          <p class="text-xs text-slate-400 dark:text-[#858585] truncate max-w-[200px]" :title="systemStatus.postgresql_version">
+          <p class="text-xs text-slate-400 dark:text-[#989898] truncate max-w-[200px]" :title="systemStatus.postgresql_version">
             {{ systemStatus.postgresql_version }}
           </p>
         </div>
@@ -130,9 +130,9 @@ async function toggleUserActive(u: User) {
           <Activity class="w-4 h-4" />
         </div>
         <div>
-          <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">System Status</p>
+          <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">System Status</p>
           <p class="text-xs font-medium text-slate-900 dark:text-[#d4d4d4]">{{ systemStatus.status }}</p>
-          <p class="text-xs text-slate-500 dark:text-[#858585]">{{ systemStatus.portal_version }}</p>
+          <p class="text-xs text-slate-500 dark:text-[#989898]">{{ systemStatus.portal_version }}</p>
         </div>
       </div>
 
@@ -141,9 +141,9 @@ async function toggleUserActive(u: User) {
           <ShieldCheck class="w-4 h-4" />
         </div>
         <div>
-          <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">Access Control</p>
+          <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">Access Control</p>
           <p class="text-xs font-medium text-slate-900 dark:text-[#d4d4d4]">Role-based access</p>
-          <p class="text-xs text-slate-500 dark:text-[#858585]">Bureau-level isolation</p>
+          <p class="text-xs text-slate-500 dark:text-[#989898]">Bureau-level isolation</p>
         </div>
       </div>
     </div>
@@ -152,10 +152,10 @@ async function toggleUserActive(u: User) {
     <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] overflow-hidden">
       <div class="border-b border-slate-200 dark:border-[#2d2d2d] px-4 py-3 flex items-center justify-between">
         <h2 class="text-xs font-semibold text-slate-900 dark:text-[#cccccc] flex items-center gap-2">
-          <Users class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+          <Users class="w-4 h-4 text-slate-500 dark:text-[#989898]" />
           User Accounts
         </h2>
-        <span class="text-xs text-slate-500 dark:text-[#858585]">{{ users.length }} accounts</span>
+        <span class="text-xs text-slate-500 dark:text-[#989898]">{{ users.length }} accounts</span>
       </div>
 
       <div class="overflow-x-auto">
@@ -174,9 +174,9 @@ async function toggleUserActive(u: User) {
             <tr v-for="u in users" :key="u.id" class="hover:bg-slate-50 dark:hover:bg-[#2a2d2e]">
               <td class="py-2.5 px-4 font-medium text-slate-900 dark:text-[#d4d4d4]">
                 {{ u.name }}
-                <div class="text-xs text-slate-400 dark:text-[#858585]">{{ u.designation || 'Staff' }}</div>
+                <div class="text-xs text-slate-400 dark:text-[#989898]">{{ u.designation || 'Staff' }}</div>
               </td>
-              <td class="py-2.5 px-4 font-mono text-slate-600 dark:text-[#858585]">{{ u.email }}</td>
+              <td class="py-2.5 px-4 font-mono text-slate-600 dark:text-[#989898]">{{ u.email }}</td>
               <td class="py-2.5 px-4">
                 <span
                   :class="[
@@ -221,10 +221,10 @@ async function toggleUserActive(u: User) {
     <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] overflow-hidden">
       <div class="border-b border-slate-200 dark:border-[#2d2d2d] px-4 py-3 flex items-center justify-between">
         <h2 class="text-xs font-semibold text-slate-900 dark:text-[#cccccc] flex items-center gap-2">
-          <Terminal class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+          <Terminal class="w-4 h-4 text-slate-500 dark:text-[#989898]" />
           Audit Logs
         </h2>
-        <span class="text-xs text-slate-400 dark:text-[#858585] font-mono">System Trail</span>
+        <span class="text-xs text-slate-400 dark:text-[#989898] font-mono">System Trail</span>
       </div>
 
       <div class="overflow-x-auto max-h-80 overflow-y-auto">
@@ -240,11 +240,11 @@ async function toggleUserActive(u: User) {
           </thead>
           <tbody class="divide-y divide-slate-100 dark:divide-[#2d2d2d]">
             <tr v-for="log in auditLogs" :key="log.id" class="hover:bg-slate-50 dark:hover:bg-[#2a2d2e]">
-              <td class="py-2 px-4 text-slate-400 dark:text-[#858585] whitespace-nowrap">{{ log.created_at?.slice(0, 19).replace('T', ' ') }}</td>
+              <td class="py-2 px-4 text-slate-400 dark:text-[#989898] whitespace-nowrap">{{ log.created_at?.slice(0, 19).replace('T', ' ') }}</td>
               <td class="py-2 px-4 font-sans font-medium text-slate-900 dark:text-[#d4d4d4] whitespace-nowrap">{{ log.user_name }}</td>
               <td class="py-2 px-4 font-medium text-blue-700 dark:text-[#4fc1ff] whitespace-nowrap">{{ log.action }}</td>
               <td class="py-2 px-4 text-slate-600 dark:text-[#cccccc] whitespace-nowrap">{{ log.entity_type }} #{{ log.entity_id || '-' }}</td>
-              <td class="py-2 px-4 text-slate-500 dark:text-[#858585] truncate max-w-xs font-sans text-xs">{{ JSON.stringify(log.details) }}</td>
+              <td class="py-2 px-4 text-slate-500 dark:text-[#989898] truncate max-w-xs font-sans text-xs">{{ JSON.stringify(log.details) }}</td>
             </tr>
           </tbody>
         </table>

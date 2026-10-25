@@ -11,7 +11,7 @@ const badgeConfig = computed(() => {
     case 'Received':
       return {
         bg: 'bg-slate-100 text-slate-800 border-slate-300 dark:bg-[#2d2d2d] dark:text-[#cccccc] dark:border-[#3e3e42]',
-        dot: 'bg-slate-500 dark:bg-[#858585]',
+        dot: 'bg-slate-500 dark:bg-[#989898]',
       }
     case 'Under Review':
       return {
@@ -40,13 +40,13 @@ const badgeConfig = computed(() => {
       }
     case 'Closed':
       return {
-        bg: 'bg-zinc-100 text-zinc-700 border-zinc-300 dark:bg-[#252526] dark:text-[#858585] dark:border-[#3e3e42]',
-        dot: 'bg-zinc-400 dark:bg-[#858585]',
+        bg: 'bg-zinc-100 text-zinc-700 border-zinc-300 dark:bg-[#252526] dark:text-[#989898] dark:border-[#3e3e42]',
+        dot: 'bg-zinc-400 dark:bg-[#989898]',
       }
     default:
       return {
         bg: 'bg-slate-100 text-slate-800 border-slate-300 dark:bg-[#2d2d2d] dark:text-[#cccccc] dark:border-[#3e3e42]',
-        dot: 'bg-slate-400 dark:bg-[#858585]',
+        dot: 'bg-slate-400 dark:bg-[#989898]',
       }
   }
 })

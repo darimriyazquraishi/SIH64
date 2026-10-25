@@ -38,7 +38,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.d
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "px-3 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#858585]" },
+    ...{ class: "px-3 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#989898]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.nav, __VLS_intrinsicElements.nav)({
     ...{ class: "mt-2 space-y-0.5" },
@@ -79,7 +79,7 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.navigation))) {
                 'h-4 w-4 transition-colors',
                 __VLS_ctx.isActive(item.path)
                     ? 'text-blue-600 dark:text-[#007acc]'
-                    : 'text-slate-400 dark:text-[#858585] group-hover:text-slate-600 dark:group-hover:text-[#cccccc]',
+                    : 'text-slate-400 dark:text-[#989898] group-hover:text-slate-600 dark:group-hover:text-[#cccccc]',
             ]) },
         'aria-hidden': "true",
     }));
@@ -88,7 +88,7 @@ for (const [item] of __VLS_getVForSourceType((__VLS_ctx.navigation))) {
                 'h-4 w-4 transition-colors',
                 __VLS_ctx.isActive(item.path)
                     ? 'text-blue-600 dark:text-[#007acc]'
-                    : 'text-slate-400 dark:text-[#858585] group-hover:text-slate-600 dark:group-hover:text-[#cccccc]',
+                    : 'text-slate-400 dark:text-[#989898] group-hover:text-slate-600 dark:group-hover:text-[#cccccc]',
             ]) },
         'aria-hidden': "true",
     }, ...__VLS_functionalComponentArgsRest(__VLS_5));
@@ -120,13 +120,13 @@ const __VLS_10 = __VLS_9({
     'aria-hidden': "true",
 }, ...__VLS_functionalComponentArgsRest(__VLS_9));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "mt-1 text-xs text-slate-500 dark:text-[#858585] leading-relaxed" },
+    ...{ class: "mt-1 text-xs text-slate-500 dark:text-[#989898] leading-relaxed [text-wrap:pretty]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "border-t border-slate-100 dark:border-[#2d2d2d] pt-3 px-3" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "flex items-center justify-between text-xs text-slate-400 dark:text-[#858585]" },
+    ...{ class: "flex items-center justify-between text-xs text-slate-400 dark:text-[#989898]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
@@ -151,7 +151,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.
 /** @type {__VLS_StyleScopedClasses['uppercase']} */ ;
 /** @type {__VLS_StyleScopedClasses['tracking-wider']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
@@ -191,8 +191,9 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['leading-relaxed']} */ ;
+/** @type {__VLS_StyleScopedClasses['[text-wrap:pretty]']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-t']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-100']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
@@ -203,7 +204,7 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-mono']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({

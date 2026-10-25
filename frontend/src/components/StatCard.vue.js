@@ -19,13 +19,13 @@ const __VLS_ctx = {};
 let __VLS_components;
 let __VLS_directives;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "bg-white dark:bg-[#252526] rounded-md border border-slate-200 dark:border-[#2d2d2d] p-4.5 transition-colors hover:border-slate-300 dark:hover:border-[#3e3e42]" },
+    ...{ class: "bg-white dark:bg-[#252526] rounded-md border border-slate-200 dark:border-[#2d2d2d] p-4 transition-colors hover:border-slate-300 dark:hover:border-[#3e3e42]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "flex items-center justify-between" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-xs font-medium text-slate-500 dark:text-[#858585]" },
+    ...{ class: "text-xs font-medium text-slate-500 dark:text-[#989898]" },
 });
 (props.title);
 var __VLS_0 = {};
@@ -45,7 +45,7 @@ else {
 }
 if (props.subtitle) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "mt-1 text-xs text-slate-500 dark:text-[#858585]" },
+        ...{ class: "mt-1 text-xs text-slate-500 dark:text-[#989898]" },
     });
     (props.subtitle);
 }
@@ -55,7 +55,7 @@ if (props.subtitle) {
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
-/** @type {__VLS_StyleScopedClasses['p-4.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['p-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['transition-colors']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:border-slate-300']} */ ;
 /** @type {__VLS_StyleScopedClasses['dark:hover:border-[#3e3e42]']} */ ;
@@ -65,7 +65,7 @@ if (props.subtitle) {
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-baseline']} */ ;
@@ -79,7 +79,7 @@ if (props.subtitle) {
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#989898]']} */ ;
 // @ts-ignore
 var __VLS_1 = __VLS_0;
 var __VLS_dollars;

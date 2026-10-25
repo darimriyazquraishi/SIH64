@@ -60,7 +60,7 @@ function triggerCsvExport() {
         <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
           Reports
         </h1>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
           Review complaint distribution, bureau workload, and export records
         </p>
       </div>
@@ -81,10 +81,10 @@ function triggerCsvExport() {
       <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5">
         <div class="border-b border-slate-100 dark:border-[#2d2d2d] pb-2.5 flex items-center justify-between">
           <h2 class="text-xs font-semibold text-slate-800 dark:text-[#cccccc] flex items-center gap-2">
-            <Layers class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+            <Layers class="w-4 h-4 text-slate-500 dark:text-[#989898]" />
             Bureau Workload
           </h2>
-          <span class="text-xs text-slate-400 dark:text-[#858585]">Open vs Total</span>
+          <span class="text-xs text-slate-400 dark:text-[#989898]">Open vs Total</span>
         </div>
 
         <div class="mt-4 space-y-4">
@@ -97,7 +97,7 @@ function triggerCsvExport() {
               <span class="font-medium text-slate-800 dark:text-[#cccccc]">
                 {{ b.code }} — {{ b.name }}
               </span>
-              <span class="font-mono text-slate-500 dark:text-[#858585]">
+              <span class="font-mono text-slate-500 dark:text-[#989898]">
                 {{ b.open }} open / {{ b.total }} total
               </span>
             </div>
@@ -122,20 +122,20 @@ function triggerCsvExport() {
       <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5">
         <div class="border-b border-slate-100 dark:border-[#2d2d2d] pb-2.5 flex items-center justify-between">
           <h2 class="text-xs font-semibold text-slate-800 dark:text-[#cccccc] flex items-center gap-2">
-            <PieChart class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+            <PieChart class="w-4 h-4 text-slate-500 dark:text-[#989898]" />
             Status Breakdown
           </h2>
-          <span class="text-xs text-slate-400 dark:text-[#858585]">All complaints</span>
+          <span class="text-xs text-slate-400 dark:text-[#989898]">All complaints</span>
         </div>
 
-        <div class="mt-4 grid grid-cols-2 gap-3">
+        <div class="mt-4 grid grid-cols-2 divide-x divide-y divide-slate-100 dark:divide-[#2d2d2d]">
           <div
             v-for="(count, status) in analytics.status_distribution"
             :key="status"
-            class="p-3 rounded border border-slate-100 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e]"
+            class="p-3"
           >
-            <p class="text-xs font-medium text-slate-500 dark:text-[#858585]">{{ status }}</p>
-            <p class="text-xl font-semibold text-slate-900 dark:text-[#d4d4d4] mt-1">{{ count }}</p>
+            <p class="text-xs font-medium text-slate-500 dark:text-[#989898]">{{ status }}</p>
+            <p class="text-xl font-semibold text-slate-900 dark:text-[#d4d4d4] mt-1 tabular-nums">{{ count }}</p>
           </div>
         </div>
       </div>
@@ -146,20 +146,20 @@ function triggerCsvExport() {
       <!-- Top Categories -->
       <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5">
         <h2 class="text-xs font-semibold text-slate-800 dark:text-[#cccccc] border-b border-slate-100 dark:border-[#2d2d2d] pb-2.5 flex items-center gap-2">
-          <BarChart3 class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+          <BarChart3 class="w-4 h-4 text-slate-500 dark:text-[#989898]" />
           Complaints by Category
         </h2>
 
-        <div class="mt-4 space-y-2.5">
+        <div class="mt-4 divide-y divide-slate-100 dark:divide-[#2d2d2d]">
           <div
             v-for="cat in analytics.category_distribution"
             :key="cat.category"
-            class="flex items-center justify-between p-2 rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-100 dark:border-[#2d2d2d]"
+            class="flex items-center justify-between py-2.5 px-1"
           >
             <span class="text-xs font-medium text-slate-800 dark:text-[#cccccc] truncate max-w-xs">
               {{ cat.category }}
             </span>
-            <span class="rounded bg-slate-900 dark:bg-[#2d2d2d] px-2 py-0.5 text-xs font-medium text-amber-400 dark:text-[#cca700] border dark:border-[#3e3e42]">
+            <span class="font-mono text-xs font-semibold text-amber-500 dark:text-[#cca700] tabular-nums">
               {{ cat.count }}
             </span>
           </div>
@@ -169,20 +169,20 @@ function triggerCsvExport() {
       <!-- State Geographic Distribution -->
       <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5">
         <h2 class="text-xs font-semibold text-slate-800 dark:text-[#cccccc] border-b border-slate-100 dark:border-[#2d2d2d] pb-2.5 flex items-center gap-2">
-          <MapPin class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+          <MapPin class="w-4 h-4 text-slate-500 dark:text-[#989898]" />
           Complaints by State
         </h2>
 
-        <div class="mt-4 space-y-2.5">
+        <div class="mt-4 divide-y divide-slate-100 dark:divide-[#2d2d2d]">
           <div
             v-for="st in analytics.state_distribution"
             :key="st.state"
-            class="flex items-center justify-between p-2 rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-100 dark:border-[#2d2d2d]"
+            class="flex items-center justify-between py-2.5 px-1"
           >
             <span class="text-xs font-medium text-slate-800 dark:text-[#cccccc]">
               {{ st.state }}
             </span>
-            <span class="rounded bg-blue-100 dark:bg-[#007acc]/15 px-2 py-0.5 text-xs font-medium text-blue-800 dark:text-[#4fc1ff] border dark:border-[#007acc]/30">
+            <span class="font-mono text-xs font-semibold text-blue-600 dark:text-[#4fc1ff] tabular-nums">
               {{ st.count }} complaints
             </span>
           </div>

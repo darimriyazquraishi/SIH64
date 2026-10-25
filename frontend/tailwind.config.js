@@ -22,7 +22,7 @@ export default {
           blueHover: '#1177bb',
           blueActive: '#0e639c',
           text: '#cccccc',         // VS Code text
-          textMuted: '#858585',    // VS Code muted text
+          textMuted: '#989898',    // VS Code muted text (WCAG AA compliant >= 4.5:1)
           textBright: '#ffffff',   // VS Code bright text
           statusbar: '#007acc',
         },

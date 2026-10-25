@@ -141,7 +141,7 @@ async function handleCreateComplaint() {
         <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
           Complaints
         </h1>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
           Review grievances, assign bureau ownership, and monitor deadlines
         </p>
       </div>
@@ -162,13 +162,13 @@ async function handleCreateComplaint() {
       <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
         <!-- Search Input -->
         <div class="md:col-span-2 relative">
-          <Search class="w-4 h-4 text-slate-400 dark:text-[#858585] absolute left-3 top-2.5 pointer-events-none" />
+          <Search class="w-4 h-4 text-slate-400 dark:text-[#989898] absolute left-3 top-2.5 pointer-events-none" />
           <input
             v-model="store.search"
             type="text"
             aria-label="Search complaints"
             placeholder="Search by case number, institution, category, or docket reference..."
-            class="w-full pl-9 pr-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] placeholder-slate-400 dark:placeholder-[#858585] transition"
+            class="w-full pl-9 pr-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] placeholder-slate-400 dark:placeholder-[#aaaaaa] transition"
           />
         </div>
 
@@ -207,7 +207,7 @@ async function handleCreateComplaint() {
       <!-- Secondary Filter Row: Status Pills & Overdue Toggle -->
       <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-[#2d2d2d]">
         <div class="flex flex-wrap items-center gap-1.5">
-          <span class="text-xs font-medium text-slate-400 dark:text-[#858585] mr-1">Status:</span>
+          <span class="text-xs font-medium text-slate-400 dark:text-[#989898] mr-1">Status:</span>
           <button
             v-for="st in ['', 'Received', 'Under Review', 'Action Required', 'Awaiting Response', 'Escalated', 'Disposed']"
             :key="st"
@@ -241,7 +241,7 @@ async function handleCreateComplaint() {
 
           <button
             type="button"
-            class="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc]"
+            class="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-[#989898] hover:text-slate-800 dark:hover:text-[#cccccc]"
             @click="store.resetFilters()"
           >
             <RotateCcw class="w-3.5 h-3.5" />
@@ -282,7 +282,7 @@ async function handleCreateComplaint() {
                 >
                   {{ c.case_number }}
                 </router-link>
-                <div v-if="c.external_reference" class="text-xs text-slate-400 dark:text-[#858585] font-sans">
+                <div v-if="c.external_reference" class="text-xs text-slate-400 dark:text-[#989898] font-sans">
                   Ref: {{ c.external_reference }}
                 </div>
               </td>
@@ -295,7 +295,7 @@ async function handleCreateComplaint() {
                 >
                   {{ c.institution_name }}
                 </router-link>
-                <div class="text-xs text-slate-400 dark:text-[#858585]">
+                <div class="text-xs text-slate-400 dark:text-[#989898]">
                   {{ c.institution_code }} · {{ c.institution_state }}
                 </div>
               </td>
@@ -305,7 +305,7 @@ async function handleCreateComplaint() {
                 <p class="font-medium text-slate-800 dark:text-[#cccccc] line-clamp-1" :title="c.subject">
                   {{ c.subject }}
                 </p>
-                <span class="inline-block mt-0.5 text-xs text-slate-500 dark:text-[#858585]">
+                <span class="inline-block mt-0.5 text-xs text-slate-500 dark:text-[#989898]">
                   {{ c.category }}
                 </span>
               </td>
@@ -318,7 +318,7 @@ async function handleCreateComplaint() {
               </td>
 
               <!-- Officer -->
-              <td class="py-3 px-4 whitespace-nowrap text-slate-600 dark:text-[#858585]">
+              <td class="py-3 px-4 whitespace-nowrap text-slate-600 dark:text-[#989898]">
                 {{ c.assigned_officer_name || 'Unassigned' }}
               </td>
 
@@ -339,7 +339,7 @@ async function handleCreateComplaint() {
                     :class="[
                       c.is_overdue
                         ? 'text-red-700 dark:text-[#f48771] font-semibold bg-red-50 dark:bg-[#f48771]/15 px-1.5 py-0.5 rounded border border-red-200 dark:border-[#f48771]/30'
-                        : 'text-slate-600 dark:text-[#858585]',
+                        : 'text-slate-600 dark:text-[#989898]',
                     ]"
                   >
                     {{ c.due_at ? c.due_at.slice(0, 10) : 'N/A' }}
@@ -389,7 +389,7 @@ async function handleCreateComplaint() {
 
       <!-- Pagination Footer -->
       <div class="flex items-center justify-between border-t border-slate-200 dark:border-[#2d2d2d] px-4 py-3 bg-slate-50 dark:bg-[#1e1e1e]">
-        <div class="text-xs text-slate-500 dark:text-[#858585]">
+        <div class="text-xs text-slate-500 dark:text-[#989898]">
           Showing <span class="font-medium text-slate-800 dark:text-[#cccccc]">{{ store.complaints.length }}</span> of <span class="font-medium text-slate-800 dark:text-[#cccccc]">{{ store.total }}</span> complaints
         </div>
 

@@ -22,14 +22,14 @@ const config = computed(() => {
             };
         case 'low':
             return {
-                bg: 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-[#252526] dark:text-[#858585] dark:border-[#3e3e42]',
-                dot: 'bg-slate-500 dark:bg-[#858585]',
+                bg: 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-[#252526] dark:text-[#989898] dark:border-[#3e3e42]',
+                dot: 'bg-slate-500 dark:bg-[#989898]',
                 text: 'Low',
             };
         default:
             return {
-                bg: 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-[#252526] dark:text-[#858585] dark:border-[#3e3e42]',
-                dot: 'bg-slate-500 dark:bg-[#858585]',
+                bg: 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-[#252526] dark:text-[#989898] dark:border-[#3e3e42]',
+                dot: 'bg-slate-500 dark:bg-[#989898]',
                 text: props.priority || 'Medium',
             };
     }

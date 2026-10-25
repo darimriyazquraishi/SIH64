@@ -27,10 +27,10 @@ const valueColor = computed(() => {
 
 <template>
   <div
-    class="bg-white dark:bg-[#252526] rounded-md border border-slate-200 dark:border-[#2d2d2d] p-4.5 transition-colors hover:border-slate-300 dark:hover:border-[#3e3e42]"
+    class="bg-white dark:bg-[#252526] rounded-md border border-slate-200 dark:border-[#2d2d2d] p-4 transition-colors hover:border-slate-300 dark:hover:border-[#3e3e42]"
   >
     <div class="flex items-center justify-between">
-      <p class="text-xs font-medium text-slate-500 dark:text-[#858585]">
+      <p class="text-xs font-medium text-slate-500 dark:text-[#989898]">
         {{ props.title }}
       </p>
       <slot name="icon" />
@@ -43,7 +43,7 @@ const valueColor = computed(() => {
       </span>
     </div>
 
-    <p v-if="props.subtitle" class="mt-1 text-xs text-slate-500 dark:text-[#858585]">
+    <p v-if="props.subtitle" class="mt-1 text-xs text-slate-500 dark:text-[#989898]">
       {{ props.subtitle }}
     </p>
   </div>

@@ -51,7 +51,7 @@ onMounted(() => {
     <div>
       <router-link
         to="/institutions"
-        class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3"
+        class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#989898] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3"
       >
         <ArrowLeft class="w-3.5 h-3.5" />
         Back to institutions
@@ -73,13 +73,13 @@ onMounted(() => {
             {{ institution.name }}
           </h1>
 
-          <div class="mt-2 flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-[#858585]">
+          <div class="mt-2 flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-[#989898]">
             <span class="flex items-center gap-1">
-              <MapPin class="w-3.5 h-3.5 text-slate-400 dark:text-[#858585]" />
+              <MapPin class="w-3.5 h-3.5 text-slate-400 dark:text-[#989898]" />
               {{ institution.address || `${institution.district}, ${institution.state}` }}
             </span>
             <span v-if="institution.website" class="flex items-center gap-1">
-              <Globe class="w-3.5 h-3.5 text-slate-400 dark:text-[#858585]" />
+              <Globe class="w-3.5 h-3.5 text-slate-400 dark:text-[#989898]" />
               <a :href="institution.website" target="_blank" class="text-blue-600 dark:text-[#4fc1ff] hover:underline">
                 {{ institution.website }}
               </a>
@@ -88,7 +88,7 @@ onMounted(() => {
 
           <!-- Aliases -->
           <div v-if="institution.aliases && institution.aliases.length > 0" class="mt-3 flex items-center gap-2">
-            <span class="text-xs font-medium text-slate-400 dark:text-[#858585]">Known aliases:</span>
+            <span class="text-xs font-medium text-slate-400 dark:text-[#989898]">Known aliases:</span>
             <div class="flex flex-wrap gap-1">
               <span
                 v-for="a in institution.aliases"
@@ -104,19 +104,19 @@ onMounted(() => {
         <!-- Quick Summary Metrics -->
         <div class="flex items-center gap-5 border-t md:border-t-0 md:border-l border-slate-200 dark:border-[#2d2d2d] pt-4 md:pt-0 md:pl-6">
           <div class="text-center">
-            <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">Total</p>
+            <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">Total</p>
             <p class="text-2xl font-semibold text-slate-900 dark:text-[#d4d4d4]">{{ summary?.total_complaints || 0 }}</p>
           </div>
           <div class="text-center">
-            <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">Active</p>
+            <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">Active</p>
             <p class="text-2xl font-semibold text-amber-600 dark:text-[#cca700]">{{ summary?.open_cases || 0 }}</p>
           </div>
           <div class="text-center">
-            <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">Resolved</p>
+            <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">Resolved</p>
             <p class="text-2xl font-semibold text-emerald-600 dark:text-[#89d185]">{{ summary?.disposed_cases || 0 }}</p>
           </div>
           <div class="text-center">
-            <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">Overdue</p>
+            <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">Overdue</p>
             <p class="text-2xl font-semibold text-red-600 dark:text-[#f48771]">{{ summary?.overdue_cases || 0 }}</p>
           </div>
         </div>
@@ -163,7 +163,7 @@ onMounted(() => {
             {{ code }}
           </span>
           <p class="text-lg font-semibold text-slate-900 dark:text-[#d4d4d4] mt-1">{{ count }}</p>
-          <p class="text-xs text-slate-500 dark:text-[#858585]">Filed</p>
+          <p class="text-xs text-slate-500 dark:text-[#989898]">Filed</p>
         </div>
       </div>
     </div>
@@ -174,7 +174,7 @@ onMounted(() => {
         <h2 class="text-xs font-semibold text-slate-900 dark:text-[#cccccc]">
           Complaint History
         </h2>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
           All registered complaints involving {{ institution.name }}
         </p>
       </div>
@@ -207,7 +207,7 @@ onMounted(() => {
 
               <td class="py-3 px-4 max-w-sm">
                 <p class="font-medium text-slate-900 dark:text-[#cccccc] line-clamp-1">{{ c.subject }}</p>
-                <p class="text-xs text-slate-500 dark:text-[#858585] line-clamp-1 mt-0.5">{{ c.description }}</p>
+                <p class="text-xs text-slate-500 dark:text-[#989898] line-clamp-1 mt-0.5">{{ c.description }}</p>
               </td>
 
               <td class="py-3 px-4 whitespace-nowrap">
@@ -216,7 +216,7 @@ onMounted(() => {
                 </span>
               </td>
 
-              <td class="py-3 px-4 text-slate-600 dark:text-[#858585]">{{ c.category }}</td>
+              <td class="py-3 px-4 text-slate-600 dark:text-[#989898]">{{ c.category }}</td>
 
               <td class="py-3 px-4 whitespace-nowrap">
                 <PriorityBadge :priority="c.priority" size="sm" />
@@ -226,7 +226,7 @@ onMounted(() => {
                 <StatusBadge :status="c.status" size="sm" />
               </td>
 
-              <td class="py-3 px-4 whitespace-nowrap text-slate-500 dark:text-[#858585]">
+              <td class="py-3 px-4 whitespace-nowrap text-slate-500 dark:text-[#989898]">
                 {{ c.received_at?.slice(0, 10) }}
               </td>
 
@@ -241,7 +241,7 @@ onMounted(() => {
             </tr>
 
             <tr v-if="complaints.length === 0">
-              <td colspan="8" class="py-8 text-center text-xs text-slate-400 dark:text-[#858585]">
+              <td colspan="8" class="py-8 text-center text-xs text-slate-400 dark:text-[#989898]">
                 No complaint records on file for this institution.
               </td>
             </tr>

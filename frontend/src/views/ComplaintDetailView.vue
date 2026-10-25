@@ -148,7 +148,7 @@ async function handleTransferBureau() {
     <div>
       <router-link
         to="/complaints"
-        class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3"
+        class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#989898] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3"
       >
         <ArrowLeft class="w-3.5 h-3.5" />
         Back to complaints
@@ -169,7 +169,7 @@ async function handleTransferBureau() {
               Overdue
             </span>
           </div>
-          <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-1">
             Registered on {{ store.currentComplaint.received_at?.slice(0, 10) }} · Last action on {{ store.currentComplaint.last_action_at?.slice(0, 10) }}
           </p>
         </div>
@@ -181,7 +181,7 @@ async function handleTransferBureau() {
             class="inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition"
             @click="isAssignModalOpen = true"
           >
-            <UserCheck class="w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" />
+            <UserCheck class="w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" />
             Assign Officer
           </button>
 
@@ -190,7 +190,7 @@ async function handleTransferBureau() {
             class="inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition"
             @click="isTransferModalOpen = true"
           >
-            <Send class="w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" />
+            <Send class="w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" />
             Transfer Bureau
           </button>
 
@@ -203,7 +203,7 @@ async function handleTransferBureau() {
             Update Status
           </button>
         </div>
-        <div v-else class="text-xs text-slate-400 dark:text-[#858585]">
+        <div v-else class="text-xs text-slate-400 dark:text-[#989898]">
           {{ authStore.isSeniorAuthority ? 'Read-only view' : 'Only the responsible bureau can modify this complaint' }}
         </div>
       </div>
@@ -213,7 +213,7 @@ async function handleTransferBureau() {
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Target Institution Card -->
       <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4">
-        <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">
+        <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">
           Institution
         </p>
         <router-link
@@ -222,17 +222,17 @@ async function handleTransferBureau() {
         >
           {{ store.currentComplaint.institution_name }}
         </router-link>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-1 font-mono">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-1 font-mono">
           AICTE ID: {{ store.currentComplaint.institution_code }}
         </p>
-        <p class="text-xs text-slate-500 dark:text-[#858585]">
+        <p class="text-xs text-slate-500 dark:text-[#989898]">
           State: {{ store.currentComplaint.institution_state }}
         </p>
       </div>
 
       <!-- Department Ownership Card -->
       <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4">
-        <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">
+        <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">
           Assigned Bureau
         </p>
         <div class="mt-1 flex items-center gap-2">
@@ -243,7 +243,7 @@ async function handleTransferBureau() {
             {{ store.currentComplaint.current_bureau_name }}
           </span>
         </div>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-1">
           Receiving bureau: {{ store.currentComplaint.receiving_bureau_code }}
         </p>
         <p class="text-xs text-slate-700 dark:text-[#cccccc]">
@@ -253,7 +253,7 @@ async function handleTransferBureau() {
 
       <!-- Deadlines Card -->
       <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4">
-        <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">
+        <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">
           Resolution Deadline
         </p>
         <div class="mt-1 flex items-baseline gap-2">
@@ -268,7 +268,7 @@ async function handleTransferBureau() {
         <p v-else class="text-xs text-emerald-600 dark:text-[#89d185] mt-1 font-medium">
           Within deadline
         </p>
-        <p v-if="store.currentComplaint.external_reference" class="text-xs text-slate-400 dark:text-[#858585] mt-1">
+        <p v-if="store.currentComplaint.external_reference" class="text-xs text-slate-400 dark:text-[#989898] mt-1">
           Ref: {{ store.currentComplaint.external_reference }}
         </p>
       </div>
@@ -283,7 +283,7 @@ async function handleTransferBureau() {
             'pb-2.5 border-b-2 transition flex items-center gap-2',
             activeTab === 'overview'
               ? 'border-slate-900 dark:border-[#007acc] text-slate-900 dark:text-white'
-              : 'border-transparent text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc]'
+              : 'border-transparent text-slate-500 dark:text-[#989898] hover:text-slate-800 dark:hover:text-[#cccccc]'
           ]"
           @click="activeTab = 'overview'"
         >
@@ -296,7 +296,7 @@ async function handleTransferBureau() {
             'pb-2.5 border-b-2 transition flex items-center gap-2',
             activeTab === 'timeline'
               ? 'border-slate-900 dark:border-[#007acc] text-slate-900 dark:text-white'
-              : 'border-transparent text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc]'
+              : 'border-transparent text-slate-500 dark:text-[#989898] hover:text-slate-800 dark:hover:text-[#cccccc]'
           ]"
           @click="activeTab = 'timeline'"
         >
@@ -312,7 +312,7 @@ async function handleTransferBureau() {
             'pb-2.5 border-b-2 transition flex items-center gap-2',
             activeTab === 'overlaps'
               ? 'border-slate-900 dark:border-[#007acc] text-slate-900 dark:text-white'
-              : 'border-transparent text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc]'
+              : 'border-transparent text-slate-500 dark:text-[#989898] hover:text-slate-800 dark:hover:text-[#cccccc]'
           ]"
           @click="activeTab = 'overlaps'"
         >
@@ -330,14 +330,14 @@ async function handleTransferBureau() {
     <!-- Tab 1: Overview -->
     <div v-if="activeTab === 'overview'" class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5 space-y-5">
       <div>
-        <h2 class="text-xs font-medium text-slate-400 dark:text-[#858585]">Subject</h2>
+        <h2 class="text-xs font-medium text-slate-400 dark:text-[#989898]">Subject</h2>
         <p class="text-sm font-medium text-slate-900 dark:text-[#d4d4d4] mt-1">
           {{ store.currentComplaint.subject }}
         </p>
       </div>
 
       <div class="border-t border-slate-100 dark:border-[#2d2d2d] pt-4">
-        <h2 class="text-xs font-medium text-slate-400 dark:text-[#858585]">Description</h2>
+        <h2 class="text-xs font-medium text-slate-400 dark:text-[#989898]">Description</h2>
         <div class="mt-2 text-xs leading-relaxed text-slate-700 dark:text-[#cccccc] bg-slate-50 dark:bg-[#1e1e1e] p-4 rounded border border-slate-200 dark:border-[#2d2d2d] whitespace-pre-wrap font-sans">
           {{ store.currentComplaint.description }}
         </div>
@@ -360,7 +360,7 @@ async function handleTransferBureau() {
         <h2 class="text-xs font-medium text-slate-800 dark:text-[#cccccc]">
           Action History
         </h2>
-        <p class="text-xs text-slate-500 dark:text-[#858585]">
+        <p class="text-xs text-slate-500 dark:text-[#989898]">
           Chronological record of status changes, bureau transfers, and officer updates
         </p>
       </div>
@@ -379,7 +379,7 @@ async function handleTransferBureau() {
               <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-200 dark:bg-[#2d2d2d] text-slate-800 dark:text-[#cccccc]">
                 {{ act.action_type.replace('_', ' ') }}
               </span>
-              <span class="text-xs text-slate-400 dark:text-[#858585]">
+              <span class="text-xs text-slate-400 dark:text-[#989898]">
                 {{ act.created_at?.slice(0, 16).replace('T', ' ') }}
               </span>
             </div>
@@ -388,7 +388,7 @@ async function handleTransferBureau() {
               {{ act.description }}
             </p>
 
-            <div class="mt-2 text-xs text-slate-500 dark:text-[#858585] flex flex-wrap items-center gap-3">
+            <div class="mt-2 text-xs text-slate-500 dark:text-[#989898] flex flex-wrap items-center gap-3">
               <span>By: <strong class="text-slate-700 dark:text-[#cccccc]">{{ act.performed_by_name }}</strong></span>
               <span v-if="act.old_status && act.new_status">
                 Status: {{ act.old_status }} → <strong class="text-slate-700 dark:text-[#cccccc]">{{ act.new_status }}</strong>
@@ -404,7 +404,7 @@ async function handleTransferBureau() {
 
     <!-- Tab 3: Related Overlaps -->
     <div v-else-if="activeTab === 'overlaps'" class="space-y-4">
-      <div v-if="(store.currentComplaint.related_links?.length || 0) === 0" class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-6 text-center text-xs text-slate-500 dark:text-[#858585]">
+      <div v-if="(store.currentComplaint.related_links?.length || 0) === 0" class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-6 text-center text-xs text-slate-500 dark:text-[#989898]">
         No related cases detected for this complaint.
       </div>
 
@@ -418,14 +418,14 @@ async function handleTransferBureau() {
             <span class="rounded bg-[#cca700]/20 text-[#cca700] px-2 py-0.5 text-xs font-medium">
               {{ Math.round(link.match_score * 100) }}% match
             </span>
-            <span class="text-xs text-slate-500 dark:text-[#858585]">
+            <span class="text-xs text-slate-500 dark:text-[#989898]">
               Method: {{ link.match_method }}
             </span>
             <span
               :class="[
                 'text-xs font-medium px-2 py-0.5 rounded',
                 link.review_status === 'confirmed' ? 'bg-[#89d185]/20 text-[#89d185]' :
-                link.review_status === 'dismissed' ? 'bg-slate-200 dark:bg-[#2d2d2d] text-slate-700 dark:text-[#858585]' :
+                link.review_status === 'dismissed' ? 'bg-slate-200 dark:bg-[#2d2d2d] text-slate-700 dark:text-[#989898]' :
                 'bg-[#cca700]/20 text-[#cca700]'
               ]"
             >
@@ -448,7 +448,7 @@ async function handleTransferBureau() {
 
         <!-- Correlated other case snapshot -->
         <div v-if="link.other_case" class="p-3 rounded border border-slate-200 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e]">
-          <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">
+          <p class="text-xs font-medium text-slate-400 dark:text-[#989898]">
             Matching complaint
           </p>
           <div class="flex items-center justify-between mt-1">
@@ -468,7 +468,7 @@ async function handleTransferBureau() {
           <p class="text-xs font-medium text-slate-800 dark:text-[#cccccc] mt-1">
             {{ link.other_case.subject }}
           </p>
-          <p class="text-xs text-slate-500 dark:text-[#858585] line-clamp-2 mt-0.5">
+          <p class="text-xs text-slate-500 dark:text-[#989898] line-clamp-2 mt-0.5">
             {{ link.other_case.description }}
           </p>
         </div>

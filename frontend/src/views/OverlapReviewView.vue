@@ -78,7 +78,7 @@ async function handleConfirmReview() {
         <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">
           Cross-Bureau Overlaps
         </h1>
-        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+        <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
           Cases flagged across bureaus for matching institutions, external dockets, or related issues
         </p>
       </div>
@@ -98,32 +98,32 @@ async function handleConfirmReview() {
     </div>
 
     <!-- Engine Matching Criteria Box -->
-    <div class="rounded-md border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4.5">
+    <div class="rounded-md border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4">
       <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-800 dark:text-white">
         Matching Criteria
       </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 mt-3 text-xs">
-        <div class="p-3 rounded border border-slate-100 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e]">
+      <div class="grid grid-cols-1 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 dark:divide-[#2d2d2d] mt-3 pt-3 border-t border-slate-100 dark:border-[#2d2d2d]">
+        <div class="py-2 sm:py-0 sm:px-3 first:pl-0 last:pr-0">
           <p class="font-medium text-slate-900 dark:text-white">1. Direct Identifiers</p>
-          <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
-            Permanent Institute ID and external reference numbers (CPGRAMS, court dockets).
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-1 leading-relaxed [text-wrap:pretty]">
+            Permanent Institute ID and external reference numbers including CPGRAMS or court dockets.
           </p>
         </div>
-        <div class="p-3 rounded border border-slate-100 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e]">
+        <div class="py-2 sm:py-0 sm:px-3 first:pl-0 last:pr-0">
           <p class="font-medium text-slate-900 dark:text-white">2. Institution Resolution</p>
-          <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-1 leading-relaxed [text-wrap:pretty]">
             Normalized college names, known campus aliases, and state boundaries.
           </p>
         </div>
-        <div class="p-3 rounded border border-slate-100 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e]">
+        <div class="py-2 sm:py-0 sm:px-3 first:pl-0 last:pr-0">
           <p class="font-medium text-slate-900 dark:text-white">3. Content Similarity</p>
-          <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-1 leading-relaxed [text-wrap:pretty]">
             Shared grievance category, keywords, and core incident descriptions.
           </p>
         </div>
-        <div class="p-3 rounded border border-slate-100 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e]">
+        <div class="py-2 sm:py-0 sm:px-3 first:pl-0 last:pr-0">
           <p class="font-medium text-slate-900 dark:text-white">4. Officer Review</p>
-          <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
+          <p class="text-xs text-slate-500 dark:text-[#989898] mt-1 leading-relaxed [text-wrap:pretty]">
             Participating bureau officers confirm correlation, dismiss, or order joint inquiry.
           </p>
         </div>
@@ -138,7 +138,7 @@ async function handleConfirmReview() {
           'px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-2',
           currentTab === 'pending'
             ? 'bg-slate-900 dark:bg-[#37373d] text-white'
-            : 'bg-white dark:bg-[#252526] text-slate-600 dark:text-[#858585] hover:bg-slate-100 dark:hover:bg-[#2a2d2e] dark:hover:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]'
+            : 'bg-white dark:bg-[#252526] text-slate-600 dark:text-[#989898] hover:bg-slate-100 dark:hover:bg-[#2a2d2e] dark:hover:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]'
         ]"
         @click="switchTab('pending')"
       >
@@ -157,7 +157,7 @@ async function handleConfirmReview() {
           'px-3 py-1.5 rounded text-xs font-medium transition-colors',
           currentTab === 'confirmed'
             ? 'bg-slate-900 dark:bg-[#37373d] text-white'
-            : 'bg-white dark:bg-[#252526] text-slate-600 dark:text-[#858585] hover:bg-slate-100 dark:hover:bg-[#2a2d2e] dark:hover:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]'
+            : 'bg-white dark:bg-[#252526] text-slate-600 dark:text-[#989898] hover:bg-slate-100 dark:hover:bg-[#2a2d2e] dark:hover:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]'
         ]"
         @click="switchTab('confirmed')"
       >
@@ -170,7 +170,7 @@ async function handleConfirmReview() {
           'px-3 py-1.5 rounded text-xs font-medium transition-colors',
           currentTab === 'dismissed'
             ? 'bg-slate-900 dark:bg-[#37373d] text-white'
-            : 'bg-white dark:bg-[#252526] text-slate-600 dark:text-[#858585] hover:bg-slate-100 dark:hover:bg-[#2a2d2e] dark:hover:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]'
+            : 'bg-white dark:bg-[#252526] text-slate-600 dark:text-[#989898] hover:bg-slate-100 dark:hover:bg-[#2a2d2e] dark:hover:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]'
         ]"
         @click="switchTab('dismissed')"
       >
@@ -183,7 +183,7 @@ async function handleConfirmReview() {
           'px-3 py-1.5 rounded text-xs font-medium transition-colors',
           currentTab === 'deferred'
             ? 'bg-slate-900 dark:bg-[#37373d] text-white'
-            : 'bg-white dark:bg-[#252526] text-slate-600 dark:text-[#858585] hover:bg-slate-100 dark:hover:bg-[#2a2d2e] dark:hover:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]'
+            : 'bg-white dark:bg-[#252526] text-slate-600 dark:text-[#989898] hover:bg-slate-100 dark:hover:bg-[#2a2d2e] dark:hover:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]'
         ]"
         @click="switchTab('deferred')"
       >
@@ -205,7 +205,7 @@ async function handleConfirmReview() {
               {{ Math.round(link.match_score * 100) }}% match
             </span>
 
-            <span class="text-xs font-mono text-slate-600 dark:text-[#858585]">
+            <span class="text-xs font-mono text-slate-600 dark:text-[#989898]">
               Method: {{ link.match_method }}
             </span>
 
@@ -213,7 +213,7 @@ async function handleConfirmReview() {
               :class="[
                 'text-xs font-medium px-2 py-0.5 rounded uppercase',
                 link.review_status === 'confirmed' ? 'bg-emerald-100 dark:bg-[#122e1b] text-emerald-800 dark:text-[#89d185] border border-emerald-300 dark:border-[#1f4a2b]' :
-                link.review_status === 'dismissed' ? 'bg-slate-200 dark:bg-[#1e1e1e] text-slate-700 dark:text-[#858585] border border-slate-300 dark:border-[#3e3e42]' :
+                link.review_status === 'dismissed' ? 'bg-slate-200 dark:bg-[#1e1e1e] text-slate-700 dark:text-[#989898] border border-slate-300 dark:border-[#3e3e42]' :
                 link.review_status === 'deferred' ? 'bg-purple-100 dark:bg-[#3b1c47] text-purple-800 dark:text-[#c586c0] border border-purple-300 dark:border-[#562868]' :
                 'bg-amber-100 dark:bg-[#332b00] text-amber-800 dark:text-[#cca700] border border-amber-300 dark:border-[#554400]'
               ]"
@@ -240,7 +240,7 @@ async function handleConfirmReview() {
               class="inline-flex items-center gap-1 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#37373d] transition-colors"
               @click="openReviewModal(link, 'unrelated')"
             >
-              <XCircle class="w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" aria-hidden="true" />
+              <XCircle class="w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" aria-hidden="true" />
               Mark Unrelated
             </button>
 
@@ -250,7 +250,7 @@ async function handleConfirmReview() {
               class="inline-flex items-center gap-1 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#37373d] transition-colors"
               @click="openReviewModal(link, 'deferred')"
             >
-              <Clock class="w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" aria-hidden="true" />
+              <Clock class="w-3.5 h-3.5 text-slate-500 dark:text-[#989898]" aria-hidden="true" />
               Defer
             </button>
           </div>
@@ -291,7 +291,7 @@ async function handleConfirmReview() {
               v-if="link.evidence.shared_keywords && link.evidence.shared_keywords.length > 0"
               class="flex items-center gap-1 ml-2"
             >
-              <span class="text-slate-500 dark:text-[#858585]">Keywords:</span>
+              <span class="text-slate-500 dark:text-[#989898]">Keywords:</span>
               <span
                 v-for="kw in link.evidence.shared_keywords"
                 :key="kw"
@@ -303,7 +303,7 @@ async function handleConfirmReview() {
           </div>
 
           <!-- Review audit info if already reviewed -->
-          <div v-if="link.reviewed_by_name" class="mt-2 pt-2 border-t border-amber-200/50 dark:border-[#554400]/40 text-xs text-slate-600 dark:text-[#858585] flex items-center gap-3">
+          <div v-if="link.reviewed_by_name" class="mt-2 pt-2 border-t border-amber-200/50 dark:border-[#554400]/40 text-xs text-slate-600 dark:text-[#989898] flex items-center gap-3">
             <span>Reviewed by: <strong class="dark:text-[#cccccc]">{{ link.reviewed_by_name }}</strong></span>
             <span>Date: {{ link.reviewed_at?.slice(0, 16).replace('T', ' ') }}</span>
             <span v-if="link.review_remarks">Remarks: <em>"{{ link.review_remarks }}"</em></span>
@@ -315,7 +315,7 @@ async function handleConfirmReview() {
           <!-- Case A Card -->
           <div v-if="link.case_a" class="p-5 space-y-2.5 bg-white dark:bg-[#252526]">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#858585]">Case A (Primary)</span>
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#989898]">Case A (Primary)</span>
               <span class="rounded bg-slate-100 dark:bg-[#1e1e1e] px-2 py-0.5 text-xs font-semibold text-slate-700 dark:text-[#4fc1ff] border border-slate-200 dark:border-[#3e3e42]">
                 {{ link.case_a.bureau_code }}
               </span>
@@ -335,7 +335,7 @@ async function handleConfirmReview() {
             </div>
 
             <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-600 dark:text-[#858585]">{{ link.case_a.category }}</span>
+              <span class="text-xs text-slate-600 dark:text-[#989898]">{{ link.case_a.category }}</span>
               <span>·</span>
               <PriorityBadge :priority="link.case_a.priority" size="sm" />
               <StatusBadge :status="link.case_a.status" size="sm" />
@@ -345,7 +345,7 @@ async function handleConfirmReview() {
               {{ link.case_a.subject }}
             </p>
 
-            <p class="text-xs text-slate-600 dark:text-[#858585] leading-relaxed bg-slate-50 dark:bg-[#1e1e1e] p-2.5 rounded border border-slate-100 dark:border-[#2d2d2d]">
+            <p class="text-xs text-slate-600 dark:text-[#989898] leading-relaxed [text-wrap:pretty] mt-1">
               {{ link.case_a.description }}
             </p>
           </div>
@@ -353,7 +353,7 @@ async function handleConfirmReview() {
           <!-- Case B Card -->
           <div v-if="link.case_b" class="p-5 space-y-2.5 bg-white dark:bg-[#252526]">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#858585]">Case B (Comparison)</span>
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#989898]">Case B (Comparison)</span>
               <span class="rounded bg-slate-100 dark:bg-[#1e1e1e] px-2 py-0.5 text-xs font-semibold text-slate-700 dark:text-[#4fc1ff] border border-slate-200 dark:border-[#3e3e42]">
                 {{ link.case_b.bureau_code }}
               </span>
@@ -373,7 +373,7 @@ async function handleConfirmReview() {
             </div>
 
             <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-600 dark:text-[#858585]">{{ link.case_b.category }}</span>
+              <span class="text-xs text-slate-600 dark:text-[#989898]">{{ link.case_b.category }}</span>
               <span>·</span>
               <PriorityBadge :priority="link.case_b.priority" size="sm" />
               <StatusBadge :status="link.case_b.status" size="sm" />
@@ -383,7 +383,7 @@ async function handleConfirmReview() {
               {{ link.case_b.subject }}
             </p>
 
-            <p class="text-xs text-slate-600 dark:text-[#858585] leading-relaxed bg-slate-50 dark:bg-[#1e1e1e] p-2.5 rounded border border-slate-100 dark:border-[#2d2d2d]">
+            <p class="text-xs text-slate-600 dark:text-[#989898] leading-relaxed [text-wrap:pretty] mt-1">
               {{ link.case_b.description }}
             </p>
           </div>
@@ -414,7 +414,7 @@ async function handleConfirmReview() {
             Comparing: {{ selectedLink?.case_a?.case_number }} ({{ selectedLink?.case_a?.bureau_code }})
             vs {{ selectedLink?.case_b?.case_number }} ({{ selectedLink?.case_b?.bureau_code }})
           </p>
-          <p class="text-slate-500 dark:text-[#858585] mt-0.5">
+          <p class="text-slate-500 dark:text-[#989898] mt-0.5">
             Institution: {{ selectedLink?.case_a?.institution_name }}
           </p>
         </div>

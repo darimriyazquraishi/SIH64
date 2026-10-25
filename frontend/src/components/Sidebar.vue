@@ -46,7 +46,7 @@ function isActive(path: string) {
     <div class="space-y-5">
       <!-- Section Label -->
       <div>
-        <p class="px-3 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#858585]">
+        <p class="px-3 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#989898]">
           Navigation
         </p>
         <nav class="mt-2 space-y-0.5" aria-label="Portal Navigation">
@@ -68,7 +68,7 @@ function isActive(path: string) {
                   'h-4 w-4 transition-colors',
                   isActive(item.path)
                     ? 'text-blue-600 dark:text-[#007acc]'
-                    : 'text-slate-400 dark:text-[#858585] group-hover:text-slate-600 dark:group-hover:text-[#cccccc]',
+                    : 'text-slate-400 dark:text-[#989898] group-hover:text-slate-600 dark:group-hover:text-[#cccccc]',
                 ]"
                 aria-hidden="true"
               />
@@ -91,15 +91,15 @@ function isActive(path: string) {
           <ShieldAlert class="w-4 h-4 text-amber-600 dark:text-[#cca700]" aria-hidden="true" />
           Cross-Bureau Cases
         </div>
-        <p class="mt-1 text-xs text-slate-500 dark:text-[#858585] leading-relaxed">
-          Cases involving the same institution across bureaus are linked for joint review while preserving separate case records.
+        <p class="mt-1 text-xs text-slate-500 dark:text-[#989898] leading-relaxed [text-wrap:pretty]">
+          Cases involving the same institution across bureaus are linked for joint review while preserving individual bureau records.
         </p>
       </div>
     </div>
 
     <!-- System Footer -->
     <div class="border-t border-slate-100 dark:border-[#2d2d2d] pt-3 px-3">
-      <div class="flex items-center justify-between text-xs text-slate-400 dark:text-[#858585]">
+      <div class="flex items-center justify-between text-xs text-slate-400 dark:text-[#989898]">
         <span>AICTE Portal</span>
         <span class="font-mono">v1.0.0</span>
       </div>

@@ -40,7 +40,7 @@ function selectDemoAccount(accEmail: string, accPass: string) {
       <h1 class="text-center text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
         AICTE Case Monitoring & Coordination Portal
       </h1>
-      <p class="mt-1 text-center text-xs text-slate-500 dark:text-[#858585]">
+      <p class="mt-1 text-center text-xs text-slate-500 dark:text-[#989898]">
         Official case tracking and cross-bureau coordination
       </p>
     </div>
@@ -61,7 +61,7 @@ function selectDemoAccount(accEmail: string, accPass: string) {
           <div>
             <label for="login-email" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Official Email</label>
             <div class="mt-1 relative rounded shadow-sm">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-[#858585]">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-[#989898]">
                 <Mail class="h-4 w-4" aria-hidden="true" />
               </div>
               <input
@@ -80,7 +80,7 @@ function selectDemoAccount(accEmail: string, accPass: string) {
           <div>
             <label for="login-password" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Password</label>
             <div class="mt-1 relative rounded shadow-sm">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-[#858585]">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-[#989898]">
                 <Lock class="h-4 w-4" aria-hidden="true" />
               </div>
               <input
@@ -112,7 +112,7 @@ function selectDemoAccount(accEmail: string, accPass: string) {
 
         <!-- Quick Demo Switcher -->
         <div class="mt-5 pt-5 border-t border-slate-100 dark:border-[#2d2d2d]">
-          <p class="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-[#858585] mb-2">
+          <p class="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-[#989898] mb-2">
             Demo Accounts
           </p>
           <div class="grid grid-cols-2 gap-2 text-xs">
@@ -122,7 +122,7 @@ function selectDemoAccount(accEmail: string, accPass: string) {
               @click="selectDemoAccount('admin@aicte.gov.in', 'Admin@12345')"
             >
               <div class="font-medium text-slate-900 dark:text-white">System Admin</div>
-              <div class="text-xs text-slate-500 dark:text-[#858585]">Full access</div>
+              <div class="text-xs text-slate-500 dark:text-[#989898]">Full access</div>
             </button>
 
             <button
@@ -131,7 +131,7 @@ function selectDemoAccount(accEmail: string, accPass: string) {
               @click="selectDemoAccount('officer.pgrc@aicte.gov.in', 'Officer@12345')"
             >
               <div class="font-medium text-slate-900 dark:text-white">PGRC Officer</div>
-              <div class="text-xs text-slate-500 dark:text-[#858585]">Grievance cell</div>
+              <div class="text-xs text-slate-500 dark:text-[#989898]">Grievance cell</div>
             </button>
 
             <button
@@ -140,7 +140,7 @@ function selectDemoAccount(accEmail: string, accPass: string) {
               @click="selectDemoAccount('officer.ab@aicte.gov.in', 'Officer@12345')"
             >
               <div class="font-medium text-slate-900 dark:text-white">Approval Officer</div>
-              <div class="text-xs text-slate-500 dark:text-[#858585]">Approval bureau</div>
+              <div class="text-xs text-slate-500 dark:text-[#989898]">Approval bureau</div>
             </button>
 
             <button
@@ -149,13 +149,13 @@ function selectDemoAccount(accEmail: string, accPass: string) {
               @click="selectDemoAccount('director.monitoring@aicte.gov.in', 'Director@12345')"
             >
               <div class="font-medium text-slate-900 dark:text-white">Senior Authority</div>
-              <div class="text-xs text-slate-500 dark:text-[#858585]">Analytics only</div>
+              <div class="text-xs text-slate-500 dark:text-[#989898]">Analytics only</div>
             </button>
           </div>
         </div>
       </div>
 
-      <div class="mt-4 text-center text-xs text-slate-500 dark:text-[#858585]">
+      <div class="mt-4 text-center text-xs text-slate-500 dark:text-[#989898]">
         Authorized AICTE personnel only.
       </div>
     </div>
