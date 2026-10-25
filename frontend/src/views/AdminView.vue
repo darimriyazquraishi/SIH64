@@ -92,120 +92,120 @@ async function toggleUserActive(u: User) {
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
-        <h2 class="text-xl font-bold tracking-tight text-slate-900">
-          Portal System Administration
-        </h2>
-        <p class="text-xs text-slate-500 mt-0.5">
-          Access control policies, user administration, and system audit log trail
+        <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
+          Administration
+        </h1>
+        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+          Manage user accounts, roles, and review system audit records
         </p>
       </div>
 
       <button
         type="button"
-        class="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition"
+        class="inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] transition"
         @click="isCreateUserOpen = true"
       >
-        <PlusCircle class="w-4 h-4" />
-        Create Portal User
+        <PlusCircle class="w-3.5 h-3.5" />
+        New User
       </button>
     </div>
 
     <!-- Diagnostic Health Status -->
     <div v-if="systemStatus" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-subtle flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
-          <Database class="w-5 h-5" />
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex items-center gap-3">
+        <div class="w-9 h-9 rounded bg-emerald-100 dark:bg-[#89d185]/15 text-emerald-700 dark:text-[#89d185] border border-emerald-200 dark:border-[#89d185]/30 flex items-center justify-center">
+          <Database class="w-4 h-4" />
         </div>
         <div>
-          <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Database Engine</p>
-          <p class="text-xs font-bold text-slate-900">{{ systemStatus.database }}</p>
-          <p class="text-[10px] text-slate-400 truncate max-w-[200px]" :title="systemStatus.postgresql_version">
+          <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">Database</p>
+          <p class="text-xs font-medium text-slate-900 dark:text-[#d4d4d4]">{{ systemStatus.database }}</p>
+          <p class="text-xs text-slate-400 dark:text-[#858585] truncate max-w-[200px]" :title="systemStatus.postgresql_version">
             {{ systemStatus.postgresql_version }}
           </p>
         </div>
       </div>
 
-      <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-subtle flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">
-          <Activity class="w-5 h-5" />
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex items-center gap-3">
+        <div class="w-9 h-9 rounded bg-blue-100 dark:bg-[#007acc]/15 text-blue-700 dark:text-[#4fc1ff] border border-blue-200 dark:border-[#007acc]/30 flex items-center justify-center">
+          <Activity class="w-4 h-4" />
         </div>
         <div>
-          <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Portal Status</p>
-          <p class="text-xs font-bold text-slate-900">{{ systemStatus.status }}</p>
-          <p class="text-[10px] text-slate-500">{{ systemStatus.portal_version }}</p>
+          <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">System Status</p>
+          <p class="text-xs font-medium text-slate-900 dark:text-[#d4d4d4]">{{ systemStatus.status }}</p>
+          <p class="text-xs text-slate-500 dark:text-[#858585]">{{ systemStatus.portal_version }}</p>
         </div>
       </div>
 
-      <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-subtle flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center">
-          <ShieldCheck class="w-5 h-5" />
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex items-center gap-3">
+        <div class="w-9 h-9 rounded bg-purple-100 dark:bg-[#cca700]/15 text-purple-700 dark:text-[#cca700] border border-purple-200 dark:border-[#cca700]/30 flex items-center justify-center">
+          <ShieldCheck class="w-4 h-4" />
         </div>
         <div>
-          <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Security Policies</p>
-          <p class="text-xs font-bold text-slate-900">RBAC Enforced</p>
-          <p class="text-[10px] text-slate-500">Record-level isolation</p>
+          <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">Access Control</p>
+          <p class="text-xs font-medium text-slate-900 dark:text-[#d4d4d4]">Role-based access</p>
+          <p class="text-xs text-slate-500 dark:text-[#858585]">Bureau-level isolation</p>
         </div>
       </div>
     </div>
 
     <!-- Users Table -->
-    <div class="rounded-xl border border-slate-200 bg-white shadow-subtle overflow-hidden">
-      <div class="border-b border-slate-200 px-6 py-4 flex items-center justify-between">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-          <Users class="w-4 h-4 text-slate-500" />
-          Authorized User Accounts
-        </h3>
-        <span class="text-xs text-slate-500">{{ users.length }} active portal accounts</span>
+    <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] overflow-hidden">
+      <div class="border-b border-slate-200 dark:border-[#2d2d2d] px-4 py-3 flex items-center justify-between">
+        <h2 class="text-xs font-semibold text-slate-900 dark:text-[#cccccc] flex items-center gap-2">
+          <Users class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+          User Accounts
+        </h2>
+        <span class="text-xs text-slate-500 dark:text-[#858585]">{{ users.length }} accounts</span>
       </div>
 
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs">
-          <thead class="bg-slate-50/70 border-b border-slate-200 text-[11px] font-bold uppercase text-slate-500">
+          <thead class="bg-slate-50 dark:bg-[#1e1e1e] border-b border-slate-200 dark:border-[#2d2d2d] text-xs font-semibold text-slate-600 dark:text-[#cccccc]">
             <tr>
-              <th class="py-3 px-4">Name</th>
-              <th class="py-3 px-4">Official Email</th>
-              <th class="py-3 px-4">System Role</th>
-              <th class="py-3 px-4">Bureau Affiliation</th>
-              <th class="py-3 px-4">Account Status</th>
-              <th class="py-3 px-4 text-right">Actions</th>
+              <th class="py-2.5 px-4">Name</th>
+              <th class="py-2.5 px-4">Email</th>
+              <th class="py-2.5 px-4">Role</th>
+              <th class="py-2.5 px-4">Bureau</th>
+              <th class="py-2.5 px-4">Status</th>
+              <th class="py-2.5 px-4 text-right">Action</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-100">
-            <tr v-for="u in users" :key="u.id" class="hover:bg-slate-50">
-              <td class="py-3 px-4 font-semibold text-slate-900">
+          <tbody class="divide-y divide-slate-100 dark:divide-[#2d2d2d]">
+            <tr v-for="u in users" :key="u.id" class="hover:bg-slate-50 dark:hover:bg-[#2a2d2e]">
+              <td class="py-2.5 px-4 font-medium text-slate-900 dark:text-[#d4d4d4]">
                 {{ u.name }}
-                <div class="text-[10px] text-slate-400 font-normal">{{ u.designation || 'Staff' }}</div>
+                <div class="text-xs text-slate-400 dark:text-[#858585]">{{ u.designation || 'Staff' }}</div>
               </td>
-              <td class="py-3 px-4 font-mono text-slate-600">{{ u.email }}</td>
-              <td class="py-3 px-4">
+              <td class="py-2.5 px-4 font-mono text-slate-600 dark:text-[#858585]">{{ u.email }}</td>
+              <td class="py-2.5 px-4">
                 <span
                   :class="[
-                    'px-2 py-0.5 rounded text-[10px] font-bold uppercase',
-                    u.role === 'admin' ? 'bg-amber-100 text-amber-800' :
-                    u.role === 'senior_authority' ? 'bg-purple-100 text-purple-800' :
-                    'bg-blue-100 text-blue-800'
+                    'px-2 py-0.5 rounded text-xs font-medium',
+                    u.role === 'admin' ? 'bg-[#cca700]/15 text-[#cca700] border border-[#cca700]/30' :
+                    u.role === 'senior_authority' ? 'bg-[#007acc]/15 text-[#4fc1ff] border border-[#007acc]/30' :
+                    'bg-slate-200 dark:bg-[#2d2d2d] text-slate-800 dark:text-[#cccccc] border border-slate-300 dark:border-[#3e3e42]'
                   ]"
                 >
                   {{ u.role.replace('_', ' ') }}
                 </span>
               </td>
-              <td class="py-3 px-4 text-slate-700">
+              <td class="py-2.5 px-4 text-slate-700 dark:text-[#cccccc]">
                 {{ u.bureau_name || u.bureau_code || 'All Bureaus' }}
               </td>
-              <td class="py-3 px-4">
+              <td class="py-2.5 px-4">
                 <span
                   :class="[
-                    'px-2 py-0.5 rounded-full text-[10px] font-bold',
-                    u.is_active ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'
+                    'px-2 py-0.5 rounded text-xs font-medium',
+                    u.is_active ? 'bg-[#89d185]/15 text-[#89d185] border border-[#89d185]/30' : 'bg-[#f48771]/15 text-[#f48771] border border-[#f48771]/30'
                   ]"
                 >
                   {{ u.is_active ? 'Active' : 'Disabled' }}
                 </span>
               </td>
-              <td class="py-3 px-4 text-right">
+              <td class="py-2.5 px-4 text-right">
                 <button
                   type="button"
-                  class="text-xs font-semibold text-slate-600 hover:text-slate-900 underline"
+                  class="text-xs font-medium text-blue-600 dark:text-[#4fc1ff] hover:underline"
                   @click="toggleUserActive(u)"
                 >
                   {{ u.is_active ? 'Deactivate' : 'Activate' }}
@@ -218,33 +218,33 @@ async function toggleUserActive(u: User) {
     </div>
 
     <!-- Audit Logs Feed -->
-    <div class="rounded-xl border border-slate-200 bg-white shadow-subtle overflow-hidden">
-      <div class="border-b border-slate-200 px-6 py-4 flex items-center justify-between">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-          <Terminal class="w-4 h-4 text-slate-500" />
-          Consequential System Audit Log
-        </h3>
-        <span class="text-xs text-slate-400 font-mono">Immutable Log Trail</span>
+    <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] overflow-hidden">
+      <div class="border-b border-slate-200 dark:border-[#2d2d2d] px-4 py-3 flex items-center justify-between">
+        <h2 class="text-xs font-semibold text-slate-900 dark:text-[#cccccc] flex items-center gap-2">
+          <Terminal class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+          Audit Logs
+        </h2>
+        <span class="text-xs text-slate-400 dark:text-[#858585] font-mono">System Trail</span>
       </div>
 
       <div class="overflow-x-auto max-h-80 overflow-y-auto">
         <table class="w-full text-left text-xs font-mono">
-          <thead class="bg-slate-50/70 border-b border-slate-200 text-[10px] font-bold uppercase text-slate-500 sticky top-0">
+          <thead class="bg-slate-50 dark:bg-[#1e1e1e] border-b border-slate-200 dark:border-[#2d2d2d] text-xs font-semibold text-slate-600 dark:text-[#cccccc] sticky top-0">
             <tr>
-              <th class="py-2.5 px-4">Timestamp</th>
-              <th class="py-2.5 px-4">Operator</th>
-              <th class="py-2.5 px-4">Action</th>
-              <th class="py-2.5 px-4">Entity</th>
-              <th class="py-2.5 px-4">Audit Payload</th>
+              <th class="py-2 px-4">Timestamp</th>
+              <th class="py-2 px-4">Operator</th>
+              <th class="py-2 px-4">Action</th>
+              <th class="py-2 px-4">Entity</th>
+              <th class="py-2 px-4">Details</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-100 text-[11px]">
-            <tr v-for="log in auditLogs" :key="log.id" class="hover:bg-slate-50">
-              <td class="py-2 px-4 text-slate-400 whitespace-nowrap">{{ log.created_at?.slice(0, 19).replace('T', ' ') }}</td>
-              <td class="py-2 px-4 font-sans font-medium text-slate-900 whitespace-nowrap">{{ log.user_name }}</td>
-              <td class="py-2 px-4 font-bold text-blue-700 whitespace-nowrap">{{ log.action }}</td>
-              <td class="py-2 px-4 text-slate-600 whitespace-nowrap">{{ log.entity_type }} #{{ log.entity_id || '-' }}</td>
-              <td class="py-2 px-4 text-slate-500 truncate max-w-xs font-sans text-[10px]">{{ JSON.stringify(log.details) }}</td>
+          <tbody class="divide-y divide-slate-100 dark:divide-[#2d2d2d]">
+            <tr v-for="log in auditLogs" :key="log.id" class="hover:bg-slate-50 dark:hover:bg-[#2a2d2e]">
+              <td class="py-2 px-4 text-slate-400 dark:text-[#858585] whitespace-nowrap">{{ log.created_at?.slice(0, 19).replace('T', ' ') }}</td>
+              <td class="py-2 px-4 font-sans font-medium text-slate-900 dark:text-[#d4d4d4] whitespace-nowrap">{{ log.user_name }}</td>
+              <td class="py-2 px-4 font-medium text-blue-700 dark:text-[#4fc1ff] whitespace-nowrap">{{ log.action }}</td>
+              <td class="py-2 px-4 text-slate-600 dark:text-[#cccccc] whitespace-nowrap">{{ log.entity_type }} #{{ log.entity_id || '-' }}</td>
+              <td class="py-2 px-4 text-slate-500 dark:text-[#858585] truncate max-w-xs font-sans text-xs">{{ JSON.stringify(log.details) }}</td>
             </tr>
           </tbody>
         </table>
@@ -254,65 +254,70 @@ async function toggleUserActive(u: User) {
     <!-- Create User Modal -->
     <Modal
       :is-open="isCreateUserOpen"
-      title="Create Authorized Portal User"
+      title="Create User"
       @close="isCreateUserOpen = false"
     >
       <form class="space-y-4" @submit.prevent="handleCreateUser">
-        <div v-if="userFormError" class="p-3 rounded-lg bg-red-50 text-xs text-red-700 border border-red-200">
+        <div v-if="userFormError" class="p-3 rounded bg-red-50 dark:bg-[#f48771]/15 text-xs text-red-700 dark:text-[#f48771] border border-red-200 dark:border-[#f48771]/30">
           {{ userFormError }}
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">Official Full Name *</label>
+          <label for="admin-user-name" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Full name *</label>
           <input
+            id="admin-user-name"
             v-model="userForm.name"
             type="text"
             required
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           />
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">Email Address *</label>
+          <label for="admin-user-email" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Email address *</label>
           <input
+            id="admin-user-email"
             v-model="userForm.email"
             type="email"
             required
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           />
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">Password *</label>
+          <label for="admin-user-password" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Password *</label>
           <input
+            id="admin-user-password"
             v-model="userForm.password"
             type="password"
             required
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-700">Role *</label>
+            <label for="admin-user-role" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Role *</label>
             <select
+              id="admin-user-role"
               v-model="userForm.role"
               required
-              class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:ring-slate-900 focus:border-slate-900"
+              class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
             >
               <option value="officer">Bureau Officer</option>
               <option value="admin">System Administrator</option>
-              <option value="senior_authority">Senior Authority (Read-Only)</option>
+              <option value="senior_authority">Senior Authority</option>
             </select>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700">Bureau Affiliation</label>
+            <label for="admin-user-bureau" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Bureau affiliation</label>
             <select
+              id="admin-user-bureau"
               v-model="userForm.bureau_id"
-              class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:ring-slate-900 focus:border-slate-900"
+              class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
             >
-              <option value="">-- None / All Bureaus --</option>
+              <option value="">-- All Bureaus --</option>
               <option v-for="b in bureaus" :key="b.id" :value="b.id">
                 {{ b.code }} — {{ b.name }}
               </option>
@@ -321,12 +326,13 @@ async function toggleUserActive(u: User) {
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">Official Designation</label>
+          <label for="admin-user-designation" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Designation</label>
           <input
+            id="admin-user-designation"
             v-model="userForm.designation"
             type="text"
-            placeholder="e.g. Joint Director, Grievance Officer"
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900"
+            placeholder="e.g. Joint Director, Officer"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           />
         </div>
       </form>
@@ -334,14 +340,14 @@ async function toggleUserActive(u: User) {
       <template #footer>
         <button
           type="button"
-          class="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium text-slate-700 hover:bg-slate-100"
+          class="px-3 py-1.5 rounded border border-slate-300 dark:border-[#3e3e42] text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#37373d]"
           @click="isCreateUserOpen = false"
         >
           Cancel
         </button>
         <button
           type="button"
-          class="px-4 py-1.5 rounded-lg bg-slate-900 text-xs font-semibold text-white hover:bg-slate-800"
+          class="px-4 py-1.5 rounded bg-slate-900 dark:bg-[#007acc] text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb]"
           @click="handleCreateUser"
         >
           Create User

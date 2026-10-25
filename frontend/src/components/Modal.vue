@@ -42,41 +42,41 @@ const maxWidthClass = {
     >
       <!-- Backdrop -->
       <div
-        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+        class="fixed inset-0 bg-black/60 transition-opacity"
         @click="emit('close')"
       />
 
       <!-- Dialog Card -->
       <div
         :class="[
-          'relative w-full rounded-xl bg-white shadow-2xl border border-slate-200 transition-all z-10 flex flex-col max-h-[90vh]',
+          'relative w-full rounded bg-white dark:bg-[#252526] border border-slate-200 dark:border-[#2d2d2d] shadow-lg transition-all z-10 flex flex-col max-h-[90vh]',
           maxWidthClass,
         ]"
       >
         <!-- Header -->
-        <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-          <h3 class="text-base font-semibold text-slate-900">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-[#2d2d2d] px-5 py-3.5">
+          <h2 class="text-sm font-semibold text-slate-900 dark:text-[#d4d4d4]">
             {{ props.title }}
-          </h3>
+          </h2>
           <button
             type="button"
-            class="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
+            aria-label="Close dialog"
+            class="rounded p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-[#2d2d2d] hover:text-slate-600 dark:hover:text-[#cccccc] transition"
             @click="emit('close')"
           >
-            <span class="sr-only">Close</span>
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         <!-- Body -->
-        <div class="px-6 py-5 overflow-y-auto">
+        <div class="px-5 py-4 overflow-y-auto">
           <slot />
         </div>
 
         <!-- Footer -->
-        <div v-if="$slots.footer" class="border-t border-slate-100 px-6 py-3.5 bg-slate-50/50 rounded-b-xl flex justify-end gap-3">
+        <div v-if="$slots.footer" class="border-t border-slate-100 dark:border-[#2d2d2d] px-5 py-3 bg-slate-50 dark:bg-[#1e1e1e] rounded-b flex justify-end gap-2.5">
           <slot name="footer" />
         </div>
       </div>

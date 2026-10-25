@@ -75,25 +75,26 @@ onMounted(() => {
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
-        <h2 class="text-xl font-bold tracking-tight text-slate-900">
-          Institution Registry
-        </h2>
-        <p class="text-xs text-slate-500 mt-0.5">
-          Unified institution profiles consolidating cross-bureau regulatory history
+        <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
+          Institutions
+        </h1>
+        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+          Browse institutions, view aliases, and inspect complaint records across bureaus
         </p>
       </div>
     </div>
 
     <!-- Filter Bar -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-subtle">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-3.5">
       <!-- Search -->
       <div class="relative">
-        <Search class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+        <Search class="w-4 h-4 text-slate-400 dark:text-[#858585] absolute left-3 top-2.5 pointer-events-none" />
         <input
           v-model="search"
           type="text"
-          placeholder="Search by Institution Name, Permanent ID, alias..."
-          class="w-full pl-9 pr-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition"
+          aria-label="Search institutions"
+          placeholder="Search by name, permanent ID, or alias..."
+          class="w-full pl-9 pr-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] placeholder-slate-400 dark:placeholder-[#858585] transition"
         />
       </div>
 
@@ -101,10 +102,11 @@ onMounted(() => {
       <div>
         <select
           v-model="stateFilter"
-          class="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition bg-white"
+          aria-label="Filter by state"
+          class="w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] transition bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc]"
           @change="page = 1; fetchInstitutions()"
         >
-          <option value="">All States / UTs</option>
+          <option value="">All States and Union Territories</option>
           <option v-for="st in states" :key="st" :value="st">
             {{ st }}
           </option>
@@ -115,10 +117,11 @@ onMounted(() => {
       <div>
         <select
           v-model="typeFilter"
-          class="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition bg-white"
+          aria-label="Filter by type"
+          class="w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] transition bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc]"
           @change="page = 1; fetchInstitutions()"
         >
-          <option value="">All Academic Disciplines</option>
+          <option value="">All Institution Types</option>
           <option value="Engineering & Technology">Engineering & Technology</option>
           <option value="Pharmacy">Pharmacy</option>
           <option value="Management">Management</option>
@@ -132,23 +135,23 @@ onMounted(() => {
       <div
         v-for="inst in institutions"
         :key="inst.id"
-        class="rounded-xl border border-slate-200 bg-white p-5 shadow-subtle hover:shadow-elevated transition flex flex-col justify-between"
+        class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 hover:border-slate-300 dark:hover:border-[#3e3e42] transition flex flex-col justify-between"
       >
         <div>
           <div class="flex items-start justify-between gap-2">
-            <span class="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-mono font-bold text-slate-700 border border-slate-200">
+            <span class="rounded bg-slate-100 dark:bg-[#1e1e1e] px-2 py-0.5 text-xs font-mono font-medium text-slate-700 dark:text-[#cccccc] border border-slate-200 dark:border-[#2d2d2d]">
               ID: {{ inst.institution_code }}
             </span>
-            <span class="text-[10px] font-semibold text-slate-500">
+            <span class="text-xs font-medium text-slate-500 dark:text-[#858585]">
               {{ inst.institution_type }}
             </span>
           </div>
 
-          <h3 class="font-bold text-sm text-slate-900 mt-2 line-clamp-2">
+          <h2 class="font-medium text-sm text-slate-900 dark:text-[#d4d4d4] mt-2 line-clamp-2">
             {{ inst.name }}
-          </h3>
+          </h2>
 
-          <p class="text-xs text-slate-500 mt-1">
+          <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
             {{ inst.district ? `${inst.district}, ` : '' }}{{ inst.state }}
           </p>
 
@@ -157,23 +160,23 @@ onMounted(() => {
             <span
               v-for="a in inst.aliases"
               :key="a"
-              class="rounded bg-slate-50 border border-slate-200/80 px-1.5 py-0.2 text-[10px] text-slate-600"
+              class="rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-200 dark:border-[#2d2d2d] px-1.5 py-0.5 text-xs text-slate-600 dark:text-[#858585]"
             >
               {{ a }}
             </span>
           </div>
         </div>
 
-        <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-          <div class="text-[11px] text-slate-600">
-            <span class="font-bold text-slate-900">{{ inst.total_complaints || 0 }}</span> Total
-            • <span class="font-bold text-amber-700">{{ inst.open_complaints || 0 }}</span> Active
-            • <span class="font-bold text-emerald-700">{{ inst.disposed_complaints || 0 }}</span> Disposed
+        <div class="mt-5 pt-3 border-t border-slate-100 dark:border-[#2d2d2d] flex items-center justify-between">
+          <div class="text-xs text-slate-600 dark:text-[#858585]">
+            <span class="font-medium text-slate-900 dark:text-[#cccccc]">{{ inst.total_complaints || 0 }}</span> total
+            · <span class="font-medium text-[#cca700]">{{ inst.open_complaints || 0 }}</span> active
+            · <span class="font-medium text-[#89d185]">{{ inst.disposed_complaints || 0 }}</span> resolved
           </div>
 
           <router-link
             :to="`/institutions/${inst.id}`"
-            class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800"
+            class="inline-flex items-center gap-1 text-xs font-medium text-blue-600 dark:text-[#4fc1ff] hover:underline"
           >
             Profile
             <ArrowRight class="w-3.5 h-3.5" />
@@ -183,20 +186,20 @@ onMounted(() => {
     </div>
 
     <!-- Empty State -->
-    <div v-if="institutions.length === 0 && !loading" class="rounded-xl border border-slate-200 bg-white p-12 text-center text-xs text-slate-500">
-      No institutions found matching your search.
+    <div v-if="institutions.length === 0 && !loading" class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-8 text-center text-xs text-slate-500 dark:text-[#858585]">
+      No institutions match the current search filters.
     </div>
 
     <!-- Pagination -->
-    <div v-if="pages > 1" class="flex items-center justify-between border-t border-slate-200 pt-4">
-      <div class="text-xs text-slate-500">
+    <div v-if="pages > 1" class="flex items-center justify-between border-t border-slate-200 dark:border-[#2d2d2d] pt-4">
+      <div class="text-xs text-slate-500 dark:text-[#858585]">
         Page {{ page }} of {{ pages }} ({{ total }} institutions)
       </div>
       <div class="flex items-center gap-2">
         <button
           type="button"
           :disabled="page <= 1"
-          class="rounded-lg border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-700 disabled:opacity-50"
+          class="rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] disabled:opacity-40"
           @click="page--; fetchInstitutions()"
         >
           Previous
@@ -204,7 +207,7 @@ onMounted(() => {
         <button
           type="button"
           :disabled="page >= pages"
-          class="rounded-lg border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-700 disabled:opacity-50"
+          class="rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] disabled:opacity-40"
           @click="page++; fetchInstitutions()"
         >
           Next

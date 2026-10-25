@@ -57,34 +57,34 @@ function triggerCsvExport() {
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
-        <h2 class="text-xl font-bold tracking-tight text-slate-900">
-          Executive Reports & Analytics
-        </h2>
-        <p class="text-xs text-slate-500 mt-0.5">
-          Institutional complaint patterns, departmental resolution metrics, and authorized data exports
+        <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]">
+          Reports
+        </h1>
+        <p class="text-xs text-slate-500 dark:text-[#858585] mt-0.5">
+          Review complaint distribution, bureau workload, and export records
         </p>
       </div>
 
       <button
         type="button"
-        class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-700 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-800 transition"
+        class="inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] transition"
         @click="triggerCsvExport"
       >
-        <FileSpreadsheet class="w-4 h-4" />
-        Export Audit CSV
+        <FileSpreadsheet class="w-3.5 h-3.5" />
+        Export CSV
       </button>
     </div>
 
     <!-- Charts Row 1: Bureau Workload & Status Breakdown -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Bureau Distribution -->
-      <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-subtle">
-        <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-            <Layers class="w-4 h-4 text-slate-600" />
-            Case Distribution by AICTE Bureau
-          </h3>
-          <span class="text-[11px] text-slate-400">Total vs Active</span>
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5">
+        <div class="border-b border-slate-100 dark:border-[#2d2d2d] pb-2.5 flex items-center justify-between">
+          <h2 class="text-xs font-semibold text-slate-800 dark:text-[#cccccc] flex items-center gap-2">
+            <Layers class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+            Bureau Workload
+          </h2>
+          <span class="text-xs text-slate-400 dark:text-[#858585]">Open vs Total</span>
         </div>
 
         <div class="mt-4 space-y-4">
@@ -94,24 +94,24 @@ function triggerCsvExport() {
             class="space-y-1.5"
           >
             <div class="flex justify-between text-xs">
-              <span class="font-semibold text-slate-800">
+              <span class="font-medium text-slate-800 dark:text-[#cccccc]">
                 {{ b.code }} — {{ b.name }}
               </span>
-              <span class="font-mono text-slate-500">
+              <span class="font-mono text-slate-500 dark:text-[#858585]">
                 {{ b.open }} open / {{ b.total }} total
               </span>
             </div>
 
-            <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
+            <div class="w-full bg-slate-100 dark:bg-[#1e1e1e] h-2.5 rounded-full overflow-hidden flex border dark:border-[#2d2d2d]">
               <div
-                class="bg-blue-600 h-full"
+                class="bg-[#4fc1ff] h-full"
                 :style="{ width: b.total > 0 ? `${(b.open / b.total) * 100}%` : '0%' }"
-                title="Active Cases"
+                title="Active"
               />
               <div
-                class="bg-emerald-500 h-full"
+                class="bg-[#89d185] h-full"
                 :style="{ width: b.total > 0 ? `${(b.disposed / b.total) * 100}%` : '0%' }"
-                title="Disposed Cases"
+                title="Resolved"
               />
             </div>
           </div>
@@ -119,23 +119,23 @@ function triggerCsvExport() {
       </div>
 
       <!-- Status Distribution -->
-      <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-subtle">
-        <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-            <PieChart class="w-4 h-4 text-slate-600" />
-            Operational Case Status Breakdown
-          </h3>
-          <span class="text-[11px] text-slate-400">Active Pipeline</span>
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5">
+        <div class="border-b border-slate-100 dark:border-[#2d2d2d] pb-2.5 flex items-center justify-between">
+          <h2 class="text-xs font-semibold text-slate-800 dark:text-[#cccccc] flex items-center gap-2">
+            <PieChart class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+            Status Breakdown
+          </h2>
+          <span class="text-xs text-slate-400 dark:text-[#858585]">All complaints</span>
         </div>
 
         <div class="mt-4 grid grid-cols-2 gap-3">
           <div
             v-for="(count, status) in analytics.status_distribution"
             :key="status"
-            class="p-3 rounded-lg border border-slate-100 bg-slate-50/70"
+            class="p-3 rounded border border-slate-100 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e]"
           >
-            <p class="text-[11px] font-semibold text-slate-500">{{ status }}</p>
-            <p class="text-xl font-bold text-slate-900 mt-1">{{ count }}</p>
+            <p class="text-xs font-medium text-slate-500 dark:text-[#858585]">{{ status }}</p>
+            <p class="text-xl font-semibold text-slate-900 dark:text-[#d4d4d4] mt-1">{{ count }}</p>
           </div>
         </div>
       </div>
@@ -144,22 +144,22 @@ function triggerCsvExport() {
     <!-- Charts Row 2: Top Categories & Geographic States -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Top Categories -->
-      <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-subtle">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 border-b border-slate-100 pb-3 flex items-center gap-2">
-          <BarChart3 class="w-4 h-4 text-slate-600" />
-          Leading Regulatory Violation Categories
-        </h3>
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5">
+        <h2 class="text-xs font-semibold text-slate-800 dark:text-[#cccccc] border-b border-slate-100 dark:border-[#2d2d2d] pb-2.5 flex items-center gap-2">
+          <BarChart3 class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+          Complaints by Category
+        </h2>
 
-        <div class="mt-4 space-y-3">
+        <div class="mt-4 space-y-2.5">
           <div
             v-for="cat in analytics.category_distribution"
             :key="cat.category"
-            class="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100"
+            class="flex items-center justify-between p-2 rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-100 dark:border-[#2d2d2d]"
           >
-            <span class="text-xs font-medium text-slate-800 truncate max-w-xs">
+            <span class="text-xs font-medium text-slate-800 dark:text-[#cccccc] truncate max-w-xs">
               {{ cat.category }}
             </span>
-            <span class="rounded bg-slate-900 px-2 py-0.5 text-xs font-bold text-amber-400">
+            <span class="rounded bg-slate-900 dark:bg-[#2d2d2d] px-2 py-0.5 text-xs font-medium text-amber-400 dark:text-[#cca700] border dark:border-[#3e3e42]">
               {{ cat.count }}
             </span>
           </div>
@@ -167,22 +167,22 @@ function triggerCsvExport() {
       </div>
 
       <!-- State Geographic Distribution -->
-      <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-subtle">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 border-b border-slate-100 pb-3 flex items-center gap-2">
-          <MapPin class="w-4 h-4 text-slate-600" />
-          Geographic Institutional Density (By State)
-        </h3>
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5">
+        <h2 class="text-xs font-semibold text-slate-800 dark:text-[#cccccc] border-b border-slate-100 dark:border-[#2d2d2d] pb-2.5 flex items-center gap-2">
+          <MapPin class="w-4 h-4 text-slate-500 dark:text-[#858585]" />
+          Complaints by State
+        </h2>
 
-        <div class="mt-4 space-y-3">
+        <div class="mt-4 space-y-2.5">
           <div
             v-for="st in analytics.state_distribution"
             :key="st.state"
-            class="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100"
+            class="flex items-center justify-between p-2 rounded bg-slate-50 dark:bg-[#1e1e1e] border border-slate-100 dark:border-[#2d2d2d]"
           >
-            <span class="text-xs font-medium text-slate-800">
+            <span class="text-xs font-medium text-slate-800 dark:text-[#cccccc]">
               {{ st.state }}
             </span>
-            <span class="rounded bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-800">
+            <span class="rounded bg-blue-100 dark:bg-[#007acc]/15 px-2 py-0.5 text-xs font-medium text-blue-800 dark:text-[#4fc1ff] border dark:border-[#007acc]/30">
               {{ st.count }} complaints
             </span>
           </div>

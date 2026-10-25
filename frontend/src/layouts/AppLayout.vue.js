@@ -5,7 +5,7 @@ const __VLS_ctx = {};
 let __VLS_components;
 let __VLS_directives;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "min-h-screen bg-slate-50 flex flex-col" },
+    ...{ class: "min-h-screen bg-slate-50 dark:bg-[#1e1e1e] text-slate-900 dark:text-[#cccccc] flex flex-col" },
 });
 /** @type {[typeof Navbar, ]} */ ;
 // @ts-ignore
@@ -32,6 +32,9 @@ const __VLS_7 = __VLS_asFunctionalComponent(__VLS_6, new __VLS_6({}));
 const __VLS_8 = __VLS_7({}, ...__VLS_functionalComponentArgsRest(__VLS_7));
 /** @type {__VLS_StyleScopedClasses['min-h-screen']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-slate-50']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#1e1e1e]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-col']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;

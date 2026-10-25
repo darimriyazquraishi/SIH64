@@ -148,29 +148,29 @@ async function handleTransferBureau() {
     <div>
       <router-link
         to="/complaints"
-        class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition mb-3"
+        class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc] transition mb-3"
       >
         <ArrowLeft class="w-3.5 h-3.5" />
-        Back to Case Directory
+        Back to complaints
       </router-link>
 
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div class="flex items-center gap-2.5">
-            <h2 class="text-xl font-bold tracking-tight text-slate-900 font-mono">
+            <h1 class="text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4] font-mono">
               {{ store.currentComplaint.case_number }}
-            </h2>
+            </h1>
             <StatusBadge :status="store.currentComplaint.status" />
             <PriorityBadge :priority="store.currentComplaint.priority" />
             <span
               v-if="store.currentComplaint.is_overdue"
-              class="rounded bg-red-600 text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-wider"
+              class="rounded bg-[#f48771]/20 text-[#f48771] border border-[#f48771]/30 text-xs font-medium px-2 py-0.5"
             >
-              OVERDUE
+              Overdue
             </span>
           </div>
-          <p class="text-xs text-slate-500 mt-1">
-            Registered on {{ store.currentComplaint.received_at?.slice(0, 10) }} • Last action recorded on {{ store.currentComplaint.last_action_at?.slice(0, 10) }}
+          <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
+            Registered on {{ store.currentComplaint.received_at?.slice(0, 10) }} · Last action on {{ store.currentComplaint.last_action_at?.slice(0, 10) }}
           </p>
         </div>
 
@@ -178,33 +178,33 @@ async function handleTransferBureau() {
         <div v-if="canEdit" class="flex flex-wrap items-center gap-2">
           <button
             type="button"
-            class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition"
+            class="inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition"
             @click="isAssignModalOpen = true"
           >
-            <UserCheck class="w-3.5 h-3.5 text-slate-500" />
+            <UserCheck class="w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" />
             Assign Officer
           </button>
 
           <button
             type="button"
-            class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition"
+            class="inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition"
             @click="isTransferModalOpen = true"
           >
-            <Send class="w-3.5 h-3.5 text-slate-500" />
+            <Send class="w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" />
             Transfer Bureau
           </button>
 
           <button
             type="button"
-            class="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition"
+            class="inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] transition"
             @click="isStatusModalOpen = true"
           >
             <FileCheck2 class="w-3.5 h-3.5" />
             Update Status
           </button>
         </div>
-        <div v-else class="text-xs text-slate-400 italic">
-          {{ authStore.isSeniorAuthority ? 'Read-only access mode' : 'Modification restricted to responsible Bureau' }}
+        <div v-else class="text-xs text-slate-400 dark:text-[#858585]">
+          {{ authStore.isSeniorAuthority ? 'Read-only view' : 'Only the responsible bureau can modify this complaint' }}
         </div>
       </div>
     </div>
@@ -212,96 +212,96 @@ async function handleTransferBureau() {
     <!-- Overview Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Target Institution Card -->
-      <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-subtle">
-        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          Target Institution
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4">
+        <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">
+          Institution
         </p>
         <router-link
           :to="`/institutions/${store.currentComplaint.institution_id}`"
-          class="mt-1 block font-bold text-sm text-slate-900 hover:text-blue-600 transition"
+          class="mt-1 block font-medium text-sm text-slate-900 dark:text-[#d4d4d4] hover:text-blue-600 dark:hover:text-[#4fc1ff] transition"
         >
           {{ store.currentComplaint.institution_name }}
         </router-link>
-        <p class="text-xs text-slate-500 mt-0.5 font-mono">
-          AICTE Permanent ID: {{ store.currentComplaint.institution_code }}
+        <p class="text-xs text-slate-500 dark:text-[#858585] mt-1 font-mono">
+          AICTE ID: {{ store.currentComplaint.institution_code }}
         </p>
-        <p class="text-xs text-slate-500">
+        <p class="text-xs text-slate-500 dark:text-[#858585]">
           State: {{ store.currentComplaint.institution_state }}
         </p>
       </div>
 
       <!-- Department Ownership Card -->
-      <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-subtle">
-        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          Responsible Department
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4">
+        <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">
+          Assigned Bureau
         </p>
         <div class="mt-1 flex items-center gap-2">
-          <span class="rounded bg-slate-900 px-2 py-0.5 text-xs font-bold text-amber-400">
+          <span class="rounded bg-slate-900 dark:bg-[#2d2d2d] text-amber-400 dark:text-[#cca700] px-2 py-0.5 text-xs font-medium border border-slate-700 dark:border-[#3e3e42]">
             {{ store.currentComplaint.current_bureau_code }}
           </span>
-          <span class="text-xs font-semibold text-slate-800">
+          <span class="text-xs font-medium text-slate-800 dark:text-[#cccccc]">
             {{ store.currentComplaint.current_bureau_name }}
           </span>
         </div>
-        <p class="text-xs text-slate-500 mt-1">
-          Receiving Bureau: {{ store.currentComplaint.receiving_bureau_code }}
+        <p class="text-xs text-slate-500 dark:text-[#858585] mt-1">
+          Receiving bureau: {{ store.currentComplaint.receiving_bureau_code }}
         </p>
-        <p class="text-xs text-slate-700 font-medium">
-          Assigned Officer: {{ store.currentComplaint.assigned_officer_name || 'Unassigned' }}
+        <p class="text-xs text-slate-700 dark:text-[#cccccc]">
+          Assigned officer: {{ store.currentComplaint.assigned_officer_name || 'Unassigned' }}
         </p>
       </div>
 
       <!-- Deadlines Card -->
-      <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-subtle">
-        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          Compliance Deadlines
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4">
+        <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">
+          Resolution Deadline
         </p>
         <div class="mt-1 flex items-baseline gap-2">
-          <span class="text-sm font-bold text-slate-900">
+          <span class="text-sm font-medium text-slate-900 dark:text-[#d4d4d4]">
             Due: {{ store.currentComplaint.due_at ? store.currentComplaint.due_at.slice(0, 10) : 'N/A' }}
           </span>
         </div>
-        <p v-if="store.currentComplaint.is_overdue" class="text-xs font-bold text-red-600 mt-1 flex items-center gap-1">
+        <p v-if="store.currentComplaint.is_overdue" class="text-xs font-medium text-red-600 dark:text-[#f48771] mt-1 flex items-center gap-1">
           <Clock class="w-3.5 h-3.5" />
-          Statutory SLA deadline breached!
+          Response overdue
         </p>
-        <p v-else class="text-xs text-emerald-600 mt-1 font-medium">
-          Within regulatory timeline
+        <p v-else class="text-xs text-emerald-600 dark:text-[#89d185] mt-1 font-medium">
+          Within deadline
         </p>
-        <p v-if="store.currentComplaint.external_reference" class="text-[11px] text-slate-400 mt-1">
-          Ext Ref: {{ store.currentComplaint.external_reference }}
+        <p v-if="store.currentComplaint.external_reference" class="text-xs text-slate-400 dark:text-[#858585] mt-1">
+          Ref: {{ store.currentComplaint.external_reference }}
         </p>
       </div>
     </div>
 
     <!-- Continuous Tabs -->
-    <div class="border-b border-slate-200">
-      <nav class="flex gap-6 -mb-px text-xs font-semibold">
+    <div class="border-b border-slate-200 dark:border-[#2d2d2d]">
+      <nav class="flex gap-6 -mb-px text-xs font-medium">
         <button
           type="button"
           :class="[
-            'pb-3 border-b-2 transition flex items-center gap-2',
+            'pb-2.5 border-b-2 transition flex items-center gap-2',
             activeTab === 'overview'
-              ? 'border-slate-900 text-slate-900'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-slate-900 dark:border-[#007acc] text-slate-900 dark:text-white'
+              : 'border-transparent text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc]'
           ]"
           @click="activeTab = 'overview'"
         >
-          Case Particulars & Narrative
+          Overview
         </button>
 
         <button
           type="button"
           :class="[
-            'pb-3 border-b-2 transition flex items-center gap-2',
+            'pb-2.5 border-b-2 transition flex items-center gap-2',
             activeTab === 'timeline'
-              ? 'border-slate-900 text-slate-900'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-slate-900 dark:border-[#007acc] text-slate-900 dark:text-white'
+              : 'border-transparent text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc]'
           ]"
           @click="activeTab = 'timeline'"
         >
-          Auditable Action Timeline
-          <span class="rounded-full bg-slate-100 text-slate-700 px-1.5 py-0.2 text-[10px]">
+          Activity History
+          <span class="rounded bg-slate-100 dark:bg-[#2d2d2d] text-slate-700 dark:text-[#cccccc] px-1.5 py-0.5 text-xs">
             {{ store.currentComplaint.actions?.length || 0 }}
           </span>
         </button>
@@ -309,17 +309,17 @@ async function handleTransferBureau() {
         <button
           type="button"
           :class="[
-            'pb-3 border-b-2 transition flex items-center gap-2',
+            'pb-2.5 border-b-2 transition flex items-center gap-2',
             activeTab === 'overlaps'
-              ? 'border-slate-900 text-slate-900'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-slate-900 dark:border-[#007acc] text-slate-900 dark:text-white'
+              : 'border-transparent text-slate-500 dark:text-[#858585] hover:text-slate-800 dark:hover:text-[#cccccc]'
           ]"
           @click="activeTab = 'overlaps'"
         >
-          Cross-Bureau Overlap Flags
+          Related Cases
           <span
             v-if="(store.currentComplaint.related_links?.length || 0) > 0"
-            class="rounded-full bg-amber-500 text-white font-bold px-1.5 py-0.2 text-[10px]"
+            class="rounded bg-[#cca700]/20 text-[#cca700] font-medium px-1.5 py-0.5 text-xs"
           >
             {{ store.currentComplaint.related_links?.length }}
           </span>
@@ -328,73 +328,73 @@ async function handleTransferBureau() {
     </div>
 
     <!-- Tab 1: Overview -->
-    <div v-if="activeTab === 'overview'" class="rounded-xl border border-slate-200 bg-white p-6 shadow-subtle space-y-6">
+    <div v-if="activeTab === 'overview'" class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5 space-y-5">
       <div>
-        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Subject / Matter</h4>
-        <p class="text-base font-bold text-slate-900 mt-1">
+        <h2 class="text-xs font-medium text-slate-400 dark:text-[#858585]">Subject</h2>
+        <p class="text-sm font-medium text-slate-900 dark:text-[#d4d4d4] mt-1">
           {{ store.currentComplaint.subject }}
         </p>
       </div>
 
-      <div class="border-t border-slate-100 pt-4">
-        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Detailed Complaint Narrative</h4>
-        <div class="mt-2 text-xs leading-relaxed text-slate-700 bg-slate-50/70 p-4 rounded-xl border border-slate-200 whitespace-pre-wrap font-sans">
+      <div class="border-t border-slate-100 dark:border-[#2d2d2d] pt-4">
+        <h2 class="text-xs font-medium text-slate-400 dark:text-[#858585]">Description</h2>
+        <div class="mt-2 text-xs leading-relaxed text-slate-700 dark:text-[#cccccc] bg-slate-50 dark:bg-[#1e1e1e] p-4 rounded border border-slate-200 dark:border-[#2d2d2d] whitespace-pre-wrap font-sans">
           {{ store.currentComplaint.description }}
         </div>
       </div>
 
-      <div v-if="store.currentComplaint.resolution_summary" class="border-t border-slate-100 pt-4">
-        <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1.5">
+      <div v-if="store.currentComplaint.resolution_summary" class="border-t border-slate-100 dark:border-[#2d2d2d] pt-4">
+        <h2 class="text-xs font-medium text-emerald-700 dark:text-[#89d185] flex items-center gap-1.5">
           <CheckCircle2 class="w-4 h-4" />
-          Official Disposal & Resolution Order
-        </h4>
-        <div class="mt-2 text-xs leading-relaxed text-emerald-900 bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+          Resolution Notes
+        </h2>
+        <div class="mt-2 text-xs leading-relaxed text-emerald-900 dark:text-[#89d185] bg-emerald-50 dark:bg-[#89d185]/10 p-4 rounded border border-emerald-200 dark:border-[#89d185]/20">
           {{ store.currentComplaint.resolution_summary }}
         </div>
       </div>
     </div>
 
     <!-- Tab 2: Action Timeline -->
-    <div v-else-if="activeTab === 'timeline'" class="rounded-xl border border-slate-200 bg-white p-6 shadow-subtle">
-      <div class="border-b border-slate-100 pb-3 mb-6">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">
-          Immutable Case Action Trail
-        </h3>
-        <p class="text-[11px] text-slate-500">
-          Chronological record of status changes, departmental transfers, and regulatory directions
+    <div v-else-if="activeTab === 'timeline'" class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-5">
+      <div class="border-b border-slate-100 dark:border-[#2d2d2d] pb-3 mb-6">
+        <h2 class="text-xs font-medium text-slate-800 dark:text-[#cccccc]">
+          Action History
+        </h2>
+        <p class="text-xs text-slate-500 dark:text-[#858585]">
+          Chronological record of status changes, bureau transfers, and officer updates
         </p>
       </div>
 
-      <div class="relative pl-6 space-y-8 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+      <div class="relative pl-6 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200 dark:before:bg-[#2d2d2d]">
         <div
           v-for="act in store.currentComplaint.actions"
           :key="act.id"
-          class="relative group"
+          class="relative"
         >
           <!-- Bullet dot -->
-          <div class="absolute -left-6 top-1 w-3 h-3 rounded-full bg-slate-900 ring-4 ring-white" />
+          <div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-slate-900 dark:bg-[#007acc] ring-4 ring-white dark:ring-[#252526]" />
 
-          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 hover:bg-slate-100/60 transition">
+          <div class="bg-slate-50 dark:bg-[#1e1e1e] p-3.5 rounded border border-slate-200 dark:border-[#2d2d2d]">
             <div class="flex items-center justify-between gap-2">
-              <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-800 uppercase">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-200 dark:bg-[#2d2d2d] text-slate-800 dark:text-[#cccccc]">
                 {{ act.action_type.replace('_', ' ') }}
               </span>
-              <span class="text-[11px] text-slate-400">
+              <span class="text-xs text-slate-400 dark:text-[#858585]">
                 {{ act.created_at?.slice(0, 16).replace('T', ' ') }}
               </span>
             </div>
 
-            <p class="text-xs text-slate-800 mt-2 font-medium">
+            <p class="text-xs text-slate-800 dark:text-[#cccccc] mt-2 font-medium">
               {{ act.description }}
             </p>
 
-            <div class="mt-2 text-[11px] text-slate-500 flex items-center gap-3">
-              <span>Recorded by: <strong>{{ act.performed_by_name }}</strong></span>
+            <div class="mt-2 text-xs text-slate-500 dark:text-[#858585] flex flex-wrap items-center gap-3">
+              <span>By: <strong class="text-slate-700 dark:text-[#cccccc]">{{ act.performed_by_name }}</strong></span>
               <span v-if="act.old_status && act.new_status">
-                Status: {{ act.old_status }} → <strong>{{ act.new_status }}</strong>
+                Status: {{ act.old_status }} → <strong class="text-slate-700 dark:text-[#cccccc]">{{ act.new_status }}</strong>
               </span>
               <span v-if="act.old_bureau_code && act.new_bureau_code && act.old_bureau_code !== act.new_bureau_code">
-                Bureau: {{ act.old_bureau_code }} → <strong>{{ act.new_bureau_code }}</strong>
+                Bureau: {{ act.old_bureau_code }} → <strong class="text-slate-700 dark:text-[#cccccc]">{{ act.new_bureau_code }}</strong>
               </span>
             </div>
           </div>
@@ -404,29 +404,29 @@ async function handleTransferBureau() {
 
     <!-- Tab 3: Related Overlaps -->
     <div v-else-if="activeTab === 'overlaps'" class="space-y-4">
-      <div v-if="(store.currentComplaint.related_links?.length || 0) === 0" class="rounded-xl border border-slate-200 bg-white p-8 text-center text-xs text-slate-500">
-        No potential cross-bureau overlap flags detected for this complaint.
+      <div v-if="(store.currentComplaint.related_links?.length || 0) === 0" class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-6 text-center text-xs text-slate-500 dark:text-[#858585]">
+        No related cases detected for this complaint.
       </div>
 
       <div
         v-for="link in store.currentComplaint.related_links"
         :key="link.id"
-        class="rounded-xl border border-slate-200 bg-white p-5 shadow-subtle space-y-4"
+        class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 space-y-3"
       >
         <div class="flex items-start justify-between">
           <div class="flex items-center gap-2">
-            <span class="rounded bg-amber-500 text-white px-2 py-0.5 text-xs font-bold">
-              {{ Math.round(link.match_score * 100) }}% Overlap Match
+            <span class="rounded bg-[#cca700]/20 text-[#cca700] px-2 py-0.5 text-xs font-medium">
+              {{ Math.round(link.match_score * 100) }}% match
             </span>
-            <span class="text-xs font-mono text-slate-500">
+            <span class="text-xs text-slate-500 dark:text-[#858585]">
               Method: {{ link.match_method }}
             </span>
             <span
               :class="[
-                'text-[10px] font-bold px-2 py-0.5 rounded uppercase',
-                link.review_status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' :
-                link.review_status === 'dismissed' ? 'bg-slate-200 text-slate-700' :
-                'bg-amber-100 text-amber-800'
+                'text-xs font-medium px-2 py-0.5 rounded',
+                link.review_status === 'confirmed' ? 'bg-[#89d185]/20 text-[#89d185]' :
+                link.review_status === 'dismissed' ? 'bg-slate-200 dark:bg-[#2d2d2d] text-slate-700 dark:text-[#858585]' :
+                'bg-[#cca700]/20 text-[#cca700]'
               ]"
             >
               {{ link.review_status }}
@@ -435,40 +435,40 @@ async function handleTransferBureau() {
 
           <router-link
             to="/overlaps"
-            class="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"
+            class="text-xs font-medium text-blue-600 dark:text-[#4fc1ff] hover:underline flex items-center gap-1"
           >
-            Open in Overlap Review Queue
+            Review in overlap queue
             <ExternalLink class="w-3.5 h-3.5" />
           </router-link>
         </div>
 
-        <p class="text-xs text-slate-700 bg-amber-50/60 p-3 rounded-lg border border-amber-200/60">
-          <strong>Explainable Rationale:</strong> {{ link.match_reason }}
+        <p class="text-xs text-slate-700 dark:text-[#cccccc] bg-amber-50/60 dark:bg-[#1e1e1e] p-3 rounded border border-amber-200/60 dark:border-[#2d2d2d]">
+          <strong class="text-slate-800 dark:text-white">Match reason:</strong> {{ link.match_reason }}
         </p>
 
         <!-- Correlated other case snapshot -->
-        <div v-if="link.other_case" class="p-3.5 rounded-lg border border-slate-200 bg-slate-50/80">
-          <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-            Correlated Cross-Department Case
+        <div v-if="link.other_case" class="p-3 rounded border border-slate-200 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e]">
+          <p class="text-xs font-medium text-slate-400 dark:text-[#858585]">
+            Matching complaint
           </p>
           <div class="flex items-center justify-between mt-1">
             <router-link
               :to="`/complaints/${link.other_case.id}`"
-              class="font-mono font-bold text-xs text-blue-600 hover:underline"
+              class="font-mono font-medium text-xs text-blue-600 dark:text-[#4fc1ff] hover:underline"
             >
               {{ link.other_case.case_number }}
             </router-link>
             <div class="flex items-center gap-2">
-              <span class="rounded bg-slate-200 px-1.5 py-0.5 text-[10px] font-bold text-slate-800">
+              <span class="rounded bg-slate-200 dark:bg-[#2d2d2d] px-1.5 py-0.5 text-xs font-medium text-slate-800 dark:text-[#cccccc]">
                 {{ link.other_case.bureau_code }}
               </span>
               <StatusBadge :status="link.other_case.status" size="sm" />
             </div>
           </div>
-          <p class="text-xs font-semibold text-slate-800 mt-1">
+          <p class="text-xs font-medium text-slate-800 dark:text-[#cccccc] mt-1">
             {{ link.other_case.subject }}
           </p>
-          <p class="text-[11px] text-slate-500 line-clamp-2 mt-0.5">
+          <p class="text-xs text-slate-500 dark:text-[#858585] line-clamp-2 mt-0.5">
             {{ link.other_case.description }}
           </p>
         </div>
@@ -478,39 +478,41 @@ async function handleTransferBureau() {
     <!-- Modal: Update Status -->
     <Modal
       :is-open="isStatusModalOpen"
-      title="Update Complaint Status & Issue Action"
+      title="Update Status"
       @close="isStatusModalOpen = false"
     >
       <form class="space-y-4" @submit.prevent="handleUpdateStatus">
-        <div v-if="actionError" class="p-3 rounded-lg bg-red-50 text-xs text-red-700 border border-red-200">
+        <div v-if="actionError" class="p-3 rounded bg-red-50 dark:bg-[#f48771]/15 text-xs text-red-700 dark:text-[#f48771] border border-red-200 dark:border-[#f48771]/30">
           {{ actionError }}
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">Target Status *</label>
+          <label for="modal-status-select" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">New status *</label>
           <select
+            id="modal-status-select"
             v-model="newStatus"
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:ring-slate-900 focus:border-slate-900"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           >
             <option value="Under Review">Under Review</option>
             <option value="Action Required">Action Required</option>
             <option value="Awaiting Response">Awaiting Response</option>
             <option value="Escalated">Escalated</option>
-            <option value="Disposed">Disposed (Resolution Reached)</option>
-            <option value="Closed">Closed (Administratively Concluded)</option>
+            <option value="Disposed">Disposed (Resolved)</option>
+            <option value="Closed">Closed (Concluded)</option>
           </select>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">
-            Action Description / Resolution Remarks *
+          <label for="modal-status-remarks" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">
+            Action description or remarks *
           </label>
           <textarea
+            id="modal-status-remarks"
             v-model="statusRemarks"
             rows="3"
             required
-            placeholder="Record official regulatory steps, show cause notice issued, hearing date, or resolution details..."
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900"
+            placeholder="Record regulatory steps, notices issued, hearing dates, or resolution notes..."
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           />
         </div>
       </form>
@@ -518,7 +520,7 @@ async function handleTransferBureau() {
       <template #footer>
         <button
           type="button"
-          class="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium text-slate-700 hover:bg-slate-100"
+          class="px-3 py-1.5 rounded border border-slate-300 dark:border-[#3e3e42] text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#37373d]"
           @click="isStatusModalOpen = false"
         >
           Cancel
@@ -526,10 +528,10 @@ async function handleTransferBureau() {
         <button
           type="button"
           :disabled="isActionLoading"
-          class="px-4 py-1.5 rounded-lg bg-slate-900 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+          class="px-4 py-1.5 rounded bg-slate-900 dark:bg-[#007acc] text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] disabled:opacity-50"
           @click="handleUpdateStatus"
         >
-          Commit Status Update
+          Update Status
         </button>
       </template>
     </Modal>
@@ -537,19 +539,20 @@ async function handleTransferBureau() {
     <!-- Modal: Assign Officer -->
     <Modal
       :is-open="isAssignModalOpen"
-      title="Assign Responsible Bureau Officer"
+      title="Assign Bureau Officer"
       @close="isAssignModalOpen = false"
     >
       <form class="space-y-4" @submit.prevent="handleAssignOfficer">
-        <div v-if="actionError" class="p-3 rounded-lg bg-red-50 text-xs text-red-700 border border-red-200">
+        <div v-if="actionError" class="p-3 rounded bg-red-50 dark:bg-[#f48771]/15 text-xs text-red-700 dark:text-[#f48771] border border-red-200 dark:border-[#f48771]/30">
           {{ actionError }}
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">Select Bureau Officer *</label>
+          <label for="modal-assign-officer" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Select officer *</label>
           <select
+            id="modal-assign-officer"
             v-model="selectedOfficerId"
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:ring-slate-900 focus:border-slate-900"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           >
             <option value="">-- Unassigned --</option>
             <option v-for="off in bureauOfficers" :key="off.id" :value="off.id">
@@ -559,12 +562,13 @@ async function handleTransferBureau() {
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">Assignment Directive / Remarks</label>
+          <label for="modal-assign-remarks" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Instructions or remarks</label>
           <textarea
+            id="modal-assign-remarks"
             v-model="assignRemarks"
             rows="2"
             placeholder="Instructions for the assigned officer..."
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           />
         </div>
       </form>
@@ -572,7 +576,7 @@ async function handleTransferBureau() {
       <template #footer>
         <button
           type="button"
-          class="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium text-slate-700 hover:bg-slate-100"
+          class="px-3 py-1.5 rounded border border-slate-300 dark:border-[#3e3e42] text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#37373d]"
           @click="isAssignModalOpen = false"
         >
           Cancel
@@ -580,10 +584,10 @@ async function handleTransferBureau() {
         <button
           type="button"
           :disabled="isActionLoading"
-          class="px-4 py-1.5 rounded-lg bg-slate-900 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+          class="px-4 py-1.5 rounded bg-slate-900 dark:bg-[#007acc] text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] disabled:opacity-50"
           @click="handleAssignOfficer"
         >
-          Save Assignment
+          Assign Officer
         </button>
       </template>
     </Modal>
@@ -591,20 +595,21 @@ async function handleTransferBureau() {
     <!-- Modal: Transfer Bureau -->
     <Modal
       :is-open="isTransferModalOpen"
-      title="Departmental Case Transfer"
+      title="Transfer Bureau"
       @close="isTransferModalOpen = false"
     >
       <form class="space-y-4" @submit.prevent="handleTransferBureau">
-        <div v-if="actionError" class="p-3 rounded-lg bg-red-50 text-xs text-red-700 border border-red-200">
+        <div v-if="actionError" class="p-3 rounded bg-red-50 dark:bg-[#f48771]/15 text-xs text-red-700 dark:text-[#f48771] border border-red-200 dark:border-[#f48771]/30">
           {{ actionError }}
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">Target AICTE Bureau / Cell *</label>
+          <label for="modal-transfer-bureau" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Destination bureau *</label>
           <select
+            id="modal-transfer-bureau"
             v-model="selectedTargetBureauId"
             required
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:ring-slate-900 focus:border-slate-900"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           >
             <option value="">-- Select Destination Bureau --</option>
             <option
@@ -618,13 +623,14 @@ async function handleTransferBureau() {
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700">Transfer Justification *</label>
+          <label for="modal-transfer-reason" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Transfer justification *</label>
           <textarea
+            id="modal-transfer-reason"
             v-model="transferRemarks"
             rows="3"
             required
-            placeholder="Document why this case falls under the jurisdiction of the receiving Bureau..."
-            class="mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900"
+            placeholder="Explain why this complaint falls under the destination bureau's jurisdiction..."
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]"
           />
         </div>
       </form>
@@ -632,7 +638,7 @@ async function handleTransferBureau() {
       <template #footer>
         <button
           type="button"
-          class="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium text-slate-700 hover:bg-slate-100"
+          class="px-3 py-1.5 rounded border border-slate-300 dark:border-[#3e3e42] text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#37373d]"
           @click="isTransferModalOpen = false"
         >
           Cancel
@@ -640,10 +646,10 @@ async function handleTransferBureau() {
         <button
           type="button"
           :disabled="isActionLoading"
-          class="px-4 py-1.5 rounded-lg bg-slate-900 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+          class="px-4 py-1.5 rounded bg-slate-900 dark:bg-[#007acc] text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] disabled:opacity-50"
           @click="handleTransferBureau"
         >
-          Authorize Transfer
+          Transfer Complaint
         </button>
       </template>
     </Modal>

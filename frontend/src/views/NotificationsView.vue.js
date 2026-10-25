@@ -32,11 +32,11 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.d
     ...{ class: "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
-__VLS_asFunctionalElement(__VLS_intrinsicElements.h2, __VLS_intrinsicElements.h2)({
-    ...{ class: "text-xl font-bold tracking-tight text-slate-900" },
+__VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1)({
+    ...{ class: "text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-xs text-slate-500 mt-0.5" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#858585] mt-0.5" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "flex items-center gap-2" },
@@ -46,16 +46,16 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElement
             __VLS_ctx.notifStore.checkDeadlines();
         } },
     type: "button",
-    ...{ class: "inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition" },
+    ...{ class: "inline-flex items-center gap-1.5 rounded border border-slate-300 dark:border-[#3e3e42] bg-white dark:bg-[#2d2d2d] px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#37373d] transition" },
 });
 const __VLS_0 = {}.Clock;
 /** @type {[typeof __VLS_components.Clock, ]} */ ;
 // @ts-ignore
 const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
-    ...{ class: "w-3.5 h-3.5 text-slate-500" },
+    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" },
 }));
 const __VLS_2 = __VLS_1({
-    ...{ class: "w-3.5 h-3.5 text-slate-500" },
+    ...{ class: "w-3.5 h-3.5 text-slate-500 dark:text-[#858585]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_1));
 if (__VLS_ctx.notifStore.unreadCount > 0) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
@@ -65,7 +65,7 @@ if (__VLS_ctx.notifStore.unreadCount > 0) {
                 __VLS_ctx.notifStore.markAllRead();
             } },
         type: "button",
-        ...{ class: "inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition" },
+        ...{ class: "inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] transition" },
     });
     const __VLS_4 = {}.CheckCheck;
     /** @type {[typeof __VLS_components.CheckCheck, ]} */ ;
@@ -78,23 +78,23 @@ if (__VLS_ctx.notifStore.unreadCount > 0) {
     }, ...__VLS_functionalComponentArgsRest(__VLS_5));
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "flex items-center justify-between border-b border-slate-200 pb-3" },
+    ...{ class: "flex items-center justify-between border-b border-slate-200 dark:border-[#2d2d2d] pb-3" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.label, __VLS_intrinsicElements.label)({
-    ...{ class: "inline-flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700" },
+    ...{ class: "inline-flex items-center gap-2 cursor-pointer text-xs font-medium text-slate-700 dark:text-[#cccccc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.input)({
     ...{ onChange: (__VLS_ctx.toggleUnread) },
     type: "checkbox",
-    ...{ class: "rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5" },
+    ...{ class: "rounded border-slate-300 dark:border-[#3e3e42] text-[#007acc] focus:ring-1 focus:ring-[#007acc] h-3.5 w-3.5 bg-white dark:bg-[#3c3c3c]" },
 });
 (__VLS_ctx.unreadOnly);
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-    ...{ class: "text-xs text-slate-500" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#858585]" },
 });
 (__VLS_ctx.notifStore.unreadCount);
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "space-y-3" },
+    ...{ class: "space-y-2.5" },
 });
 for (const [notif] of __VLS_getVForSourceType((__VLS_ctx.notifStore.notifications))) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -103,10 +103,10 @@ for (const [notif] of __VLS_getVForSourceType((__VLS_ctx.notifStore.notification
             } },
         key: (notif.id),
         ...{ class: ([
-                'rounded-xl border p-4 shadow-subtle transition cursor-pointer hover:shadow-elevated',
+                'rounded border p-4 transition cursor-pointer',
                 !notif.is_read
-                    ? 'bg-blue-50/40 border-blue-200'
-                    : 'bg-white border-slate-200'
+                    ? 'bg-blue-50/30 dark:bg-[#252526] border-blue-300 dark:border-[#007acc]/40 hover:border-blue-400 dark:hover:border-[#007acc]'
+                    : 'bg-white dark:bg-[#252526] border-slate-200 dark:border-[#2d2d2d] hover:border-slate-300 dark:hover:border-[#3e3e42]'
             ]) },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -117,10 +117,10 @@ for (const [notif] of __VLS_getVForSourceType((__VLS_ctx.notifStore.notification
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         ...{ class: ([
-                'p-2 rounded-lg mt-0.5',
-                notif.notification_type === 'overlap_detected' ? 'bg-amber-100 text-amber-800' :
-                    notif.notification_type === 'case_overdue' ? 'bg-red-100 text-red-800' :
-                        'bg-blue-100 text-blue-800'
+                'p-2 rounded mt-0.5 border',
+                notif.notification_type === 'overlap_detected' ? 'bg-[#cca700]/15 text-[#cca700] border-[#cca700]/30' :
+                    notif.notification_type === 'case_overdue' ? 'bg-[#f48771]/15 text-[#f48771] border-[#f48771]/30' :
+                        'bg-[#007acc]/15 text-[#4fc1ff] border-[#007acc]/30'
             ]) },
     });
     if (notif.notification_type === 'overlap_detected') {
@@ -160,28 +160,28 @@ for (const [notif] of __VLS_getVForSourceType((__VLS_ctx.notifStore.notification
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         ...{ class: "flex items-center gap-2" },
     });
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.h4, __VLS_intrinsicElements.h4)({
-        ...{ class: (['text-xs font-bold text-slate-900', !notif.is_read ? 'text-blue-950 font-extrabold' : '']) },
+    __VLS_asFunctionalElement(__VLS_intrinsicElements.h2, __VLS_intrinsicElements.h2)({
+        ...{ class: (['text-xs font-semibold text-slate-900 dark:text-[#d4d4d4]', !notif.is_read ? 'text-blue-950 dark:text-white' : '']) },
     });
     (notif.title);
     if (!notif.is_read) {
         __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-            ...{ class: "w-2 h-2 rounded-full bg-blue-600" },
+            ...{ class: "w-2 h-2 rounded-full bg-[#007acc]" },
         });
     }
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs text-slate-600 mt-1 leading-relaxed" },
+        ...{ class: "text-xs text-slate-600 dark:text-[#cccccc] mt-1 leading-relaxed" },
     });
     (notif.message);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "flex flex-col items-end gap-2 flex-shrink-0" },
+        ...{ class: "flex flex-col items-end gap-1.5 flex-shrink-0" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-        ...{ class: "text-[11px] text-slate-400" },
+        ...{ class: "text-xs text-slate-400 dark:text-[#858585]" },
     });
     (notif.created_at?.slice(0, 16).replace('T', ' '));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-        ...{ class: "text-xs font-semibold text-blue-600 hover:underline inline-flex items-center gap-1" },
+        ...{ class: "text-xs font-medium text-blue-600 dark:text-[#4fc1ff] hover:underline inline-flex items-center gap-1" },
     });
     const __VLS_20 = {}.ArrowRight;
     /** @type {[typeof __VLS_components.ArrowRight, ]} */ ;
@@ -198,12 +198,12 @@ if (__VLS_ctx.notifStore.notifications.length === 0 && !__VLS_ctx.notifStore.loa
     /** @type {[typeof EmptyState, ]} */ ;
     // @ts-ignore
     const __VLS_24 = __VLS_asFunctionalComponent(EmptyState, new EmptyState({
-        title: "No notifications in your inbox",
-        description: "You are completely caught up! Relevant case alerts, overlap notices, and assignments will appear here.",
+        title: "No notifications",
+        description: "You have no unread notifications or alerts.",
     }));
     const __VLS_25 = __VLS_24({
-        title: "No notifications in your inbox",
-        description: "You are completely caught up! Relevant case alerts, overlap notices, and assignments will appear here.",
+        title: "No notifications",
+        description: "You have no unread notifications or alerts.",
     }, ...__VLS_functionalComponentArgsRest(__VLS_24));
 }
 /** @type {__VLS_StyleScopedClasses['space-y-6']} */ ;
@@ -214,11 +214,13 @@ if (__VLS_ctx.notifStore.notifications.length === 0 && !__VLS_ctx.notifStore.loa
 /** @type {__VLS_StyleScopedClasses['sm:justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xl']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['tracking-tight']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
@@ -226,33 +228,38 @@ if (__VLS_ctx.notifStore.notifications.length === 0 && !__VLS_ctx.notifStore.loa
 /** @type {__VLS_StyleScopedClasses['inline-flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-1.5']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
-/** @type {__VLS_StyleScopedClasses['shadow-sm']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-slate-50']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:hover:bg-[#37373d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['transition']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['inline-flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-1.5']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#007acc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-white']} */ ;
-/** @type {__VLS_StyleScopedClasses['shadow-sm']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-slate-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:hover:bg-[#1177bb]']} */ ;
 /** @type {__VLS_StyleScopedClasses['transition']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-3.5']} */ ;
@@ -261,23 +268,30 @@ if (__VLS_ctx.notifStore.notifications.length === 0 && !__VLS_ctx.notifStore.loa
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['pb-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['inline-flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['cursor-pointer']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-blue-600']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:ring-blue-500']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-[#007acc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-3.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#3c3c3c]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['space-y-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['space-y-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-start']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
@@ -297,21 +311,24 @@ if (__VLS_ctx.notifStore.notifications.length === 0 && !__VLS_ctx.notifStore.loa
 /** @type {__VLS_StyleScopedClasses['w-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['rounded-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-blue-600']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-[#007acc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['leading-relaxed']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-col']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-end']} */ ;
-/** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['gap-1.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex-shrink-0']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[11px]']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-blue-600']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#4fc1ff]']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:underline']} */ ;
 /** @type {__VLS_StyleScopedClasses['inline-flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;

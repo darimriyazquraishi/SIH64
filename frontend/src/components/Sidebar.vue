@@ -21,17 +21,17 @@ const overlapsStore = useOverlapsStore()
 
 const navigation = computed(() => [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-  { name: 'All Complaints', path: '/complaints', icon: FileText },
+  { name: 'Complaints', path: '/complaints', icon: FileText },
   {
-    name: 'Cross-Bureau Overlaps',
+    name: 'Overlaps',
     path: '/overlaps',
     icon: GitCompare,
     badge: overlapsStore.pendingCount > 0 ? overlapsStore.pendingCount : null,
   },
-  { name: 'Institution Directory', path: '/institutions', icon: Building2 },
-  { name: 'Reports & Analytics', path: '/reports', icon: BarChart3 },
+  { name: 'Institutions', path: '/institutions', icon: Building2 },
+  { name: 'Reports', path: '/reports', icon: BarChart3 },
   { name: 'Notifications', path: '/notifications', icon: Bell },
-  { name: 'CSV Data Import', path: '/imports', icon: UploadCloud },
+  { name: 'Import', path: '/imports', icon: UploadCloud },
   ...(authStore.isAdmin ? [{ name: 'Administration', path: '/admin', icon: Settings }] : []),
 ])
 
@@ -42,39 +42,42 @@ function isActive(path: string) {
 </script>
 
 <template>
-  <aside class="w-64 border-r border-slate-200 bg-white min-h-[calc(100vh-4rem)] flex flex-col justify-between p-4">
-    <div class="space-y-6">
+  <aside class="w-64 border-r border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] min-h-[calc(100vh-4rem)] flex flex-col justify-between p-3.5 transition-colors">
+    <div class="space-y-5">
       <!-- Section Label -->
       <div>
-        <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-          Core Operations
+        <p class="px-3 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-[#858585]">
+          Navigation
         </p>
-        <nav class="mt-2 space-y-1">
+        <nav class="mt-2 space-y-0.5" aria-label="Portal Navigation">
           <router-link
             v-for="item in navigation"
             :key="item.name"
             :to="item.path"
             :class="[
-              'group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition',
+              'group flex items-center justify-between rounded px-3 py-2 text-xs font-medium transition-colors',
               isActive(item.path)
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
+                ? 'bg-slate-100 dark:bg-[#37373d] text-slate-900 dark:text-white font-semibold'
+                : 'text-slate-600 dark:text-[#cccccc] hover:bg-slate-50 dark:hover:bg-[#2a2d2e] hover:text-slate-900 dark:hover:text-white',
             ]"
           >
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2.5">
               <component
                 :is="item.icon"
                 :class="[
-                  'h-4 w-4 transition',
-                  isActive(item.path) ? 'text-amber-400' : 'text-slate-400 group-hover:text-slate-600',
+                  'h-4 w-4 transition-colors',
+                  isActive(item.path)
+                    ? 'text-blue-600 dark:text-[#007acc]'
+                    : 'text-slate-400 dark:text-[#858585] group-hover:text-slate-600 dark:group-hover:text-[#cccccc]',
                 ]"
+                aria-hidden="true"
               />
               <span>{{ item.name }}</span>
             </div>
 
             <span
               v-if="item.badge"
-              class="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-white shadow-sm animate-pulse"
+              class="flex h-5 min-w-[20px] px-1.5 items-center justify-center rounded-full bg-amber-600 dark:bg-[#cca700] text-xs font-semibold text-white dark:text-[#1e1e1e]"
             >
               {{ item.badge }}
             </span>
@@ -82,23 +85,23 @@ function isActive(path: string) {
         </nav>
       </div>
 
-      <!-- Quick Context Box -->
-      <div class="rounded-xl border border-slate-200 bg-slate-50/80 p-3.5">
-        <div class="flex items-center gap-2 text-slate-900 font-semibold text-xs">
-          <ShieldAlert class="w-4 h-4 text-amber-600" />
-          Cross-Bureau Protocol
+      <!-- Coordination Policy Box -->
+      <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-slate-50 dark:bg-[#1e1e1e] p-3">
+        <div class="flex items-center gap-2 text-slate-800 dark:text-[#d4d4d4] font-medium text-xs">
+          <ShieldAlert class="w-4 h-4 text-amber-600 dark:text-[#cca700]" aria-hidden="true" />
+          Cross-Bureau Cases
         </div>
-        <p class="mt-1 text-[11px] text-slate-500 leading-relaxed">
-          Complaints concerning identical institutions across departments are correlated transparently without destructive auto-merging.
+        <p class="mt-1 text-xs text-slate-500 dark:text-[#858585] leading-relaxed">
+          Cases involving the same institution across bureaus are linked for joint review while preserving separate case records.
         </p>
       </div>
     </div>
 
     <!-- System Footer -->
-    <div class="border-t border-slate-100 pt-3 px-3">
-      <div class="flex items-center justify-between text-[11px] text-slate-400">
+    <div class="border-t border-slate-100 dark:border-[#2d2d2d] pt-3 px-3">
+      <div class="flex items-center justify-between text-xs text-slate-400 dark:text-[#858585]">
         <span>AICTE Portal</span>
-        <span class="font-mono">v1.0.0-SIH</span>
+        <span class="font-mono">v1.0.0</span>
       </div>
     </div>
   </aside>

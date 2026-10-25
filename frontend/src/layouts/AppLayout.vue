@@ -4,7 +4,7 @@ import Sidebar from '@/components/Sidebar.vue'
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-50 flex flex-col">
+  <div class="min-h-screen bg-slate-50 dark:bg-[#1e1e1e] text-slate-900 dark:text-[#cccccc] flex flex-col">
     <Navbar />
     <div class="flex flex-1">
       <Sidebar class="hidden md:flex flex-shrink-0" />

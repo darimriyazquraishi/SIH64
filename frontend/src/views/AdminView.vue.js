@@ -85,133 +85,133 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.d
     ...{ class: "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
-__VLS_asFunctionalElement(__VLS_intrinsicElements.h2, __VLS_intrinsicElements.h2)({
-    ...{ class: "text-xl font-bold tracking-tight text-slate-900" },
+__VLS_asFunctionalElement(__VLS_intrinsicElements.h1, __VLS_intrinsicElements.h1)({
+    ...{ class: "text-xl font-semibold tracking-tight text-slate-900 dark:text-[#d4d4d4]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-    ...{ class: "text-xs text-slate-500 mt-0.5" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#858585] mt-0.5" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
     ...{ onClick: (...[$event]) => {
             __VLS_ctx.isCreateUserOpen = true;
         } },
     type: "button",
-    ...{ class: "inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition" },
+    ...{ class: "inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] transition" },
 });
 const __VLS_0 = {}.PlusCircle;
 /** @type {[typeof __VLS_components.PlusCircle, ]} */ ;
 // @ts-ignore
 const __VLS_1 = __VLS_asFunctionalComponent(__VLS_0, new __VLS_0({
-    ...{ class: "w-4 h-4" },
+    ...{ class: "w-3.5 h-3.5" },
 }));
 const __VLS_2 = __VLS_1({
-    ...{ class: "w-4 h-4" },
+    ...{ class: "w-3.5 h-3.5" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_1));
 if (__VLS_ctx.systemStatus) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
         ...{ class: "grid grid-cols-1 md:grid-cols-3 gap-4" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "rounded-xl border border-slate-200 bg-white p-4 shadow-subtle flex items-center gap-3" },
+        ...{ class: "rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex items-center gap-3" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center" },
+        ...{ class: "w-9 h-9 rounded bg-emerald-100 dark:bg-[#89d185]/15 text-emerald-700 dark:text-[#89d185] border border-emerald-200 dark:border-[#89d185]/30 flex items-center justify-center" },
     });
     const __VLS_4 = {}.Database;
     /** @type {[typeof __VLS_components.Database, ]} */ ;
     // @ts-ignore
     const __VLS_5 = __VLS_asFunctionalComponent(__VLS_4, new __VLS_4({
-        ...{ class: "w-5 h-5" },
+        ...{ class: "w-4 h-4" },
     }));
     const __VLS_6 = __VLS_5({
-        ...{ class: "w-5 h-5" },
+        ...{ class: "w-4 h-4" },
     }, ...__VLS_functionalComponentArgsRest(__VLS_5));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-[10px] font-bold uppercase tracking-wider text-slate-400" },
+        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#858585]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs font-bold text-slate-900" },
+        ...{ class: "text-xs font-medium text-slate-900 dark:text-[#d4d4d4]" },
     });
     (__VLS_ctx.systemStatus.database);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-[10px] text-slate-400 truncate max-w-[200px]" },
+        ...{ class: "text-xs text-slate-400 dark:text-[#858585] truncate max-w-[200px]" },
         title: (__VLS_ctx.systemStatus.postgresql_version),
     });
     (__VLS_ctx.systemStatus.postgresql_version);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "rounded-xl border border-slate-200 bg-white p-4 shadow-subtle flex items-center gap-3" },
+        ...{ class: "rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex items-center gap-3" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center" },
+        ...{ class: "w-9 h-9 rounded bg-blue-100 dark:bg-[#007acc]/15 text-blue-700 dark:text-[#4fc1ff] border border-blue-200 dark:border-[#007acc]/30 flex items-center justify-center" },
     });
     const __VLS_8 = {}.Activity;
     /** @type {[typeof __VLS_components.Activity, ]} */ ;
     // @ts-ignore
     const __VLS_9 = __VLS_asFunctionalComponent(__VLS_8, new __VLS_8({
-        ...{ class: "w-5 h-5" },
+        ...{ class: "w-4 h-4" },
     }));
     const __VLS_10 = __VLS_9({
-        ...{ class: "w-5 h-5" },
+        ...{ class: "w-4 h-4" },
     }, ...__VLS_functionalComponentArgsRest(__VLS_9));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-[10px] font-bold uppercase tracking-wider text-slate-400" },
+        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#858585]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs font-bold text-slate-900" },
+        ...{ class: "text-xs font-medium text-slate-900 dark:text-[#d4d4d4]" },
     });
     (__VLS_ctx.systemStatus.status);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-[10px] text-slate-500" },
+        ...{ class: "text-xs text-slate-500 dark:text-[#858585]" },
     });
     (__VLS_ctx.systemStatus.portal_version);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "rounded-xl border border-slate-200 bg-white p-4 shadow-subtle flex items-center gap-3" },
+        ...{ class: "rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-4 flex items-center gap-3" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "w-10 h-10 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center" },
+        ...{ class: "w-9 h-9 rounded bg-purple-100 dark:bg-[#cca700]/15 text-purple-700 dark:text-[#cca700] border border-purple-200 dark:border-[#cca700]/30 flex items-center justify-center" },
     });
     const __VLS_12 = {}.ShieldCheck;
     /** @type {[typeof __VLS_components.ShieldCheck, ]} */ ;
     // @ts-ignore
     const __VLS_13 = __VLS_asFunctionalComponent(__VLS_12, new __VLS_12({
-        ...{ class: "w-5 h-5" },
+        ...{ class: "w-4 h-4" },
     }));
     const __VLS_14 = __VLS_13({
-        ...{ class: "w-5 h-5" },
+        ...{ class: "w-4 h-4" },
     }, ...__VLS_functionalComponentArgsRest(__VLS_13));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-[10px] font-bold uppercase tracking-wider text-slate-400" },
+        ...{ class: "text-xs font-medium text-slate-400 dark:text-[#858585]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-xs font-bold text-slate-900" },
+        ...{ class: "text-xs font-medium text-slate-900 dark:text-[#d4d4d4]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({
-        ...{ class: "text-[10px] text-slate-500" },
+        ...{ class: "text-xs text-slate-500 dark:text-[#858585]" },
     });
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "rounded-xl border border-slate-200 bg-white shadow-subtle overflow-hidden" },
+    ...{ class: "rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] overflow-hidden" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "border-b border-slate-200 px-6 py-4 flex items-center justify-between" },
+    ...{ class: "border-b border-slate-200 dark:border-[#2d2d2d] px-4 py-3 flex items-center justify-between" },
 });
-__VLS_asFunctionalElement(__VLS_intrinsicElements.h3, __VLS_intrinsicElements.h3)({
-    ...{ class: "text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2" },
+__VLS_asFunctionalElement(__VLS_intrinsicElements.h2, __VLS_intrinsicElements.h2)({
+    ...{ class: "text-xs font-semibold text-slate-900 dark:text-[#cccccc] flex items-center gap-2" },
 });
 const __VLS_16 = {}.Users;
 /** @type {[typeof __VLS_components.Users, ]} */ ;
 // @ts-ignore
 const __VLS_17 = __VLS_asFunctionalComponent(__VLS_16, new __VLS_16({
-    ...{ class: "w-4 h-4 text-slate-500" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
 }));
 const __VLS_18 = __VLS_17({
-    ...{ class: "w-4 h-4 text-slate-500" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_17));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-    ...{ class: "text-xs text-slate-500" },
+    ...{ class: "text-xs text-slate-500 dark:text-[#858585]" },
 });
 (__VLS_ctx.users.length);
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -221,105 +221,105 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.table, __VLS_intrinsicElements
     ...{ class: "w-full text-left text-xs" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.thead, __VLS_intrinsicElements.thead)({
-    ...{ class: "bg-slate-50/70 border-b border-slate-200 text-[11px] font-bold uppercase text-slate-500" },
+    ...{ class: "bg-slate-50 dark:bg-[#1e1e1e] border-b border-slate-200 dark:border-[#2d2d2d] text-xs font-semibold text-slate-600 dark:text-[#cccccc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.tr, __VLS_intrinsicElements.tr)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-3 px-4" },
+    ...{ class: "py-2.5 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-3 px-4" },
+    ...{ class: "py-2.5 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-3 px-4" },
+    ...{ class: "py-2.5 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-3 px-4" },
+    ...{ class: "py-2.5 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-3 px-4" },
+    ...{ class: "py-2.5 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-3 px-4 text-right" },
+    ...{ class: "py-2.5 px-4 text-right" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.tbody, __VLS_intrinsicElements.tbody)({
-    ...{ class: "divide-y divide-slate-100" },
+    ...{ class: "divide-y divide-slate-100 dark:divide-[#2d2d2d]" },
 });
 for (const [u] of __VLS_getVForSourceType((__VLS_ctx.users))) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.tr, __VLS_intrinsicElements.tr)({
         key: (u.id),
-        ...{ class: "hover:bg-slate-50" },
+        ...{ class: "hover:bg-slate-50 dark:hover:bg-[#2a2d2e]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-3 px-4 font-semibold text-slate-900" },
+        ...{ class: "py-2.5 px-4 font-medium text-slate-900 dark:text-[#d4d4d4]" },
     });
     (u.name);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "text-[10px] text-slate-400 font-normal" },
+        ...{ class: "text-xs text-slate-400 dark:text-[#858585]" },
     });
     (u.designation || 'Staff');
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-3 px-4 font-mono text-slate-600" },
+        ...{ class: "py-2.5 px-4 font-mono text-slate-600 dark:text-[#858585]" },
     });
     (u.email);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-3 px-4" },
+        ...{ class: "py-2.5 px-4" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
         ...{ class: ([
-                'px-2 py-0.5 rounded text-[10px] font-bold uppercase',
-                u.role === 'admin' ? 'bg-amber-100 text-amber-800' :
-                    u.role === 'senior_authority' ? 'bg-purple-100 text-purple-800' :
-                        'bg-blue-100 text-blue-800'
+                'px-2 py-0.5 rounded text-xs font-medium',
+                u.role === 'admin' ? 'bg-[#cca700]/15 text-[#cca700] border border-[#cca700]/30' :
+                    u.role === 'senior_authority' ? 'bg-[#007acc]/15 text-[#4fc1ff] border border-[#007acc]/30' :
+                        'bg-slate-200 dark:bg-[#2d2d2d] text-slate-800 dark:text-[#cccccc] border border-slate-300 dark:border-[#3e3e42]'
             ]) },
     });
     (u.role.replace('_', ' '));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-3 px-4 text-slate-700" },
+        ...{ class: "py-2.5 px-4 text-slate-700 dark:text-[#cccccc]" },
     });
     (u.bureau_name || u.bureau_code || 'All Bureaus');
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-3 px-4" },
+        ...{ class: "py-2.5 px-4" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
         ...{ class: ([
-                'px-2 py-0.5 rounded-full text-[10px] font-bold',
-                u.is_active ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'
+                'px-2 py-0.5 rounded text-xs font-medium',
+                u.is_active ? 'bg-[#89d185]/15 text-[#89d185] border border-[#89d185]/30' : 'bg-[#f48771]/15 text-[#f48771] border border-[#f48771]/30'
             ]) },
     });
     (u.is_active ? 'Active' : 'Disabled');
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-3 px-4 text-right" },
+        ...{ class: "py-2.5 px-4 text-right" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
         ...{ onClick: (...[$event]) => {
                 __VLS_ctx.toggleUserActive(u);
             } },
         type: "button",
-        ...{ class: "text-xs font-semibold text-slate-600 hover:text-slate-900 underline" },
+        ...{ class: "text-xs font-medium text-blue-600 dark:text-[#4fc1ff] hover:underline" },
     });
     (u.is_active ? 'Deactivate' : 'Activate');
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "rounded-xl border border-slate-200 bg-white shadow-subtle overflow-hidden" },
+    ...{ class: "rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] overflow-hidden" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-    ...{ class: "border-b border-slate-200 px-6 py-4 flex items-center justify-between" },
+    ...{ class: "border-b border-slate-200 dark:border-[#2d2d2d] px-4 py-3 flex items-center justify-between" },
 });
-__VLS_asFunctionalElement(__VLS_intrinsicElements.h3, __VLS_intrinsicElements.h3)({
-    ...{ class: "text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2" },
+__VLS_asFunctionalElement(__VLS_intrinsicElements.h2, __VLS_intrinsicElements.h2)({
+    ...{ class: "text-xs font-semibold text-slate-900 dark:text-[#cccccc] flex items-center gap-2" },
 });
 const __VLS_20 = {}.Terminal;
 /** @type {[typeof __VLS_components.Terminal, ]} */ ;
 // @ts-ignore
 const __VLS_21 = __VLS_asFunctionalComponent(__VLS_20, new __VLS_20({
-    ...{ class: "w-4 h-4 text-slate-500" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
 }));
 const __VLS_22 = __VLS_21({
-    ...{ class: "w-4 h-4 text-slate-500" },
+    ...{ class: "w-4 h-4 text-slate-500 dark:text-[#858585]" },
 }, ...__VLS_functionalComponentArgsRest(__VLS_21));
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-    ...{ class: "text-xs text-slate-400 font-mono" },
+    ...{ class: "text-xs text-slate-400 dark:text-[#858585] font-mono" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
     ...{ class: "overflow-x-auto max-h-80 overflow-y-auto" },
@@ -328,51 +328,51 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.table, __VLS_intrinsicElements
     ...{ class: "w-full text-left text-xs font-mono" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.thead, __VLS_intrinsicElements.thead)({
-    ...{ class: "bg-slate-50/70 border-b border-slate-200 text-[10px] font-bold uppercase text-slate-500 sticky top-0" },
+    ...{ class: "bg-slate-50 dark:bg-[#1e1e1e] border-b border-slate-200 dark:border-[#2d2d2d] text-xs font-semibold text-slate-600 dark:text-[#cccccc] sticky top-0" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.tr, __VLS_intrinsicElements.tr)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-2.5 px-4" },
+    ...{ class: "py-2 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-2.5 px-4" },
+    ...{ class: "py-2 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-2.5 px-4" },
+    ...{ class: "py-2 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-2.5 px-4" },
+    ...{ class: "py-2 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.th, __VLS_intrinsicElements.th)({
-    ...{ class: "py-2.5 px-4" },
+    ...{ class: "py-2 px-4" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.tbody, __VLS_intrinsicElements.tbody)({
-    ...{ class: "divide-y divide-slate-100 text-[11px]" },
+    ...{ class: "divide-y divide-slate-100 dark:divide-[#2d2d2d]" },
 });
 for (const [log] of __VLS_getVForSourceType((__VLS_ctx.auditLogs))) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.tr, __VLS_intrinsicElements.tr)({
         key: (log.id),
-        ...{ class: "hover:bg-slate-50" },
+        ...{ class: "hover:bg-slate-50 dark:hover:bg-[#2a2d2e]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-2 px-4 text-slate-400 whitespace-nowrap" },
+        ...{ class: "py-2 px-4 text-slate-400 dark:text-[#858585] whitespace-nowrap" },
     });
     (log.created_at?.slice(0, 19).replace('T', ' '));
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-2 px-4 font-sans font-medium text-slate-900 whitespace-nowrap" },
+        ...{ class: "py-2 px-4 font-sans font-medium text-slate-900 dark:text-[#d4d4d4] whitespace-nowrap" },
     });
     (log.user_name);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-2 px-4 font-bold text-blue-700 whitespace-nowrap" },
+        ...{ class: "py-2 px-4 font-medium text-blue-700 dark:text-[#4fc1ff] whitespace-nowrap" },
     });
     (log.action);
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-2 px-4 text-slate-600 whitespace-nowrap" },
+        ...{ class: "py-2 px-4 text-slate-600 dark:text-[#cccccc] whitespace-nowrap" },
     });
     (log.entity_type);
     (log.entity_id || '-');
     __VLS_asFunctionalElement(__VLS_intrinsicElements.td, __VLS_intrinsicElements.td)({
-        ...{ class: "py-2 px-4 text-slate-500 truncate max-w-xs font-sans text-[10px]" },
+        ...{ class: "py-2 px-4 text-slate-500 dark:text-[#858585] truncate max-w-xs font-sans text-xs" },
     });
     (JSON.stringify(log.details));
 }
@@ -381,12 +381,12 @@ for (const [log] of __VLS_getVForSourceType((__VLS_ctx.auditLogs))) {
 const __VLS_24 = __VLS_asFunctionalComponent(Modal, new Modal({
     ...{ 'onClose': {} },
     isOpen: (__VLS_ctx.isCreateUserOpen),
-    title: "Create Authorized Portal User",
+    title: "Create User",
 }));
 const __VLS_25 = __VLS_24({
     ...{ 'onClose': {} },
     isOpen: (__VLS_ctx.isCreateUserOpen),
-    title: "Create Authorized Portal User",
+    title: "Create User",
 }, ...__VLS_functionalComponentArgsRest(__VLS_24));
 let __VLS_27;
 let __VLS_28;
@@ -403,38 +403,44 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.form, __VLS_intrinsicElements.
 });
 if (__VLS_ctx.userFormError) {
     __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
-        ...{ class: "p-3 rounded-lg bg-red-50 text-xs text-red-700 border border-red-200" },
+        ...{ class: "p-3 rounded bg-red-50 dark:bg-[#f48771]/15 text-xs text-red-700 dark:text-[#f48771] border border-red-200 dark:border-[#f48771]/30" },
     });
     (__VLS_ctx.userFormError);
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.label, __VLS_intrinsicElements.label)({
-    ...{ class: "block text-xs font-semibold text-slate-700" },
+    for: "admin-user-name",
+    ...{ class: "block text-xs font-medium text-slate-700 dark:text-[#cccccc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.input)({
+    id: "admin-user-name",
     value: (__VLS_ctx.userForm.name),
     type: "text",
     required: true,
-    ...{ class: "mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900" },
+    ...{ class: "mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.label, __VLS_intrinsicElements.label)({
-    ...{ class: "block text-xs font-semibold text-slate-700" },
+    for: "admin-user-email",
+    ...{ class: "block text-xs font-medium text-slate-700 dark:text-[#cccccc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.input)({
+    id: "admin-user-email",
     type: "email",
     required: true,
-    ...{ class: "mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900" },
+    ...{ class: "mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]" },
 });
 (__VLS_ctx.userForm.email);
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.label, __VLS_intrinsicElements.label)({
-    ...{ class: "block text-xs font-semibold text-slate-700" },
+    for: "admin-user-password",
+    ...{ class: "block text-xs font-medium text-slate-700 dark:text-[#cccccc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.input)({
+    id: "admin-user-password",
     type: "password",
     required: true,
-    ...{ class: "mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900" },
+    ...{ class: "mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]" },
 });
 (__VLS_ctx.userForm.password);
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({
@@ -442,12 +448,14 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.d
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.label, __VLS_intrinsicElements.label)({
-    ...{ class: "block text-xs font-semibold text-slate-700" },
+    for: "admin-user-role",
+    ...{ class: "block text-xs font-medium text-slate-700 dark:text-[#cccccc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.select, __VLS_intrinsicElements.select)({
+    id: "admin-user-role",
     value: (__VLS_ctx.userForm.role),
     required: true,
-    ...{ class: "mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:ring-slate-900 focus:border-slate-900" },
+    ...{ class: "mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.option, __VLS_intrinsicElements.option)({
     value: "officer",
@@ -460,11 +468,13 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.option, __VLS_intrinsicElement
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.label, __VLS_intrinsicElements.label)({
-    ...{ class: "block text-xs font-semibold text-slate-700" },
+    for: "admin-user-bureau",
+    ...{ class: "block text-xs font-medium text-slate-700 dark:text-[#cccccc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.select, __VLS_intrinsicElements.select)({
+    id: "admin-user-bureau",
     value: (__VLS_ctx.userForm.bureau_id),
-    ...{ class: "mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:ring-slate-900 focus:border-slate-900" },
+    ...{ class: "mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.option, __VLS_intrinsicElements.option)({
     value: "",
@@ -479,13 +489,15 @@ for (const [b] of __VLS_getVForSourceType((__VLS_ctx.bureaus))) {
 }
 __VLS_asFunctionalElement(__VLS_intrinsicElements.div, __VLS_intrinsicElements.div)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.label, __VLS_intrinsicElements.label)({
-    ...{ class: "block text-xs font-semibold text-slate-700" },
+    for: "admin-user-designation",
+    ...{ class: "block text-xs font-medium text-slate-700 dark:text-[#cccccc]" },
 });
 __VLS_asFunctionalElement(__VLS_intrinsicElements.input)({
+    id: "admin-user-designation",
     value: (__VLS_ctx.userForm.designation),
     type: "text",
-    placeholder: "e.g. Joint Director, Grievance Officer",
-    ...{ class: "mt-1 block w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-slate-900 focus:border-slate-900" },
+    placeholder: "e.g. Joint Director, Officer",
+    ...{ class: "mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc] focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc]" },
 });
 {
     const { footer: __VLS_thisSlot } = __VLS_26.slots;
@@ -494,12 +506,12 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.input)({
                 __VLS_ctx.isCreateUserOpen = false;
             } },
         type: "button",
-        ...{ class: "px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-medium text-slate-700 hover:bg-slate-100" },
+        ...{ class: "px-3 py-1.5 rounded border border-slate-300 dark:border-[#3e3e42] text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#37373d]" },
     });
     __VLS_asFunctionalElement(__VLS_intrinsicElements.button, __VLS_intrinsicElements.button)({
         ...{ onClick: (__VLS_ctx.handleCreateUser) },
         type: "button",
-        ...{ class: "px-4 py-1.5 rounded-lg bg-slate-900 text-xs font-semibold text-white hover:bg-slate-800" },
+        ...{ class: "px-4 py-1.5 rounded bg-slate-900 dark:bg-[#007acc] text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb]" },
     });
 }
 var __VLS_26;
@@ -511,225 +523,262 @@ var __VLS_26;
 /** @type {__VLS_StyleScopedClasses['sm:justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xl']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['tracking-tight']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-0.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['inline-flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-1.5']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#007acc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3.5']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-white']} */ ;
-/** @type {__VLS_StyleScopedClasses['shadow-sm']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-slate-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:hover:bg-[#1177bb]']} */ ;
 /** @type {__VLS_StyleScopedClasses['transition']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-3.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-3.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid-cols-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['md:grid-cols-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-xl']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#252526]']} */ ;
 /** @type {__VLS_StyleScopedClasses['p-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['shadow-subtle']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-10']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-10']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-9']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-9']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-emerald-100']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#89d185]/15']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-emerald-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#89d185]']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-emerald-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#89d185]/30']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-5']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-5']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[10px]']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['uppercase']} */ ;
-/** @type {__VLS_StyleScopedClasses['tracking-wider']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[10px]']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['truncate']} */ ;
 /** @type {__VLS_StyleScopedClasses['max-w-[200px]']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-xl']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#252526]']} */ ;
 /** @type {__VLS_StyleScopedClasses['p-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['shadow-subtle']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-10']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-10']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-9']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-9']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-blue-100']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#007acc]/15']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-blue-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#4fc1ff]']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-blue-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#007acc]/30']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-5']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-5']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[10px]']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['uppercase']} */ ;
-/** @type {__VLS_StyleScopedClasses['tracking-wider']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[10px]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-xl']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#252526]']} */ ;
 /** @type {__VLS_StyleScopedClasses['p-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['shadow-subtle']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-10']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-10']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-9']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-9']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-purple-100']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#cca700]/15']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-purple-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cca700]']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-purple-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#cca700]/30']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-center']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-5']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-5']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[10px]']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['uppercase']} */ ;
-/** @type {__VLS_StyleScopedClasses['tracking-wider']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[10px]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-xl']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
-/** @type {__VLS_StyleScopedClasses['shadow-subtle']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#252526]']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-hidden']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
-/** @type {__VLS_StyleScopedClasses['px-6']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['uppercase']} */ ;
-/** @type {__VLS_StyleScopedClasses['tracking-wider']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-x-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-left']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-slate-50/70']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-slate-50']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#1e1e1e]']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[11px]']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['uppercase']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-right']} */ ;
 /** @type {__VLS_StyleScopedClasses['divide-y']} */ ;
 /** @type {__VLS_StyleScopedClasses['divide-slate-100']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:divide-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-slate-50']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:hover:bg-[#2a2d2e]']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[10px]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-normal']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-mono']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-right']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
-/** @type {__VLS_StyleScopedClasses['hover:text-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['underline']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-xl']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-blue-600']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#4fc1ff]']} */ ;
+/** @type {__VLS_StyleScopedClasses['hover:underline']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
-/** @type {__VLS_StyleScopedClasses['shadow-subtle']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#252526]']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-hidden']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
-/** @type {__VLS_StyleScopedClasses['px-6']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-4']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['justify-between']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['uppercase']} */ ;
-/** @type {__VLS_StyleScopedClasses['tracking-wider']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['flex']} */ ;
 /** @type {__VLS_StyleScopedClasses['items-center']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['h-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-mono']} */ ;
 /** @type {__VLS_StyleScopedClasses['overflow-x-auto']} */ ;
 /** @type {__VLS_StyleScopedClasses['max-h-80']} */ ;
@@ -738,175 +787,231 @@ var __VLS_26;
 /** @type {__VLS_StyleScopedClasses['text-left']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-mono']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-slate-50/70']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-slate-50']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#1e1e1e]']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-b']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-200']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[10px]']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
-/** @type {__VLS_StyleScopedClasses['uppercase']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#2d2d2d]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['sticky']} */ ;
 /** @type {__VLS_StyleScopedClasses['top-0']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['divide-y']} */ ;
 /** @type {__VLS_StyleScopedClasses['divide-slate-100']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[11px]']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:divide-[#2d2d2d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-slate-50']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:hover:bg-[#2a2d2e]']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-400']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['whitespace-nowrap']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-sans']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#d4d4d4]']} */ ;
 /** @type {__VLS_StyleScopedClasses['whitespace-nowrap']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-bold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-blue-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#4fc1ff]']} */ ;
 /** @type {__VLS_StyleScopedClasses['whitespace-nowrap']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-600']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['whitespace-nowrap']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-500']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#858585]']} */ ;
 /** @type {__VLS_StyleScopedClasses['truncate']} */ ;
 /** @type {__VLS_StyleScopedClasses['max-w-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-sans']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-[10px]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['space-y-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['p-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-red-50']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#f48771]/15']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-red-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#f48771]']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-red-200']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#f48771]/30']} */ ;
 /** @type {__VLS_StyleScopedClasses['block']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['block']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:ring-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:border-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#3c3c3c]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-[#007acc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['block']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['block']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:ring-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:border-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#3c3c3c]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-[#007acc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['block']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['block']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:ring-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:border-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#3c3c3c]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-[#007acc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid']} */ ;
 /** @type {__VLS_StyleScopedClasses['grid-cols-2']} */ ;
 /** @type {__VLS_StyleScopedClasses['gap-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['block']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
 /** @type {__VLS_StyleScopedClasses['block']} */ ;
 /** @type {__VLS_StyleScopedClasses['w-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['border']} */ ;
-/** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:ring-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:border-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['block']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
-/** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
-/** @type {__VLS_StyleScopedClasses['block']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['border']} */ ;
-/** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:ring-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:border-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['block']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
-/** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
-/** @type {__VLS_StyleScopedClasses['block']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
-/** @type {__VLS_StyleScopedClasses['py-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['border']} */ ;
-/** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:ring-slate-900']} */ ;
-/** @type {__VLS_StyleScopedClasses['focus:border-slate-900']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-3']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['border']} */ ;
 /** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#3c3c3c]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['block']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
 /** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['block']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#3c3c3c]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['block']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['mt-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['block']} */ ;
+/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['bg-white']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#3c3c3c]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-1']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:ring-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['focus:border-[#007acc]']} */ ;
+/** @type {__VLS_StyleScopedClasses['px-3']} */ ;
+/** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
+/** @type {__VLS_StyleScopedClasses['border']} */ ;
+/** @type {__VLS_StyleScopedClasses['border-slate-300']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:border-[#3e3e42]']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
+/** @type {__VLS_StyleScopedClasses['text-slate-700']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:text-[#cccccc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-slate-100']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:hover:bg-[#37373d]']} */ ;
 /** @type {__VLS_StyleScopedClasses['px-4']} */ ;
 /** @type {__VLS_StyleScopedClasses['py-1.5']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-lg']} */ ;
+/** @type {__VLS_StyleScopedClasses['rounded']} */ ;
 /** @type {__VLS_StyleScopedClasses['bg-slate-900']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:bg-[#007acc]']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-xs']} */ ;
-/** @type {__VLS_StyleScopedClasses['font-semibold']} */ ;
+/** @type {__VLS_StyleScopedClasses['font-medium']} */ ;
 /** @type {__VLS_StyleScopedClasses['text-white']} */ ;
 /** @type {__VLS_StyleScopedClasses['hover:bg-slate-800']} */ ;
+/** @type {__VLS_StyleScopedClasses['dark:hover:bg-[#1177bb]']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {

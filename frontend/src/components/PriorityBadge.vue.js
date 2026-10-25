@@ -4,32 +4,32 @@ const config = computed(() => {
     switch (props.priority?.toLowerCase()) {
         case 'critical':
             return {
-                bg: 'bg-red-50 text-red-700 border-red-300 font-semibold',
-                dot: 'bg-red-600 animate-ping',
+                bg: 'bg-red-50 text-red-700 border-red-300 font-semibold dark:bg-[#3b1214] dark:text-[#f48771] dark:border-[#5c1c20]',
+                dot: 'bg-red-600 dark:bg-[#f14c4c]',
                 text: 'Critical',
             };
         case 'high':
             return {
-                bg: 'bg-amber-50 text-amber-800 border-amber-300',
-                dot: 'bg-amber-600',
+                bg: 'bg-amber-50 text-amber-800 border-amber-300 dark:bg-[#3d1e06] dark:text-[#ce9178] dark:border-[#5e2e0a]',
+                dot: 'bg-amber-600 dark:bg-[#ce9178]',
                 text: 'High',
             };
         case 'medium':
             return {
-                bg: 'bg-blue-50 text-blue-800 border-blue-300',
-                dot: 'bg-blue-600',
+                bg: 'bg-blue-50 text-blue-800 border-blue-300 dark:bg-[#093554] dark:text-[#4fc1ff] dark:border-[#14496b]',
+                dot: 'bg-blue-600 dark:bg-[#4fc1ff]',
                 text: 'Medium',
             };
         case 'low':
             return {
-                bg: 'bg-slate-100 text-slate-700 border-slate-300',
-                dot: 'bg-slate-500',
+                bg: 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-[#252526] dark:text-[#858585] dark:border-[#3e3e42]',
+                dot: 'bg-slate-500 dark:bg-[#858585]',
                 text: 'Low',
             };
         default:
             return {
-                bg: 'bg-slate-100 text-slate-700 border-slate-300',
-                dot: 'bg-slate-500',
+                bg: 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-[#252526] dark:text-[#858585] dark:border-[#3e3e42]',
+                dot: 'bg-slate-500 dark:bg-[#858585]',
                 text: props.priority || 'Medium',
             };
     }
@@ -45,30 +45,10 @@ __VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.
             __VLS_ctx.config.bg,
         ]) },
 });
-__VLS_asFunctionalElement(__VLS_intrinsicElements.span, __VLS_intrinsicElements.span)({
-    ...{ class: "relative flex h-2 w-2" },
-});
-if (props.priority?.toLowerCase() === 'critical') {
-    __VLS_asFunctionalElement(__VLS_intrinsicElements.span)({
-        ...{ class: "animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" },
-    });
-}
 __VLS_asFunctionalElement(__VLS_intrinsicElements.span)({
-    ...{ class: (['relative inline-flex rounded-full h-2 w-2', __VLS_ctx.config.dot]) },
+    ...{ class: (['inline-flex rounded-full h-1.5 w-1.5', __VLS_ctx.config.dot]) },
 });
 (__VLS_ctx.config.text);
-/** @type {__VLS_StyleScopedClasses['relative']} */ ;
-/** @type {__VLS_StyleScopedClasses['flex']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-2']} */ ;
-/** @type {__VLS_StyleScopedClasses['animate-ping']} */ ;
-/** @type {__VLS_StyleScopedClasses['absolute']} */ ;
-/** @type {__VLS_StyleScopedClasses['inline-flex']} */ ;
-/** @type {__VLS_StyleScopedClasses['h-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['w-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['rounded-full']} */ ;
-/** @type {__VLS_StyleScopedClasses['bg-red-400']} */ ;
-/** @type {__VLS_StyleScopedClasses['opacity-75']} */ ;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
