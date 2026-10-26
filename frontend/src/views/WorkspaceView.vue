@@ -532,7 +532,6 @@ onBeforeUnmount(() => {})
   <div class="workspace-view">
     <div class="page-heading-row">
       <div class="page-heading-copy">
-        <div class="page-kicker"><span class="kicker-line"></span> {{ page === 'dashboard' ? 'MONITORING DESK' : page === 'overlaps' ? 'CROSS-BUREAU REVIEW' : 'CASEWORK REGISTER' }}</div>
         <h1>{{ pageHeading }}</h1>
         <p>{{ pageSubheading }}</p>
       </div>

@@ -256,10 +256,10 @@ onMounted(() => {
         <div class="public-page-header">
           <div class="header-icon-title">
             <FilePlus2 :size="24" class="header-icon" />
-            <h1>Register Public Grievance</h1>
+            <h1>Register a grievance</h1>
           </div>
           <p class="public-page-subtitle">
-            Submit a formal complaint or regulatory alert concerning AICTE approved technical institutions. An official unique ticket number will be generated immediately upon submission.
+            Submit a complaint concerning an AICTE-approved technical institution. A ticket number will be generated immediately to track status.
           </p>
         </div>
 
@@ -269,10 +269,9 @@ onMounted(() => {
             <!-- Section 1: Complainant Details -->
             <div class="form-section">
               <div class="section-title-row">
-                <span class="section-num">1</span>
                 <div>
-                  <h2 class="form-section-heading">Complainant Information</h2>
-                  <p class="form-section-desc">Personal details for official verification and communication.</p>
+                  <h2 class="form-section-heading">Complainant details</h2>
+                  <p class="form-section-desc">Your contact information for verification and status updates.</p>
                 </div>
               </div>
 
@@ -308,7 +307,7 @@ onMounted(() => {
 
               <div class="form-field mt-3">
                 <label for="complainant-mobile" class="field-label">
-                  Mobile Number <small class="text-quiet">(Optional for SMS alerts)</small>
+                  Mobile Number <small class="text-quiet">(Optional)</small>
                 </label>
                 <input
                   id="complainant-mobile"
@@ -326,10 +325,9 @@ onMounted(() => {
             <!-- Section 2: Target Institution -->
             <div class="form-section">
               <div class="section-title-row">
-                <span class="section-num">2</span>
                 <div>
-                  <h2 class="form-section-heading">Target Institution</h2>
-                  <p class="form-section-desc">Select the AICTE approved technical college or polytechnic concerned.</p>
+                  <h2 class="form-section-heading">Target institution</h2>
+                  <p class="form-section-desc">Select or enter the AICTE-approved institution concerned.</p>
                 </div>
               </div>
 
@@ -431,10 +429,9 @@ onMounted(() => {
             <!-- Section 3: Grievance Particulars -->
             <div class="form-section">
               <div class="section-title-row">
-                <span class="section-num">3</span>
                 <div>
-                  <h2 class="form-section-heading">Grievance Details</h2>
-                  <p class="form-section-desc">Classify the grievance category and describe the issues encountered.</p>
+                  <h2 class="form-section-heading">Grievance details</h2>
+                  <p class="form-section-desc">Select the category and provide the facts of the matter.</p>
                 </div>
               </div>
 
@@ -452,46 +449,46 @@ onMounted(() => {
 
                 <div class="form-field">
                   <label for="grievance-priority" class="field-label">
-                    Priority Rating
+                    Urgency level
                   </label>
                   <select id="grievance-priority" v-model="priority" class="public-select">
-                    <option value="Low">Low - Informational / Non-urgent</option>
-                    <option value="Medium">Medium - Standard (30-day inquiry)</option>
-                    <option value="High">High - Impending Academic Deadline</option>
-                    <option value="Critical">Critical - Urgent Injunction / Ragging (7-day SLA)</option>
+                    <option value="Low">Low - Informational / non-urgent</option>
+                    <option value="Medium">Medium - Standard inquiry</option>
+                    <option value="High">High - Time-sensitive academic matter</option>
+                    <option value="Critical">Critical - Urgent inquiry or ragging report</option>
                   </select>
                 </div>
               </div>
 
               <div v-if="category.includes('Ragging')" class="ragging-alert">
                 <AlertCircle :size="16" />
-                <span>Ragging complaints are routed with Critical Priority directly to the Ragging Prevention Cell.</span>
+                <span>Ragging complaints receive critical priority and route directly to the Ragging Prevention Cell.</span>
               </div>
 
               <div class="form-field mt-3">
                 <label for="grievance-subject" class="field-label">
-                  Subject / Summary Title <span class="required">*</span>
+                  Subject <span class="required">*</span>
                 </label>
                 <input
                   id="grievance-subject"
                   v-model="subject"
                   type="text"
                   class="public-input"
-                  placeholder="e.g. Unapproved donation demanded for issuing university migration certificate"
+                  placeholder="Summary of the issue"
                   required
                 />
               </div>
 
               <div class="form-field mt-3">
                 <label for="grievance-description" class="field-label">
-                  Detailed Grievance Description <span class="required">*</span>
+                  Detailed description <span class="required">*</span>
                 </label>
                 <textarea
                   id="grievance-description"
                   v-model="description"
                   rows="5"
                   class="public-textarea"
-                  placeholder="Provide complete facts, dates, affected student cohorts, fee receipts, or institutional correspondence..."
+                  placeholder="State the facts, dates, fee details, affected cohorts, or institutional responses..."
                   required
                 />
                 <span class="char-count">{{ description.length }} characters</span>
@@ -504,10 +501,9 @@ onMounted(() => {
             <!-- Section 4: Supporting Evidence -->
             <div class="form-section">
               <div class="section-title-row">
-                <span class="section-num">4</span>
                 <div>
-                  <h2 class="form-section-heading">Supporting Documents (Optional)</h2>
-                  <p class="form-section-desc">Upload receipts, notices, circulars, or evidence (PDF, PNG, JPG, DOC, DOCX up to 16MB).</p>
+                  <h2 class="form-section-heading">Supporting documents (optional)</h2>
+                  <p class="form-section-desc">Attach receipts, circulars, or correspondence (PDF, JPG, PNG, DOC, DOCX up to 16MB).</p>
                 </div>
               </div>
 
@@ -521,8 +517,8 @@ onMounted(() => {
                 />
                 <div class="file-drop-content" @click="fileInputRef?.click()">
                   <UploadCloud :size="32" class="upload-icon" />
-                  <strong>Click to select a document or image</strong>
-                  <span>Supports PDF, Word documents, and high-resolution images up to 16MB</span>
+                  <strong>Select a document or image</strong>
+                  <span>PDF, Word documents, or images up to 16MB</span>
                 </div>
               </div>
 
@@ -544,7 +540,7 @@ onMounted(() => {
             <div v-if="error" class="public-error-card" role="alert">
               <AlertCircle :size="18" class="error-icon" />
               <div class="error-copy">
-                <strong>Submission Error</strong>
+                <strong>Unable to register grievance</strong>
                 <p>{{ error }}</p>
               </div>
             </div>
@@ -553,7 +549,7 @@ onMounted(() => {
             <div class="form-submit-row">
               <div class="submit-note">
                 <ShieldCheck :size="15" />
-                <span>Submissions are audited and tracked under SIH 2026 guidelines.</span>
+                <span>Submissions are logged directly into the AICTE case register.</span>
               </div>
 
               <button

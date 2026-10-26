@@ -113,10 +113,10 @@ onMounted(() => {
         <div class="public-page-header">
           <div class="header-icon-title">
             <Search :size="24" class="header-icon" />
-            <h1>Track Grievance Status</h1>
+            <h1>Track grievance status</h1>
           </div>
           <p class="public-page-subtitle">
-            Enter your AICTE ticket number (e.g. <code>AICTE-2026-XXXXXX</code>) to view the current progress, assigned bureau, and official resolution.
+            Enter your AICTE ticket number (e.g. <code>AICTE-2026-XXXXXX</code>) to view status, assigned bureau, and resolution details.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ onMounted(() => {
               <input
                 v-model="searchTicket"
                 type="text"
-                placeholder="Enter Ticket Number (e.g. AICTE-2026-XXXXXX)"
+                placeholder="Enter ticket number (e.g. AICTE-2026-XXXXXX)"
                 class="track-input"
                 autocomplete="off"
                 required
@@ -140,7 +140,7 @@ onMounted(() => {
               :disabled="loading"
             >
               <span v-if="loading">Searching…</span>
-              <span v-else>Track Grievance</span>
+              <span v-else>Track grievance</span>
             </button>
           </form>
 
@@ -154,7 +154,7 @@ onMounted(() => {
         <div v-if="error" class="public-error-card" role="alert">
           <AlertCircle :size="18" class="error-icon" />
           <div class="error-copy">
-            <strong>Grievance Not Found</strong>
+            <strong>Grievance not found</strong>
             <p>{{ error }}</p>
           </div>
         </div>
@@ -164,10 +164,9 @@ onMounted(() => {
           <!-- Status Header -->
           <div class="result-header">
             <div class="result-ticket-info">
-              <span class="result-tag">GRIEVANCE RECORD</span>
               <h2 class="result-ticket-number">{{ complaint.ticket_number }}</h2>
               <span v-if="complaint.case_number" class="result-case-sub">
-                Casework Reference: {{ complaint.case_number }}
+                Casework reference: {{ complaint.case_number }}
               </span>
             </div>
 
@@ -202,8 +201,8 @@ onMounted(() => {
                 <Clock :size="16" />
               </div>
               <div class="step-content">
-                <strong>Bureau Processing</strong>
-                <small>{{ complaint.bureau_name || 'Designated Bureau' }}</small>
+                <strong>Bureau processing</strong>
+                <small>{{ complaint.bureau_name || 'Designated bureau' }}</small>
               </div>
             </div>
 
@@ -217,7 +216,7 @@ onMounted(() => {
                 <ShieldCheck :size="16" />
               </div>
               <div class="step-content">
-                <strong>Disposal / Closure</strong>
+                <strong>Disposal / closure</strong>
                 <small v-if="complaint.disposed_at">{{ formatDate(complaint.disposed_at) }}</small>
                 <small v-else>Statutory due: {{ formatDate(complaint.due_at) }}</small>
               </div>
@@ -227,7 +226,7 @@ onMounted(() => {
           <!-- Core Metadata Grid -->
           <div class="result-grid">
             <div class="result-meta-item">
-              <span class="meta-label"><Building2 :size="14" /> Concerned Institution</span>
+              <span class="meta-label"><Building2 :size="14" /> Concerned institution</span>
               <strong class="meta-value">{{ complaint.institution_name || 'N/A' }}</strong>
               <small class="meta-sub" v-if="complaint.institution_state">
                 {{ complaint.institution_state }} · Code: {{ complaint.institution_code || 'Unspecified' }}
@@ -235,19 +234,19 @@ onMounted(() => {
             </div>
 
             <div class="result-meta-item">
-              <span class="meta-label"><ShieldCheck :size="14" /> Handling Bureau</span>
+              <span class="meta-label"><ShieldCheck :size="14" /> Handling bureau</span>
               <strong class="meta-value">{{ complaint.bureau_name }} ({{ complaint.bureau_code }})</strong>
               <small class="meta-sub">Assigned by institutional jurisdiction</small>
             </div>
 
             <div class="result-meta-item">
-              <span class="meta-label"><Layers :size="14" /> Category & Priority</span>
+              <span class="meta-label"><Layers :size="14" /> Category and priority</span>
               <strong class="meta-value">{{ complaint.category }}</strong>
-              <small class="meta-sub">Priority Classification: {{ complaint.priority }}</small>
+              <small class="meta-sub">Priority classification: {{ complaint.priority }}</small>
             </div>
 
             <div class="result-meta-item">
-              <span class="meta-label"><Clock :size="14" /> Last Action Recorded</span>
+              <span class="meta-label"><Clock :size="14" /> Last action recorded</span>
               <strong class="meta-value">{{ formatDate(complaint.last_action_at) }}</strong>
               <small class="meta-sub">Updated by assigned bureau cell</small>
             </div>
@@ -258,12 +257,12 @@ onMounted(() => {
             <h3 class="prose-title"><FileText :size="15" /> Subject</h3>
             <p class="prose-subject">{{ complaint.subject }}</p>
 
-            <h3 class="prose-title prose-title-sub"><FileText :size="15" /> Grievance Particulars</h3>
+            <h3 class="prose-title prose-title-sub"><FileText :size="15" /> Grievance details</h3>
             <div class="prose-body">{{ complaint.description }}</div>
 
             <div v-if="complaint.has_supporting_document" class="doc-attachment-badge">
               <Paperclip :size="14" />
-              <span>Supporting Evidence Attached: <strong>{{ complaint.supporting_document_name || 'Document' }}</strong></span>
+              <span>Supporting document attached: <strong>{{ complaint.supporting_document_name || 'Document' }}</strong></span>
             </div>
           </div>
 
@@ -271,20 +270,20 @@ onMounted(() => {
           <div v-if="complaint.resolution_summary" class="resolution-box">
             <div class="resolution-header">
               <CheckCircle2 :size="16" class="resolution-icon" />
-              <strong>Official Redressal & Resolution Findings</strong>
+              <strong>Official resolution</strong>
             </div>
             <p class="resolution-body">{{ complaint.resolution_summary }}</p>
             <div class="resolution-footer" v-if="complaint.disposed_at">
-              Formal Case Disposal Recorded on: {{ formatDate(complaint.disposed_at) }}
+              Disposed on: {{ formatDate(complaint.disposed_at) }}
             </div>
           </div>
 
           <div v-else class="ongoing-notice">
             <Info :size="16" />
             <div>
-              <strong>Case Under Active Review</strong>
+              <strong>Under review</strong>
               <p>
-                The assigned bureau cell is conducting factual verification. Resolution updates and institutional directives will be posted here as soon as finalized.
+                The assigned bureau is reviewing this record. Status changes and resolution notes will appear here.
               </p>
             </div>
           </div>
@@ -293,7 +292,7 @@ onMounted(() => {
           <div class="privacy-note">
             <ShieldCheck :size="14" />
             <span>
-              Public Data Protection Notice: Internal officer identities, case notes, and cross-bureau overlap telemetry remain strictly confidential under AICTE administrative guidelines.
+              Public disclosure: Investigating officer identities, internal notes, and administrative logs remain confidential.
             </span>
           </div>
         </div>

@@ -79,19 +79,15 @@ function goToRegister() {
               <CheckCircle2 :size="28" />
             </div>
             <div class="confirmation-heading">
-              <span class="confirmation-meta-status">Submission Confirmed</span>
-              <h1>Complaint Registered Successfully</h1>
-              <p>Your grievance has been formally accepted by the AICTE Integrated Redressal System.</p>
+              <h1>Grievance registered</h1>
+              <p>Your complaint has been recorded in the AICTE case register.</p>
             </div>
           </div>
 
           <!-- Highlight Ticket Box -->
           <div class="ticket-callout">
             <div class="ticket-callout-top">
-              <span class="ticket-label">OFFICIAL GRIEVANCE TICKET NUMBER</span>
-              <span class="ticket-security-pill">
-                <ShieldCheck :size="13" /> Backend Verified
-              </span>
+              <span class="ticket-label">TICKET NUMBER</span>
             </div>
 
             <div class="ticket-value-row">
@@ -109,13 +105,13 @@ function goToRegister() {
             </div>
 
             <p class="ticket-instruction">
-              Please save this ticket number. You will need it to track investigation progress, bureau transfers, and final resolution.
+              Save this ticket number to track progress, bureau responses, and final resolution.
             </p>
           </div>
 
           <!-- Details Table -->
           <div class="confirmation-details">
-            <h2 class="confirmation-section-title">Submission Summary</h2>
+            <h2 class="confirmation-section-title">Submission summary</h2>
             <div class="summary-grid">
               <div class="summary-item">
                 <span class="summary-label"><Building2 :size="14" /> Institution</span>
@@ -141,16 +137,16 @@ function goToRegister() {
 
           <!-- Next Steps Guidance -->
           <div class="guidance-box">
-            <h3 class="guidance-title"><Clock :size="15" /> What happens next?</h3>
+            <h3 class="guidance-title"><Clock :size="15" /> Next steps</h3>
             <ol class="guidance-list">
               <li>
-                <strong>Initial Review:</strong> The designated AICTE Bureau verifies institutional jurisdiction and schedules inquiries.
+                <strong>Bureau intake:</strong> The designated AICTE bureau reviews jurisdiction and determines required actions.
               </li>
               <li>
-                <strong>Cross-Bureau Coordination:</strong> Overlap screening runs automatically to link related cases without exposing confidential records.
+                <strong>Inter-bureau check:</strong> Related complaints concerning the same institution are cross-referenced.
               </li>
               <li>
-                <strong>Resolution Updates:</strong> Official findings and closure directives will be published directly to your tracking page.
+                <strong>Resolution:</strong> Directives and closure notes will appear on your tracking page.
               </li>
             </ol>
           </div>
@@ -159,17 +155,17 @@ function goToRegister() {
           <div class="confirmation-actions">
             <button type="button" class="button button-primary" @click="goToTrack">
               <Search :size="15" />
-              <span>Track Complaint Now</span>
+              <span>Track grievance</span>
             </button>
 
             <button type="button" class="button button-quiet" @click="handlePrint">
               <Printer :size="15" />
-              <span>Print Acknowledgment</span>
+              <span>Print acknowledgment</span>
             </button>
 
             <button type="button" class="button button-quiet" @click="goToRegister">
               <FilePlus2 :size="15" />
-              <span>Register Another Grievance</span>
+              <span>Register another grievance</span>
             </button>
           </div>
         </div>

@@ -13,8 +13,8 @@ const route = useRoute()
           <ShieldCheck :size="20" />
         </span>
         <div class="public-brand-text">
-          <span class="public-brand-title"><strong>AICTE</strong> Grievance Portal</span>
-          <span class="public-brand-subtitle">Public Citizen & Student Redressal</span>
+          <span class="public-brand-title"><strong>AICTE</strong> grievance portal</span>
+          <span class="public-brand-subtitle">Public citizen & student redressal</span>
         </div>
       </router-link>
 
@@ -25,7 +25,7 @@ const route = useRoute()
           :class="{ 'public-nav-active': route.path === '/register' }"
         >
           <FilePlus2 :size="15" />
-          <span>Register Grievance</span>
+          <span>Register grievance</span>
         </router-link>
 
         <router-link
@@ -34,14 +34,14 @@ const route = useRoute()
           :class="{ 'public-nav-active': route.path === '/track' }"
         >
           <Search :size="15" />
-          <span>Track Status</span>
+          <span>Track status</span>
         </router-link>
 
         <span class="public-nav-divider" />
 
         <router-link to="/login" class="public-staff-btn">
           <LockKeyhole :size="14" />
-          <span>Casework Sign In</span>
+          <span>Casework sign in</span>
         </router-link>
       </nav>
     </div>
