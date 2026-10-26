@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Bell, ChevronDown, Menu, Search, Shield, LogOut } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const emit = defineEmits<{ 'toggle-menu': [] }>()
 const route = useRoute()
@@ -42,6 +43,7 @@ async function signOut() {
         <input v-model="ui.globalSearch" type="search" placeholder="Search cases or institutions" aria-label="Search cases or institutions" />
         <kbd>⌘ K</kbd>
       </label>
+      <ThemeToggle />
       <button class="icon-button topbar-notifications" aria-label="Open notifications" @click="router.push('/notifications')">
         <Bell :size="19" />
         <span v-if="ui.unreadNotifications > 0" class="notification-dot"></span>

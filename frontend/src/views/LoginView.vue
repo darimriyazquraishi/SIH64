@@ -5,6 +5,7 @@ import { ArrowRight, ArrowUpRight, LockKeyhole, User } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import aicteLogo from '@/assets/aicte-logo.png'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const auth = useAuthStore()
 const ui = useUiStore()
@@ -43,9 +44,12 @@ function enterDemo() {
     <header class="login-center-top">
       <div class="login-top-container">
         <span class="authorized-badge">Authorized Casework Access</span>
-        <router-link to="/register" class="public-portal-top-link">
-          Public grievance portal <ArrowUpRight :size="13" />
-        </router-link>
+        <div class="login-top-right">
+          <ThemeToggle />
+          <router-link to="/register" class="public-portal-top-link">
+            Public grievance portal <ArrowUpRight :size="13" />
+          </router-link>
+        </div>
       </div>
     </header>
 

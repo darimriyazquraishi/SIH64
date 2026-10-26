@@ -2,6 +2,7 @@
 import { useRoute } from 'vue-router'
 import { FilePlus2, Search, LockKeyhole } from 'lucide-vue-next'
 import aicteLogo from '@/assets/aicte-logo.png'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const route = useRoute()
 </script>
@@ -35,6 +36,8 @@ const route = useRoute()
           <Search :size="15" />
           <span>Track status</span>
         </router-link>
+
+        <ThemeToggle />
 
         <span class="public-nav-divider" />
 
