@@ -81,12 +81,12 @@ function enterDemo() {
           <label class="field-label" for="login-email">User ID or Official Email</label>
           <div class="login-input-wrap">
             <Mail :size="17" />
-            <input id="login-email" v-model="email" type="text" autocomplete="username" required placeholder="admin or admin@aicte.gov.in" />
+            <input id="login-email" v-model="email" type="text" autocomplete="username" required placeholder="admin, authority, user or official email" />
           </div>
           <label class="field-label" for="login-password">Password</label>
           <div class="login-input-wrap">
             <LockKeyhole :size="17" />
-            <input id="login-password" v-model="password" type="password" autocomplete="current-password" required placeholder="admin" />
+            <input id="login-password" v-model="password" type="password" autocomplete="current-password" required placeholder="Enter password" />
           </div>
           <button class="button button-primary login-submit" type="submit" :disabled="auth.loading">
             {{ auth.loading ? 'Signing in…' : 'Sign in' }} <ArrowRight :size="16" />
@@ -99,19 +99,19 @@ function enterDemo() {
             <span><strong>System administrator</strong><small>User ID: admin · Password: admin</small></span>
             <ArrowUpRight :size="15" />
           </button>
-          <button type="button" @click="chooseAccount('officer.pgrc@aicte.gov.in', 'Officer@12345')">
-            <span class="demo-account-icon"><FileText :size="16" /></span>
-            <span><strong>PGRC officer</strong><small>Grievance casework</small></span>
+          <button type="button" @click="chooseAccount('authority', 'authority')">
+            <span class="demo-account-icon"><Search :size="16" /></span>
+            <span><strong>Senior authority</strong><small>User ID: authority · Password: authority</small></span>
             <ArrowUpRight :size="15" />
           </button>
-          <button type="button" @click="chooseAccount('director.monitoring@aicte.gov.in', 'Director@12345')">
-            <span class="demo-account-icon"><Search :size="16" /></span>
-            <span><strong>Senior authority</strong><small>Monitoring and reports</small></span>
+          <button type="button" @click="chooseAccount('user', 'user')">
+            <span class="demo-account-icon"><FileText :size="16" /></span>
+            <span><strong>Casework user</strong><small>User ID: user · Password: user</small></span>
             <ArrowUpRight :size="15" />
           </button>
         </div>
         <button class="button button-quiet login-local-demo" type="button" @click="enterDemo">Explore local demonstration <ArrowRight :size="15" /></button>
-        <p class="login-disclaimer">Fictional demonstration data only. This prototype is not connected to live AICTE systems.</p>
+        <p class="login-disclaimer">Demonstration accounts for SIH 2026 jury review. Each role reflects respective RBAC privileges.</p>
       </div>
       <footer class="login-footer"><span>AICTE Complaint Monitoring & Coordination Portal</span><span>Prototype · 2026</span></footer>
     </section>
