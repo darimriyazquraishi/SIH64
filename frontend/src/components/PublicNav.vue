@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { ShieldCheck, FilePlus2, Search, LockKeyhole } from 'lucide-vue-next'
+import { FilePlus2, Search, LockKeyhole } from 'lucide-vue-next'
+import aicteLogo from '@/assets/aicte-logo.png'
 
 const route = useRoute()
 </script>
@@ -9,9 +10,7 @@ const route = useRoute()
   <header class="public-nav">
     <div class="public-nav-inner">
       <router-link to="/register" class="public-brand">
-        <span class="public-brand-mark">
-          <ShieldCheck :size="20" />
-        </span>
+        <img :src="aicteLogo" alt="AICTE" class="public-nav-logo" />
         <div class="public-brand-text">
           <span class="public-brand-title"><strong>AICTE</strong> grievance portal</span>
           <span class="public-brand-subtitle">Public citizen & student redressal</span>

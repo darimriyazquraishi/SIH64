@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ArrowRight, ArrowUpRight, LockKeyhole, User, ShieldCheck } from 'lucide-vue-next'
+import { ArrowRight, ArrowUpRight, LockKeyhole, User } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
+import aicteLogo from '@/assets/aicte-logo.png'
 
 const auth = useAuthStore()
 const ui = useUiStore()
@@ -38,60 +39,28 @@ function enterDemo() {
 </script>
 
 <template>
-  <main class="login-page">
-    <aside class="login-side">
-      <div class="login-brand">
-        <span class="login-brand-mark"><ShieldCheck :size="22" /></span>
-        <div class="login-brand-text">
-          <strong>AICTE Casework</strong>
-          <small>Grievance Coordination</small>
-        </div>
-      </div>
-
-      <div class="login-side-main">
-        <h1>Centralized grievance monitoring</h1>
-        <p class="login-side-description">
-          Review complaints, monitor statutory deadlines, and coordinate case outcomes across AICTE central bureaus.
-        </p>
-
-        <div class="login-features-list">
-          <div class="feature-item">
-            <span class="feature-dot" />
-            <span>Cross-bureau correlation & overlap review</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-dot" />
-            <span>Statutory timeline & escalation tracking</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-dot" />
-            <span>Direct public citizen registration & tracking</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="login-side-footer">
-        <span>Smart India Hackathon 2026</span>
-        <span>AICTE Portal</span>
-      </div>
-    </aside>
-
-    <section class="login-main">
-      <div class="login-main-top">
-        <span class="authorized-badge">Authorized casework access</span>
+  <main class="login-center-page">
+    <header class="login-center-top">
+      <div class="login-top-container">
+        <span class="authorized-badge">Authorized Casework Access</span>
         <router-link to="/register" class="public-portal-top-link">
           Public grievance portal <ArrowUpRight :size="13" />
         </router-link>
       </div>
+    </header>
 
-      <div class="login-form-wrap">
-        <div class="login-heading">
-          <h2>Sign in</h2>
-          <p class="login-subtitle">Enter your official credentials to access the workspace.</p>
+    <div class="login-center-body">
+      <div class="login-card">
+        <!-- AICTE Official Logo & Brand Header -->
+        <div class="login-header">
+          <img :src="aicteLogo" alt="AICTE Logo" class="aicte-login-logo" />
+          <h1 class="login-brand-heading">AICTE Casework</h1>
+          <p class="login-brand-sub">Complaint monitoring & coordination portal</p>
         </div>
 
         <div v-if="auth.error" class="login-error" role="alert">{{ auth.error }}</div>
 
+        <!-- Form -->
         <form class="login-form" @submit.prevent="handleLogin">
           <div class="form-field">
             <label class="field-label" for="login-email">User ID or email</label>
@@ -170,11 +139,13 @@ function enterDemo() {
           </div>
         </div>
       </div>
+    </div>
 
-      <footer class="login-footer">
-        <span>AICTE Complaint Monitoring & Coordination Portal</span>
-        <span>SIH 2026</span>
-      </footer>
-    </section>
+    <footer class="login-center-footer">
+      <div class="login-footer-inner">
+        <span>All India Council for Technical Education · SIH 2026</span>
+        <span>Problem statement 26264</span>
+      </div>
+    </footer>
   </main>
 </template>

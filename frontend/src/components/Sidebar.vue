@@ -5,8 +5,9 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import {
   Activity, BarChart3, Bell, Building2, ChevronRight, ClipboardList,
-  Database, FileSearch, LayoutDashboard, Settings2, ShieldCheck, X,
+  Database, FileSearch, LayoutDashboard, Settings2, X,
 } from 'lucide-vue-next'
+import aicteLogo from '@/assets/aicte-logo.png'
 
 withDefaults(defineProps<{ open?: boolean }>(), { open: false })
 const emit = defineEmits<{ close: [] }>()
@@ -41,7 +42,7 @@ function go(to: string) {
 <template>
   <aside class="sidebar" :class="{ 'sidebar-open': open }" aria-label="Primary navigation">
     <div class="brand-lockup">
-      <div class="brand-mark"><ShieldCheck :size="21" :stroke-width="1.8" /></div>
+      <img :src="aicteLogo" alt="AICTE" class="sidebar-brand-logo" />
       <div class="brand-copy">
         <span class="brand-name">casework<span class="brand-period">.</span></span>
         <span class="brand-subtitle">AICTE monitoring</span>
