@@ -549,21 +549,45 @@ onBeforeUnmount(() => {})
     <template v-if="page === 'dashboard'">
       <div class="overview-notice" v-if="pendingOverlaps.length">
         <div class="notice-symbol"><GitCompare :size="18" /></div>
-        <div class="notice-copy"><strong>{{ pendingOverlaps.length }} potential case relationship{{ pendingOverlaps.length === 1 ? '' : 's' }} waiting for review</strong><span>Review the evidence before linking records. Similarity is a signal, not a final decision.</span></div>
+        <div class="notice-copy">
+          <strong>{{ pendingOverlaps.length }} case overlap{{ pendingOverlaps.length === 1 ? '' : 's' }} awaiting review</strong>
+          <span>Cross-bureau correlation detected for related institutions.</span>
+        </div>
         <button class="text-action" @click="router.push('/overlaps')">Review queue <ArrowRight :size="15" /></button>
       </div>
 
       <section class="metric-strip" aria-label="Case summary">
-        <div class="metric-cell"><span class="metric-label">Total registered</span><strong class="metric-value">{{ totalCount.toLocaleString('en-IN') }}</strong><span class="metric-note"><FileText :size="13" /> All complaints in view</span></div>
-        <div class="metric-cell"><span class="metric-label">Open cases</span><strong class="metric-value">{{ openCount.toLocaleString('en-IN') }}</strong><span class="metric-note"><Activity :size="13" /> Awaiting a final outcome</span></div>
-        <div class="metric-cell"><span class="metric-label">Action required</span><strong class="metric-value metric-warn">{{ actionCount.toLocaleString('en-IN') }}</strong><span class="metric-note"><AlertCircle :size="13" /> Needs an officer's next step</span></div>
-        <div class="metric-cell"><span class="metric-label">Past due</span><strong class="metric-value metric-danger">{{ overdueCount.toLocaleString('en-IN') }}</strong><span class="metric-note"><CalendarClock :size="13" /> Beyond the recorded due date</span></div>
-        <div class="metric-cell"><span class="metric-label">Disposed</span><strong class="metric-value">{{ disposedCount.toLocaleString('en-IN') }}</strong><span class="metric-note"><CheckCircle2 :size="13" /> Recorded as complete</span></div>
+        <div class="metric-cell">
+          <span class="metric-label">Total registered</span>
+          <strong class="metric-value">{{ totalCount.toLocaleString('en-IN') }}</strong>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-label">Open cases</span>
+          <strong class="metric-value">{{ openCount.toLocaleString('en-IN') }}</strong>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-label">Action required</span>
+          <strong class="metric-value metric-warn">{{ actionCount.toLocaleString('en-IN') }}</strong>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-label">Past due</span>
+          <strong class="metric-value metric-danger">{{ overdueCount.toLocaleString('en-IN') }}</strong>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-label">Disposed</span>
+          <strong class="metric-value">{{ disposedCount.toLocaleString('en-IN') }}</strong>
+        </div>
       </section>
 
       <div class="overview-grid">
         <section class="content-section cases-section">
-          <div class="section-heading"><div><h2>Recently updated cases</h2><p>Latest entries across the register</p></div><button class="text-action" @click="router.push('/complaints')">All complaints <ArrowRight :size="15" /></button></div>
+          <div class="section-heading">
+            <div>
+              <h2>Recent cases</h2>
+              <p>Latest entries in the register</p>
+            </div>
+            <button class="text-action" @click="router.push('/complaints')">All complaints <ArrowRight :size="15" /></button>
+          </div>
           <div class="table-wrap">
             <table class="data-table">
               <thead><tr><th>Case / institution</th><th>Current Bureau</th><th>Status</th><th>Priority</th><th>Due</th><th></th></tr></thead>
@@ -576,26 +600,32 @@ onBeforeUnmount(() => {})
                   <td><span :class="{ 'date-overdue': item.is_overdue }">{{ shortDate(item.due_at) }}</span></td>
                   <td><ChevronRight :size="16" class="row-arrow" /></td>
                 </tr>
-                <tr v-if="!recentComplaints.length"><td colspan="6" class="empty-cell">No complaint records are available.</td></tr>
+                <tr v-if="!recentComplaints.length"><td colspan="6" class="empty-cell">No complaint records available.</td></tr>
               </tbody>
             </table>
           </div>
-          <div class="table-foot"><span>Showing {{ recentComplaints.length }} recent records</span><span>Updated {{ dateTime(new Date().toISOString()) }}</span></div>
+          <div class="table-foot"><span>{{ recentComplaints.length }} records</span><span>Updated {{ shortDate(new Date().toISOString()) }}</span></div>
         </section>
 
         <aside class="right-rail">
           <section class="content-section review-section">
-            <div class="section-heading"><div><h2>Needs a decision</h2><p>Potential overlaps requiring review</p></div><span class="count-mark">{{ pendingOverlaps.length }}</span></div>
+            <div class="section-heading">
+              <div>
+                <h2>Needs decision</h2>
+                <p>Potential overlaps</p>
+              </div>
+              <span class="count-mark">{{ pendingOverlaps.length }}</span>
+            </div>
             <div v-if="pendingOverlaps.length" class="review-list">
               <button v-for="link in pendingOverlaps.slice(0, 3)" :key="link.id" class="review-item" @click="openReview(link)">
-                <div class="review-item-top"><span class="match-score">{{ Math.round((link.match_score || 0) * 100) }}% signal</span><span class="review-age">{{ shortDate(link.created_at) }}</span></div>
+                <div class="review-item-top"><span class="match-score">{{ Math.round((link.match_score || 0) * 100) }}% match</span><span class="review-age">{{ shortDate(link.created_at) }}</span></div>
                 <strong>{{ getCaseForLink(link, 'a').case_number }} <span>↔</span> {{ getCaseForLink(link, 'b').case_number }}</strong>
-                <p>{{ link.match_reason }}</p>
-                <span class="review-item-action">Compare records <ArrowRight :size="14" /></span>
+                <p class="review-item-reason">{{ link.match_reason }}</p>
+                <span class="review-item-action">Compare <ArrowRight :size="14" /></span>
               </button>
             </div>
-            <div v-else class="quiet-empty"><CheckCircle2 :size="18" /><span>No cases are waiting in the review queue.</span></div>
-            <button class="section-footer-link" @click="router.push('/overlaps')">Open review queue <ArrowRight :size="15" /></button>
+            <div v-else class="quiet-empty"><CheckCircle2 :size="18" /><span>Review queue is empty.</span></div>
+            <button class="section-footer-link" @click="router.push('/overlaps')">Review queue <ArrowRight :size="15" /></button>
           </section>
 
           <section class="content-section deadline-section">

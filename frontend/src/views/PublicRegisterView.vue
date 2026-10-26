@@ -278,28 +278,28 @@ onMounted(() => {
               <div class="form-grid-two">
                 <div class="form-field">
                   <label for="complainant-name" class="field-label">
-                    Full Name <span class="required">*</span>
+                    Full name <span class="required">*</span>
                   </label>
                   <input
                     id="complainant-name"
                     v-model="complainantName"
                     type="text"
                     class="public-input"
-                    placeholder="e.g. Dr. Ramesh Kumar or Priya Sharma"
+                    placeholder="Full name"
                     required
                   />
                 </div>
 
                 <div class="form-field">
                   <label for="complainant-email" class="field-label">
-                    Email Address <span class="required">*</span>
+                    Email address <span class="required">*</span>
                   </label>
                   <input
                     id="complainant-email"
                     v-model="complainantEmail"
                     type="email"
                     class="public-input"
-                    placeholder="e.g. complainant@example.org"
+                    placeholder="email@example.com"
                     required
                   />
                 </div>
@@ -307,7 +307,7 @@ onMounted(() => {
 
               <div class="form-field mt-3">
                 <label for="complainant-mobile" class="field-label">
-                  Mobile Number <small class="text-quiet">(Optional)</small>
+                  Mobile number <small class="text-quiet">(Optional)</small>
                 </label>
                 <input
                   id="complainant-mobile"
@@ -327,7 +327,7 @@ onMounted(() => {
               <div class="section-title-row">
                 <div>
                   <h2 class="form-section-heading">Target institution</h2>
-                  <p class="form-section-desc">Select or enter the AICTE-approved institution concerned.</p>
+                  <p class="form-section-desc">Select or enter the concerned AICTE institution.</p>
                 </div>
               </div>
 
@@ -357,7 +357,7 @@ onMounted(() => {
                     v-model="institutionSearchQuery"
                     type="text"
                     class="public-input"
-                    placeholder="Type institution name or AICTE permanent ID (e.g. Apex Institute, Indian Institute...)"
+                    placeholder="Search institution name or AICTE code"
                     :disabled="Boolean(selectedInstitution)"
                   />
                   <button
@@ -400,14 +400,14 @@ onMounted(() => {
               <div v-else class="form-grid-two">
                 <div class="form-field">
                   <label for="manual-inst-name" class="field-label">
-                    Institution Name <span class="required">*</span>
+                    Institution name <span class="required">*</span>
                   </label>
                   <input
                     id="manual-inst-name"
                     v-model="manualInstitutionName"
                     type="text"
                     class="public-input"
-                    placeholder="Enter complete institution name"
+                    placeholder="Institution name"
                   />
                 </div>
 
@@ -474,7 +474,7 @@ onMounted(() => {
                   v-model="subject"
                   type="text"
                   class="public-input"
-                  placeholder="Summary of the issue"
+                  placeholder="Brief summary of the issue"
                   required
                 />
               </div>
