@@ -49,19 +49,19 @@ const maxWidthClass = {
       <!-- Dialog Card -->
       <div
         :class="[
-          'relative w-full rounded bg-white dark:bg-[#252526] border border-slate-200 dark:border-[#2d2d2d] shadow-lg transition-all z-10 flex flex-col max-h-[90vh]',
+          'relative w-full rounded-xl bg-white dark:bg-[#1e201d] border border-[#dfe7d6] dark:border-[#2f332b] shadow-xl transition-all z-10 flex flex-col max-h-[90vh]',
           maxWidthClass,
         ]"
       >
         <!-- Header -->
-        <div class="flex items-center justify-between border-b border-slate-100 dark:border-[#2d2d2d] px-5 py-3.5">
-          <h2 class="text-sm font-semibold text-slate-900 dark:text-[#d4d4d4]">
+        <div class="flex items-center justify-between border-b border-[#dfe7d6] dark:border-[#2f332b] px-5 py-3.5">
+          <h2 class="text-sm font-semibold text-[#22261f] dark:text-[#e6eae2]">
             {{ props.title }}
           </h2>
           <button
             type="button"
             aria-label="Close dialog"
-            class="rounded p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-[#2d2d2d] hover:text-slate-600 dark:hover:text-[#cccccc] transition"
+            class="rounded-lg p-1 text-[#5f6656] hover:bg-[#f3f7ed] dark:hover:bg-[#252922] hover:text-[#22261f] dark:hover:text-[#e6eae2] transition"
             @click="emit('close')"
           >
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,7 +76,7 @@ const maxWidthClass = {
         </div>
 
         <!-- Footer -->
-        <div v-if="$slots.footer" class="border-t border-slate-100 dark:border-[#2d2d2d] px-5 py-3 bg-slate-50 dark:bg-[#1e1e1e] rounded-b flex justify-end gap-2.5">
+        <div v-if="$slots.footer" class="border-t border-[#dfe7d6] dark:border-[#2f332b] px-5 py-3 bg-[#f8faf4] dark:bg-[#161716] rounded-b-xl flex justify-end gap-2.5">
           <slot name="footer" />
         </div>
       </div>

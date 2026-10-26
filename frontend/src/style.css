@@ -4,64 +4,70 @@
 
 @layer base {
   body {
-    @apply text-slate-800 bg-slate-50 dark:bg-[#1e1e1e] dark:text-[#cccccc] antialiased;
+    /* 10FastFingers Lemondrop (Light Mode) background & text */
+    @apply text-[#22261f] bg-[#e8efe0] antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  /* VS Code text selection */
+  /* 10FastFingers Glow (Dark Mode) background & text */
+  html.dark body {
+    @apply bg-[#161716] text-[#e6eae2];
+  }
+
+  /* Selection highlight */
+  ::selection {
+    background-color: rgba(242, 201, 76, 0.4);
+    color: #1a1c17;
+  }
   .dark ::selection {
-    background-color: #094771;
+    background-color: rgba(184, 238, 130, 0.35);
     color: #ffffff;
   }
 
-  /* Clean focus rings without glow */
+  /* Focus outline */
   :focus-visible {
-    outline: 1px solid #007acc;
-    outline-offset: -1px;
+    outline: 2px solid #7eaa3b;
+    outline-offset: 1px;
+  }
+  .dark :focus-visible {
+    outline: 2px solid #b8ee82;
+    outline-offset: 1px;
   }
 }
 
-/* VS Code native-style scrollbar */
+/* 10FastFingers Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #dfe7d6;
 }
 .dark ::-webkit-scrollbar-track {
-  background: #1e1e1e;
+  background: #161716;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 0;
+  background: #c2ceb7;
+  border-radius: 4px;
 }
 .dark ::-webkit-scrollbar-thumb {
-  background: #424242;
-  border-radius: 0;
+  background: #2f332b;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #aab89d;
 }
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #4f4f4f;
+  background: #3e4439;
 }
 
-/* Administrative table styles - clean VS Code row selection */
-.admin-table-row:hover {
-  background-color: #f8fafc;
+/* 10FastFingers Word Highlighting Utilities */
+.lemondrop-highlight {
+  background-color: rgba(242, 201, 76, 0.3);
+  box-shadow: -2px 0 0 0 #b86f00;
 }
-.dark .admin-table-row:hover {
-  background-color: #2a2d2e;
-}
-
-/* Clean, crisp panel without slop glass/blur */
-.clean-panel {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-}
-.dark .clean-panel {
-  background-color: #252526;
-  border: 1px solid #2d2d2d;
+.dark .glow-highlight {
+  background-color: rgba(184, 238, 130, 0.2);
+  box-shadow: -2px 0 0 0 #b8ee82;
 }
 

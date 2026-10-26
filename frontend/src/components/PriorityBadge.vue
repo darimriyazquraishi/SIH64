@@ -24,46 +24,46 @@ const config = computed(() => {
     case 'critical':
       return {
         icon: ChevronsUp,
-        iconColor: 'text-red-600 dark:text-[#f48771]',
-        textColor: 'text-red-700 dark:text-[#f48771] font-semibold',
-        tagBg: 'bg-red-50 text-red-700 border-red-200 dark:bg-[#f48771]/15 dark:text-[#f48771] dark:border-[#f48771]/30',
-        dotColor: 'bg-red-600 dark:bg-[#f14c4c]',
+        iconColor: 'text-red-700 dark:text-[#f87171]',
+        textColor: 'text-red-700 dark:text-[#f87171] font-semibold',
+        tagBg: 'bg-red-50 text-red-700 border-red-200 dark:bg-[#341416] dark:text-[#f87171] dark:border-[#521c20]',
+        dotColor: 'bg-red-700 dark:bg-[#c72e2e]',
         label: 'Critical',
       }
     case 'high':
       return {
         icon: ChevronUp,
-        iconColor: 'text-amber-600 dark:text-[#ce9178]',
-        textColor: 'text-amber-800 dark:text-[#ce9178] font-medium',
-        tagBg: 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-[#ce9178]/15 dark:text-[#ce9178] dark:border-[#ce9178]/30',
-        dotColor: 'bg-amber-600 dark:bg-[#ce9178]',
+        iconColor: 'text-[#b86f00] dark:text-[#facc15]',
+        textColor: 'text-[#854d0e] dark:text-[#facc15] font-medium',
+        tagBg: 'bg-[#fef9c3] text-[#854d0e] border-[#fef08a] dark:bg-[#282614] dark:text-[#facc15] dark:border-[#423f1f]',
+        dotColor: 'bg-[#b86f00] dark:bg-[#facc15]',
         label: 'High',
       }
     case 'medium':
       return {
         icon: Minus,
-        iconColor: 'text-blue-600 dark:text-[#4fc1ff]',
-        textColor: 'text-blue-800 dark:text-[#4fc1ff] font-medium',
-        tagBg: 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-[#4fc1ff]/15 dark:text-[#4fc1ff] dark:border-[#4fc1ff]/30',
-        dotColor: 'bg-blue-600 dark:bg-[#4fc1ff]',
+        iconColor: 'text-[#7eaa3b] dark:text-[#b8ee82]',
+        textColor: 'text-[#465f29] dark:text-[#b8ee82] font-medium',
+        tagBg: 'bg-[#f0f6e9] text-[#465f29] border-[#d8e5cb] dark:bg-[#1a2417] dark:text-[#b8ee82] dark:border-[#2a3c23]',
+        dotColor: 'bg-[#7eaa3b] dark:bg-[#b8ee82]',
         label: 'Medium',
       }
     case 'low':
       return {
         icon: ChevronDown,
-        iconColor: 'text-slate-500 dark:text-[#989898]',
-        textColor: 'text-slate-600 dark:text-[#989898] font-normal',
-        tagBg: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-[#252526] dark:text-[#989898] dark:border-[#3e3e42]',
-        dotColor: 'bg-slate-500 dark:bg-[#989898]',
+        iconColor: 'text-[#5f6656] dark:text-[#989e92]',
+        textColor: 'text-[#5f6656] dark:text-[#989e92] font-normal',
+        tagBg: 'bg-[#f3f7ed] text-[#5f6656] border-[#dfe7d6] dark:bg-[#1e201d] dark:text-[#989e92] dark:border-[#2f332b]',
+        dotColor: 'bg-[#5f6656] dark:bg-[#989e92]',
         label: 'Low',
       }
     default:
       return {
         icon: Minus,
-        iconColor: 'text-slate-500 dark:text-[#989898]',
-        textColor: 'text-slate-600 dark:text-[#989898] font-normal',
-        tagBg: 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-[#252526] dark:text-[#989898] dark:border-[#3e3e42]',
-        dotColor: 'bg-slate-500 dark:bg-[#989898]',
+        iconColor: 'text-[#5f6656] dark:text-[#989e92]',
+        textColor: 'text-[#5f6656] dark:text-[#989e92] font-normal',
+        tagBg: 'bg-[#f3f7ed] text-[#5f6656] border-[#dfe7d6] dark:bg-[#1e201d] dark:text-[#989e92] dark:border-[#2f332b]',
+        dotColor: 'bg-[#5f6656] dark:bg-[#989e92]',
         label: props.priority || 'Medium',
       }
   }

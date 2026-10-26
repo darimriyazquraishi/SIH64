@@ -35,50 +35,50 @@ const badgeConfig = computed(() => {
     case 'Under Review':
       return {
         icon: Clock,
-        dot: 'bg-amber-500 dark:bg-[#cca700]',
-        iconColor: 'text-amber-600 dark:text-[#cca700]',
-        textColor: 'text-amber-800 dark:text-[#e5b567]',
-        tagBg: 'bg-amber-50/80 text-amber-800 border-amber-200 dark:bg-[#cca700]/15 dark:text-[#e5b567] dark:border-[#cca700]/30',
+        dot: 'bg-[#b86f00] dark:bg-[#fdd878]',
+        iconColor: 'text-[#b86f00] dark:text-[#fdd878]',
+        textColor: 'text-[#7a4800] dark:text-[#fdd878]',
+        tagBg: 'bg-[#fef9ec] text-[#7a4800] border-[#fce7b0] dark:bg-[#2b2515] dark:text-[#fdd878] dark:border-[#42391e]',
       }
     case 'Action Required':
       return {
         icon: AlertTriangle,
-        dot: 'bg-orange-500 dark:bg-[#ce9178]',
-        iconColor: 'text-orange-600 dark:text-[#ce9178]',
-        textColor: 'text-orange-800 dark:text-[#ce9178]',
-        tagBg: 'bg-orange-50/80 text-orange-800 border-orange-200 dark:bg-[#ce9178]/15 dark:text-[#ce9178] dark:border-[#ce9178]/30',
+        dot: 'bg-[#c2410c] dark:bg-[#ff944d]',
+        iconColor: 'text-[#c2410c] dark:text-[#ff944d]',
+        textColor: 'text-[#9a3412] dark:text-[#ff944d]',
+        tagBg: 'bg-[#fff5ee] text-[#9a3412] border-[#ffddc7] dark:bg-[#301f17] dark:text-[#ff944d] dark:border-[#4a2e20]',
       }
     case 'Awaiting Response':
       return {
         icon: HelpCircle,
-        dot: 'bg-sky-500 dark:bg-[#4fc1ff]',
-        iconColor: 'text-sky-600 dark:text-[#4fc1ff]',
-        textColor: 'text-sky-800 dark:text-[#4fc1ff]',
-        tagBg: 'bg-sky-50/80 text-sky-800 border-sky-200 dark:bg-[#4fc1ff]/15 dark:text-[#4fc1ff] dark:border-[#4fc1ff]/30',
+        dot: 'bg-sky-600 dark:bg-[#70d7ff]',
+        iconColor: 'text-sky-700 dark:text-[#70d7ff]',
+        textColor: 'text-sky-900 dark:text-[#70d7ff]',
+        tagBg: 'bg-sky-50 text-sky-900 border-sky-200 dark:bg-[#142633] dark:text-[#70d7ff] dark:border-[#1d3d52]',
       }
     case 'Escalated':
       return {
         icon: ArrowUpRight,
-        dot: 'bg-rose-600 dark:bg-[#f14c4c]',
-        iconColor: 'text-rose-600 dark:text-[#f48771]',
-        textColor: 'text-rose-800 dark:text-[#f48771] font-semibold',
-        tagBg: 'bg-rose-50/80 text-rose-800 border-rose-200 dark:bg-[#f48771]/15 dark:text-[#f48771] dark:border-[#f48771]/30',
+        dot: 'bg-rose-700 dark:bg-[#ff6b6b]',
+        iconColor: 'text-rose-700 dark:text-[#ff6b6b]',
+        textColor: 'text-rose-900 dark:text-[#ff6b6b] font-semibold',
+        tagBg: 'bg-rose-50 text-rose-900 border-rose-200 dark:bg-[#381a1c] dark:text-[#ff6b6b] dark:border-[#522428]',
       }
     case 'Disposed':
       return {
         icon: CheckCircle2,
-        dot: 'bg-emerald-600 dark:bg-[#89d185]',
-        iconColor: 'text-emerald-600 dark:text-[#89d185]',
-        textColor: 'text-emerald-800 dark:text-[#89d185]',
-        tagBg: 'bg-emerald-50/80 text-emerald-800 border-emerald-200 dark:bg-[#89d185]/15 dark:text-[#89d185] dark:border-[#89d185]/30',
+        dot: 'bg-[#5e9a2e] dark:bg-[#b8ee82]',
+        iconColor: 'text-[#5e9a2e] dark:text-[#b8ee82]',
+        textColor: 'text-[#2e5917] dark:text-[#b8ee82]',
+        tagBg: 'bg-[#f0f5e8] text-[#2e5917] border-[#dfe7d6] dark:bg-[#1f2817] dark:text-[#b8ee82] dark:border-[#2f3f1e]',
       }
     case 'Closed':
       return {
         icon: Check,
-        dot: 'bg-zinc-400 dark:bg-[#989898]',
-        iconColor: 'text-zinc-500 dark:text-[#989898]',
-        textColor: 'text-zinc-700 dark:text-[#989898]',
-        tagBg: 'bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-[#252526] dark:text-[#989898] dark:border-[#3e3e42]',
+        dot: 'bg-zinc-400 dark:bg-[#989e92]',
+        iconColor: 'text-zinc-600 dark:text-[#989e92]',
+        textColor: 'text-zinc-800 dark:text-[#989e92]',
+        tagBg: 'bg-zinc-100 text-zinc-800 border-zinc-200 dark:bg-[#1e201d] dark:text-[#989e92] dark:border-[#2f332b]',
       }
     default:
       return {

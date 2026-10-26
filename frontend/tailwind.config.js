@@ -8,38 +8,64 @@ export default {
   theme: {
     extend: {
       colors: {
+        // 10FastFingers Themes: Lemondrop (Light) & Glow (Dark)
+        lemondrop: {
+          bg: '#e8efe0',
+          card: '#ffffff',
+          cardAlt: '#f3f7ed',
+          border: '#dfe7d6',
+          borderLight: '#eef3e8',
+          text: '#22261f',
+          muted: '#5f6656',
+          accent: '#7eaa3b',
+          gold: '#c26700',
+          highlight: 'rgba(242, 201, 76, 0.3)',
+        },
+        glow: {
+          bg: '#161716',
+          card: '#1e201d',
+          cardAlt: '#232621',
+          border: '#2f332b',
+          borderLight: '#3a3f35',
+          text: '#e6eae2',
+          muted: '#989e92',
+          neon: '#b8ee82',
+          neonHover: '#c8f595',
+          neonGlow: 'rgba(184, 238, 130, 0.25)',
+          darkBar: '#101110',
+        },
         vscode: {
-          bg: '#1e1e1e',           // VS Code main editor canvas
-          sidebar: '#252526',      // VS Code sidebar & title
-          panel: '#252526',        // VS Code panels & cards
-          header: '#2d2d2d',       // VS Code tab bar / table headers
-          border: '#2d2d2d',       // VS Code border
-          borderLight: '#3e3e42',  // VS Code input & secondary border
-          hover: '#2a2d2e',        // VS Code row hover
-          active: '#37373d',       // VS Code active item
-          input: '#3c3c3c',        // VS Code input box
-          blue: '#007acc',         // VS Code accent blue
-          blueHover: '#1177bb',
-          blueActive: '#0e639c',
-          text: '#cccccc',         // VS Code text
-          textMuted: '#989898',    // VS Code muted text (WCAG AA compliant >= 4.5:1)
-          textBright: '#ffffff',   // VS Code bright text
-          statusbar: '#007acc',
+          bg: '#161716',           // Glow main editor canvas
+          sidebar: '#1a1c18',      // Glow sidebar
+          panel: '#1e201d',        // Glow panels & cards
+          header: '#252922',       // Glow table headers
+          border: '#2f332b',       // Glow border
+          borderLight: '#3a3f35',  // Glow secondary border
+          hover: '#252922',        // Glow row hover
+          active: '#2c3127',       // Glow active item
+          input: '#252922',        // Glow input box
+          blue: '#b8ee82',         // Glow neon accent
+          blueHover: '#c8f595',
+          blueActive: '#9cd663',
+          text: '#e6eae2',         // Glow text
+          textMuted: '#989e92',    // Glow muted text (WCAG AA compliant >= 4.5:1)
+          textBright: '#ffffff',
+          statusbar: '#161716',
         },
         aicte: {
           blue: '#002B49',
-          orange: '#FF6F00',
-          navy: '#0F172A',
-          gold: '#C59B27',
+          orange: '#b86f00',
+          navy: '#161716',
+          gold: '#c26700',
         },
-        // Direct mapping of Tailwind slate tokens to VS Code theme in dark mode
+        // Direct mapping of Tailwind slate tokens in dark mode to Glow theme
         slate: {
-          700: '#3e3e42',
-          750: '#333333',
-          800: '#2d2d2d',
-          850: '#282828',
-          900: '#252526',
-          950: '#1e1e1e',
+          700: '#3a3f35',
+          750: '#2f332b',
+          800: '#252922',
+          850: '#20231d',
+          900: '#1e201d',
+          950: '#161716',
         }
       },
       fontFamily: {

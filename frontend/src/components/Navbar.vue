@@ -56,21 +56,21 @@ function handleNotificationClick(notif: any) {
 </script>
 
 <template>
-  <header class="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] px-5 transition-colors select-none">
+  <header class="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#161716] px-5 transition-colors select-none">
     <!-- Brand / Title -->
     <div class="flex items-center gap-3">
       <router-link to="/" class="flex items-center gap-3 group">
         <SihLogo size="md" :show-subtitle="false" />
-        <div class="hidden sm:block border-l border-slate-200 dark:border-[#383838] pl-3">
+        <div class="hidden sm:block border-l border-[#dfe7d6] dark:border-[#2f332b] pl-3">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold text-slate-800 dark:text-white">
+            <span class="text-xs font-semibold text-[#22261f] dark:text-[#e6eae2]">
               AICTE Complaint Monitoring Portal
             </span>
-            <span class="rounded bg-orange-100 dark:bg-[#33200a] text-orange-700 dark:text-[#f97316] px-1.5 py-0.5 text-xs font-bold border border-orange-200 dark:border-[#522900]">
+            <span class="rounded bg-[#fef3c7] dark:bg-[#202716] text-[#b86f00] dark:text-[#b8ee82] px-1.5 py-0.5 text-xs font-bold border border-[#fde68a] dark:border-[#33421d]">
               SIH 2026
             </span>
           </div>
-          <p class="text-xs text-slate-400 dark:text-[#989898] leading-tight">
+          <p class="text-xs text-[#5f6656] dark:text-[#989e92] leading-tight">
             All India Council for Technical Education
           </p>
         </div>
@@ -78,17 +78,17 @@ function handleNotificationClick(notif: any) {
     </div>
 
     <!-- Center: Demostack Quick Search Input with Ctrl+K -->
-    <div class="hidden md:flex items-center bg-slate-100 dark:bg-[#1e1e1e] rounded-lg px-3 py-1.5 w-64 lg:w-80 border border-slate-200 dark:border-[#3e3e42] focus-within:border-blue-500 dark:focus-within:border-[#007acc] transition">
-      <Search class="w-3.5 h-3.5 text-slate-400 dark:text-[#aaaaaa] shrink-0 mr-2" />
+    <div class="hidden md:flex items-center bg-[#f3f7ed] dark:bg-[#1e201d] rounded-lg px-3 py-1.5 w-64 lg:w-80 border border-[#dfe7d6] dark:border-[#2f332b] focus-within:border-[#7eaa3b] dark:focus-within:border-[#b8ee82] transition">
+      <Search class="w-3.5 h-3.5 text-[#5f6656] dark:text-[#989e92] shrink-0 mr-2" />
       <input
         ref="searchInput"
         v-model="searchQuery"
         type="text"
         placeholder="Search cases, colleges, dockets..."
-        class="bg-transparent text-xs w-full text-slate-900 dark:text-[#cccccc] placeholder-slate-400 dark:placeholder-[#aaaaaa] focus:outline-none"
+        class="bg-transparent text-xs w-full text-[#22261f] dark:text-[#e6eae2] placeholder-[#5f6656] dark:placeholder-[#aaaaaa] focus:outline-none"
         @keydown.enter="handleSearchSubmit"
       />
-      <div class="flex items-center gap-0.5 rounded bg-white dark:bg-[#252526] px-1.5 py-0.5 border border-slate-200 dark:border-[#3e3e42] text-xs font-mono text-slate-400 dark:text-[#989898]">
+      <div class="flex items-center gap-0.5 rounded bg-white dark:bg-[#161716] px-1.5 py-0.5 border border-[#dfe7d6] dark:border-[#2f332b] text-xs font-mono text-[#5f6656] dark:text-[#989e92]">
         <span>Ctrl</span>
         <span>K</span>
       </div>
@@ -99,9 +99,9 @@ function handleNotificationClick(notif: any) {
       <!-- Public Landing Page Link -->
       <router-link
         to="/landing"
-        class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium text-slate-700 dark:text-[#cccccc] hover:bg-slate-100 dark:hover:bg-[#333336] border border-transparent hover:border-slate-200 dark:hover:border-[#3e3e42] transition-colors"
+        class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium text-[#22261f] dark:text-[#e6eae2] hover:bg-[#f3f7ed] dark:hover:bg-[#252922] border border-transparent hover:border-[#dfe7d6] dark:hover:border-[#2f332b] transition-colors"
       >
-        <Compass class="w-3.5 h-3.5 text-[#f97316]" aria-hidden="true" />
+        <Compass class="w-3.5 h-3.5 text-[#b86f00] dark:text-[#b8ee82]" aria-hidden="true" />
         <span>Landing Page</span>
       </router-link>
 
@@ -109,16 +109,16 @@ function handleNotificationClick(notif: any) {
       <ThemeToggle />
 
       <!-- Bureau / Role Badge -->
-      <div v-if="authStore.user?.bureau_code" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-100 dark:bg-[#093554] border border-slate-200 dark:border-[#14496b] text-xs font-medium text-slate-700 dark:text-[#4fc1ff]">
-        <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-[#4fc1ff]"></span>
+      <div v-if="authStore.user?.bureau_code" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#f0f6e9] dark:bg-[#1a2417] border border-[#d8e5cb] dark:border-[#2a3c23] text-xs font-medium text-[#465f29] dark:text-[#b8ee82]">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#7eaa3b] dark:bg-[#b8ee82]"></span>
         {{ authStore.user.bureau_name || authStore.user.bureau_code }}
       </div>
-      <div v-else-if="authStore.isAdmin" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-50 dark:bg-[#332b00] border border-amber-200 dark:border-[#554400] text-xs font-medium text-amber-800 dark:text-[#cca700]">
-        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-[#cca700]"></span>
+      <div v-else-if="authStore.isAdmin" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#fef9c3] dark:bg-[#242616] border border-[#fef08a] dark:border-[#3a3e1f] text-xs font-medium text-[#854d0e] dark:text-[#b8ee82]">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#b86f00] dark:bg-[#b8ee82]"></span>
         System Administrator
       </div>
-      <div v-else-if="authStore.isSeniorAuthority" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-purple-50 dark:bg-[#3b1c47] border border-purple-200 dark:border-[#562868] text-xs font-medium text-purple-800 dark:text-[#c586c0]">
-        <span class="w-1.5 h-1.5 rounded-full bg-purple-500 dark:bg-[#c586c0]"></span>
+      <div v-else-if="authStore.isSeniorAuthority" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#fae8ff] dark:bg-[#271d2b] border border-[#f0abfc] dark:border-[#422a4b] text-xs font-medium text-[#86198f] dark:text-[#e879f9]">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#c026d3] dark:bg-[#e879f9]"></span>
         Senior Authority (Read-Only)
       </div>
 
@@ -126,14 +126,14 @@ function handleNotificationClick(notif: any) {
       <div class="relative">
         <button
           type="button"
-          class="relative rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-800 dark:text-[#989898] dark:hover:bg-[#2a2d2e] dark:hover:text-white transition-colors"
+          class="relative rounded p-1.5 text-[#5f6656] hover:bg-[#f3f7ed] hover:text-[#22261f] dark:text-[#989e92] dark:hover:bg-[#22261f] dark:hover:text-[#e6eae2] transition-colors"
           aria-label="View notifications"
           @click="isNotifOpen = !isNotifOpen"
         >
           <Bell class="h-4 w-4" aria-hidden="true" />
           <span
             v-if="notifStore.unreadCount > 0"
-            class="absolute top-0.5 right-0.5 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-red-700 dark:bg-[#c72e2e] text-xs font-bold text-white"
+            class="absolute top-0.5 right-0.5 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-[#c2410c] dark:bg-[#b8ee82] text-xs font-bold text-white dark:text-[#10140d]"
           >
             {{ notifStore.unreadCount > 9 ? '9+' : notifStore.unreadCount }}
           </span>
@@ -142,54 +142,54 @@ function handleNotificationClick(notif: any) {
         <!-- Dropdown Popover -->
         <div
           v-if="isNotifOpen"
-          class="absolute right-0 mt-2 w-80 sm:w-96 rounded-md border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] shadow-lg z-50 overflow-hidden"
+          class="absolute right-0 mt-2 w-80 sm:w-96 rounded-md border border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#1e201d] shadow-lg z-50 overflow-hidden"
         >
-          <div class="flex items-center justify-between border-b border-slate-100 dark:border-[#2d2d2d] px-3.5 py-2.5 bg-slate-50 dark:bg-[#1e1e1e]">
+          <div class="flex items-center justify-between border-b border-[#dfe7d6] dark:border-[#2f332b] px-3.5 py-2.5 bg-[#f8faf4] dark:bg-[#161716]">
             <div class="flex items-center gap-2">
-              <span class="text-xs font-semibold text-slate-900 dark:text-white">Notifications</span>
-              <span v-if="notifStore.unreadCount > 0" class="rounded px-1.5 py-0.5 bg-red-100 dark:bg-[#441416] text-xs font-medium text-red-700 dark:text-[#f48771]">
+              <span class="text-xs font-semibold text-[#22261f] dark:text-[#e6eae2]">Notifications</span>
+              <span v-if="notifStore.unreadCount > 0" class="rounded px-1.5 py-0.5 bg-[#fef2f2] dark:bg-[#341416] text-xs font-medium text-red-700 dark:text-[#f87171]">
                 {{ notifStore.unreadCount }} unread
               </span>
             </div>
             <button
               v-if="notifStore.unreadCount > 0"
-              class="text-xs font-medium text-blue-600 hover:text-blue-800 dark:text-[#4fc1ff] dark:hover:underline"
+              class="text-xs font-medium text-[#5e8428] hover:text-[#425e1a] dark:text-[#b8ee82] dark:hover:underline"
               @click="notifStore.markAllRead()"
             >
               Mark all read
             </button>
           </div>
 
-          <div class="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-[#2d2d2d]">
+          <div class="max-h-80 overflow-y-auto divide-y divide-[#dfe7d6] dark:divide-[#2f332b]">
             <div
               v-for="notif in notifStore.notifications.slice(0, 6)"
               :key="notif.id"
               :class="[
-                'p-3 text-left transition-colors cursor-pointer hover:bg-slate-50 dark:hover:bg-[#2a2d2e]',
-                !notif.is_read ? 'bg-blue-50/40 dark:bg-[#1f2937]/30' : ''
+                'p-3 text-left transition-colors cursor-pointer hover:bg-[#f8faf4] dark:hover:bg-[#252922]',
+                !notif.is_read ? 'bg-[#f4f8ed] dark:bg-[#20271c]' : ''
               ]"
               @click="handleNotificationClick(notif)"
             >
               <div class="flex items-start justify-between gap-2">
-                <p :class="['text-xs leading-snug', !notif.is_read ? 'font-semibold text-slate-900 dark:text-white' : 'text-slate-700 dark:text-[#cccccc]']">
+                <p :class="['text-xs leading-snug', !notif.is_read ? 'font-semibold text-[#22261f] dark:text-[#e6eae2]' : 'text-[#383d32] dark:text-[#cccccc]']">
                   {{ notif.title }}
                 </p>
-                <span v-if="!notif.is_read" class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-[#4fc1ff] flex-shrink-0 mt-1"></span>
+                <span v-if="!notif.is_read" class="w-1.5 h-1.5 rounded-full bg-[#7eaa3b] dark:bg-[#b8ee82] flex-shrink-0 mt-1"></span>
               </div>
-              <p class="mt-1 text-xs text-slate-500 dark:text-[#989898] line-clamp-2">
+              <p class="mt-1 text-xs text-[#5f6656] dark:text-[#989e92] line-clamp-2">
                 {{ notif.message }}
               </p>
             </div>
 
-            <div v-if="notifStore.notifications.length === 0" class="p-6 text-center text-xs text-slate-400 dark:text-[#989898]">
+            <div v-if="notifStore.notifications.length === 0" class="p-6 text-center text-xs text-[#5f6656] dark:text-[#989e92]">
               No unread notifications
             </div>
           </div>
 
-          <div class="border-t border-slate-100 dark:border-[#2d2d2d] p-2 bg-slate-50 dark:bg-[#1e1e1e] text-center">
+          <div class="border-t border-[#dfe7d6] dark:border-[#2f332b] p-2 bg-[#f8faf4] dark:bg-[#161716] text-center">
             <router-link
               to="/notifications"
-              class="text-xs font-medium text-blue-600 hover:text-blue-800 dark:text-[#4fc1ff] dark:hover:underline"
+              class="text-xs font-medium text-[#5e8428] hover:text-[#425e1a] dark:text-[#b8ee82] dark:hover:underline"
               @click="isNotifOpen = false"
             >
               All notifications
@@ -202,18 +202,18 @@ function handleNotificationClick(notif: any) {
       <div class="relative">
         <button
           type="button"
-          class="flex items-center gap-2 rounded p-1 hover:bg-slate-100 dark:hover:bg-[#2a2d2e] transition-colors"
+          class="flex items-center gap-2 rounded p-1 hover:bg-[#f3f7ed] dark:hover:bg-[#22261f] transition-colors"
           aria-label="User account menu"
           @click="isProfileOpen = !isProfileOpen"
         >
-          <div class="flex h-7 w-7 items-center justify-center rounded bg-slate-800 dark:bg-[#37373d] text-white text-xs font-semibold">
+          <div class="flex h-7 w-7 items-center justify-center rounded bg-[#22261f] dark:bg-[#2c3325] text-white dark:text-[#b8ee82] text-xs font-semibold">
             {{ authStore.user?.name?.charAt(0) || 'A' }}
           </div>
           <div class="text-left hidden lg:block">
-            <p class="text-xs font-medium text-slate-900 dark:text-white leading-none">
+            <p class="text-xs font-medium text-[#22261f] dark:text-[#e6eae2] leading-none">
               {{ authStore.user?.name || 'Authorized Officer' }}
             </p>
-            <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
+            <p class="text-xs text-[#5f6656] dark:text-[#989e92] mt-0.5">
               {{ authStore.user?.designation || (authStore.isAdmin ? 'System Administrator' : (authStore.user?.role || 'Portal Operator')) }}
             </p>
           </div>
@@ -222,15 +222,15 @@ function handleNotificationClick(notif: any) {
         <!-- Dropdown Menu -->
         <div
           v-if="isProfileOpen"
-          class="absolute right-0 mt-2 w-52 rounded-md border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] shadow-lg z-50 p-1"
+          class="absolute right-0 mt-2 w-52 rounded-md border border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#1e201d] shadow-lg z-50 p-1"
         >
-          <div class="px-3 py-2 border-b border-slate-100 dark:border-[#2d2d2d]">
-            <p class="text-xs font-semibold text-slate-900 dark:text-white">{{ authStore.user?.name || 'Authorized Officer' }}</p>
-            <p class="text-xs text-slate-500 dark:text-[#989898] truncate">{{ authStore.user?.email || 'officer@aicte.gov.in' }}</p>
+          <div class="px-3 py-2 border-b border-[#dfe7d6] dark:border-[#2f332b]">
+            <p class="text-xs font-semibold text-[#22261f] dark:text-[#e6eae2]">{{ authStore.user?.name || 'Authorized Officer' }}</p>
+            <p class="text-xs text-[#5f6656] dark:text-[#989e92] truncate">{{ authStore.user?.email || 'officer@aicte.gov.in' }}</p>
           </div>
           <button
             type="button"
-            class="w-full flex items-center gap-2 rounded px-3 py-1.5 text-xs font-medium text-red-600 dark:text-[#f48771] hover:bg-red-50 dark:hover:bg-[#3b1214] transition-colors mt-1"
+            class="w-full flex items-center gap-2 rounded px-3 py-1.5 text-xs font-medium text-red-700 dark:text-[#f87171] hover:bg-red-50 dark:hover:bg-[#2d1b1c] transition-colors mt-1"
             @click="handleLogout"
           >
             <LogOut class="w-3.5 h-3.5" aria-hidden="true" />
