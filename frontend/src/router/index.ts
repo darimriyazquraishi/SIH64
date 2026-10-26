@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import AppLayout from '@/layouts/AppLayout.vue'
 import WorkspaceView from '@/views/WorkspaceView.vue'
+import UserPortalView from '@/views/UserPortalView.vue'
 import LoginView from '@/views/LoginView.vue'
 import PublicRegisterView from '@/views/PublicRegisterView.vue'
 import PublicTrackView from '@/views/PublicTrackView.vue'
@@ -15,16 +16,17 @@ const routes: RouteRecordRaw[] = [
   { path: '/login', name: 'login', component: LoginView, meta: { guestOnly: true } },
   {
     path: '/', component: AppLayout, meta: { requiresAuth: true }, children: [
-      { path: '', name: 'dashboard', component: WorkspaceView },
-      { path: 'complaints', name: 'complaints', component: WorkspaceView },
-      { path: 'complaints/:id', name: 'complaint-detail', component: WorkspaceView },
-      { path: 'institutions', name: 'institutions', component: WorkspaceView },
-      { path: 'institutions/:id', name: 'institution-profile', component: WorkspaceView },
-      { path: 'overlaps', name: 'overlaps', component: WorkspaceView },
-      { path: 'reports', name: 'reports', component: WorkspaceView },
-      { path: 'notifications', name: 'notifications', component: WorkspaceView },
-      { path: 'imports', name: 'imports', component: WorkspaceView },
-      { path: 'admin', name: 'admin', component: WorkspaceView, meta: { requiresRole: 'admin' } },
+      { path: '', name: 'dashboard', component: WorkspaceView, meta: { requiresRole: 'INDUSTRY' } },
+      { path: 'user', name: 'user-portal', component: UserPortalView },
+      { path: 'complaints', name: 'complaints', component: WorkspaceView, meta: { requiresRole: 'INDUSTRY' } },
+      { path: 'complaints/:id', name: 'complaint-detail', component: WorkspaceView, meta: { requiresRole: 'INDUSTRY' } },
+      { path: 'institutions', name: 'institutions', component: WorkspaceView, meta: { requiresRole: 'INDUSTRY' } },
+      { path: 'institutions/:id', name: 'institution-profile', component: WorkspaceView, meta: { requiresRole: 'INDUSTRY' } },
+      { path: 'overlaps', name: 'overlaps', component: WorkspaceView, meta: { requiresRole: 'INDUSTRY' } },
+      { path: 'reports', name: 'reports', component: WorkspaceView, meta: { requiresRole: 'INDUSTRY' } },
+      { path: 'notifications', name: 'notifications', component: WorkspaceView, meta: { requiresRole: 'INDUSTRY' } },
+      { path: 'imports', name: 'imports', component: WorkspaceView, meta: { requiresRole: 'INDUSTRY' } },
+      { path: 'admin', name: 'admin', component: WorkspaceView, meta: { requiresRole: 'SYSTEM_ADMIN' } },
     ],
   },
   { path: '/:pathMatch(.*)*', redirect: '/login' },
@@ -34,16 +36,40 @@ const router = createRouter({ history: createWebHistory(), routes })
 
 router.beforeEach((to) => {
   const auth = useAuthStore()
+
+  // Public pages are always accessible
   if (to.meta.public) {
     return true
   }
+
+  // Authentication check
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
     return { path: '/login', query: { redirect: to.fullPath } }
   }
-  if (to.meta.guestOnly && auth.isAuthenticated) return '/'
-  if (to.meta.requiresRole && to.meta.requiresRole !== auth.user?.role && auth.user?.role !== 'admin') {
-    return '/'
+
+  // Guest-only (Login page) redirects based on role
+  if (to.meta.guestOnly && auth.isAuthenticated) {
+    return auth.isUser ? '/user' : '/'
   }
+
+  // Complainant / USER role isolation:
+  // Public complainants can ONLY access /user and public routes
+  if (auth.isUser) {
+    if (to.path !== '/user' && !to.meta.public) {
+      return '/user'
+    }
+    return true
+  }
+
+  // INDUSTRY role restriction:
+  // Cannot access System Administration
+  if (auth.isIndustry) {
+    if (to.meta.requiresRole === 'SYSTEM_ADMIN' || to.path === '/admin') {
+      return '/'
+    }
+  }
+
+  // SYSTEM_ADMIN has access to everything
   return true
 })
 

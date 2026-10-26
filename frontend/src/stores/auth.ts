@@ -27,10 +27,19 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => Boolean(
     token.value && user.value && (token.value !== 'dev_bypass_token' || isExplicitDemoSession())
   ))
-  const isAdmin = computed(() => user.value?.role === 'admin')
-  const isOfficer = computed(() => user.value?.role === 'officer')
+  const isSystemAdmin = computed(() => ['SYSTEM_ADMIN', 'ADMIN', 'admin'].includes((user.value?.role || '').trim()))
+  const isIndustry = computed(() => ['INDUSTRY', 'OFFICER', 'officer', 'senior_authority'].includes((user.value?.role || '').trim()))
+  const isUser = computed(() => ['USER', 'user', 'citizen'].includes((user.value?.role || '').trim()))
+  const isAdmin = computed(() => isSystemAdmin.value)
+  const isOfficer = computed(() => isIndustry.value)
   const isSeniorAuthority = computed(() => user.value?.role === 'senior_authority')
   const userBureauCode = computed(() => user.value?.bureau_code || null)
+  const roleDisplay = computed(() => {
+    if (isSystemAdmin.value) return 'System Administrator'
+    if (isIndustry.value) return 'Industry / Department'
+    return 'Citizen Complainant'
+  })
+
 
   async function login(email: string, password: string): Promise<boolean> {
     loading.value = true
@@ -93,6 +102,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     token, user, loading, error, isAuthenticated, isAdmin, isOfficer,
-    isSeniorAuthority, userBureauCode, login, logout, fetchMe,
+    isSeniorAuthority, isSystemAdmin, isIndustry, isUser, roleDisplay,
+    userBureauCode, login, logout, fetchMe,
   }
+
 })

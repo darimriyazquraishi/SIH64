@@ -1,15 +1,22 @@
 from flask import Blueprint, request, jsonify
 from sqlalchemy import or_, desc
 from ..models import db, CaseLink, Complaint
-from ..services.auth_service import jwt_required, roles_required, get_current_user
+from ..services.auth_service import (
+    jwt_required,
+    roles_required,
+    get_current_user,
+    ROLE_SYSTEM_ADMIN,
+    ROLE_INDUSTRY,
+)
 from ..services.overlap_service import review_case_link, scan_complaint_overlaps
 
 overlaps_bp = Blueprint("overlaps", __name__, url_prefix="/api/v1/overlaps")
 
 @overlaps_bp.route("", methods=["GET"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def list_overlaps():
-    review_status = request.args.get("review_status", "pending") # "pending", "confirmed", "dismissed", "deferred", "all"
+    review_status = request.args.get("review_status", "pending")
     relationship_type = request.args.get("relationship_type")
     min_score = request.args.get("min_score", type=float)
 
@@ -35,6 +42,7 @@ def list_overlaps():
 
 @overlaps_bp.route("/<int:link_id>", methods=["GET"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def get_overlap(link_id: int):
     link = db.session.get(CaseLink, link_id)
     if not link:
@@ -43,10 +51,10 @@ def get_overlap(link_id: int):
 
 @overlaps_bp.route("/<int:link_id>/review", methods=["POST"])
 @jwt_required
-@roles_required("admin", "officer")
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def review_overlap(link_id: int):
     data = request.get_json() or {}
-    decision = data.get("decision")  # "confirmed_related", "unrelated", "deferred"
+    decision = data.get("decision")
     remarks = data.get("remarks", "")
     user = get_current_user()
 
@@ -64,7 +72,7 @@ def review_overlap(link_id: int):
 
 @overlaps_bp.route("/rescan", methods=["POST"])
 @jwt_required
-@roles_required("admin")
+@roles_required(ROLE_SYSTEM_ADMIN)
 def rescan_all():
     complaints = db.session.query(Complaint).all()
     count = 0

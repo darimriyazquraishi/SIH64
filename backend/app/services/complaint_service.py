@@ -275,11 +275,9 @@ def update_complaint_status(complaint_id: int, new_status: str, remarks: str, cu
     if not comp:
         return None, "Complaint not found"
 
-    # Permission check: officer can only update cases belonging to their Bureau
-    if current_user.role == "officer" and comp.current_bureau_id != current_user.bureau_id:
-        return None, f"Forbidden: You do not have permission to modify complaints belonging to another Bureau"
-    if current_user.role == "senior_authority":
-        return None, "Senior authority account has read-only access"
+    if current_user.is_user:
+        return None, "Forbidden: Public complainants cannot modify complaint status"
+
 
     old_status = comp.status
     comp.status = new_status
@@ -318,10 +316,8 @@ def assign_complaint(complaint_id: int, assign_to_user_id: int, remarks: str, cu
     if not comp:
         return None, "Complaint not found"
 
-    if current_user.role == "officer" and comp.current_bureau_id != current_user.bureau_id:
-        return None, "Forbidden: Cannot assign cases outside your Bureau"
-    if current_user.role == "senior_authority":
-        return None, "Senior authority has read-only access"
+    if current_user.is_user:
+        return None, "Forbidden: Public complainants cannot assign complaints"
 
     target_user = db.session.get(User, assign_to_user_id) if assign_to_user_id else None
     old_assigned_id = comp.assigned_user_id
@@ -363,10 +359,9 @@ def transfer_bureau(complaint_id: int, target_bureau_id: int, remarks: str, curr
     if not comp:
         return None, "Complaint not found"
 
-    if current_user.role == "officer" and comp.current_bureau_id != current_user.bureau_id:
-        return None, "Forbidden: Cannot transfer cases that do not currently belong to your Bureau"
-    if current_user.role == "senior_authority":
-        return None, "Senior authority has read-only access"
+    if current_user.is_user:
+        return None, "Forbidden: Public complainants cannot transfer complaints"
+
 
     target_bureau = db.session.get(Bureau, target_bureau_id)
     if not target_bureau:

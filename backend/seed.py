@@ -52,21 +52,30 @@ def seed_database():
 
         bureau_map = {b.code: b for b in bureaus}
 
-        print("Seeding Authorized Portal Users...")
-        # 1. Admin (userid: admin, password: admin)
+        print("Seeding Authorized Portal Users across the 3 Levels...")
+        # 1. System Admin (userid: admin, password: admin)
         admin = User(
             name="Dr. Rajiv Sharma",
             email="admin@aicte.gov.in",
-            role="admin",
+            role="SYSTEM_ADMIN",
             designation="Chief System Administrator & Director (IT)",
         )
         admin.set_password("admin")
 
-        # 2. Bureau Officers
+        # 2. Industry Accounts
+        industry_desk = User(
+            name="Grievance Redressal Industry Desk",
+            email="industry@aicte.gov.in",
+            role="INDUSTRY",
+            bureau_id=bureau_map["PGRC"].id,
+            designation="Senior Grievance Coordinator",
+        )
+        industry_desk.set_password("industry")
+
         officer_pgrc = User(
             name="Smt. Ananya Sen",
             email="officer.pgrc@aicte.gov.in",
-            role="officer",
+            role="INDUSTRY",
             bureau_id=bureau_map["PGRC"].id,
             designation="Senior Grievance Officer (PGRC)",
         )
@@ -75,7 +84,7 @@ def seed_database():
         officer_ab = User(
             name="Shri Vikramaditya Rao",
             email="officer.ab@aicte.gov.in",
-            role="officer",
+            role="INDUSTRY",
             bureau_id=bureau_map["AB"].id,
             designation="Joint Director (Approval Bureau)",
         )
@@ -84,23 +93,24 @@ def seed_database():
         officer_rpc = User(
             name="Dr. Meenakshi Sundaram",
             email="officer.rpc@aicte.gov.in",
-            role="officer",
+            role="INDUSTRY",
             bureau_id=bureau_map["RPC"].id,
             designation="Anti-Ragging Coordination Officer",
         )
         officer_rpc.set_password("Officer@12345")
 
-        # 3. Senior Read-Only Authority
-        director_monitoring = User(
-            name="Prof. K. V. Ramanathan",
-            email="director.monitoring@aicte.gov.in",
-            role="senior_authority",
-            designation="Advisor & Member Secretary (Monitoring)",
+        # 3. User / Complainant Account
+        user_citizen = User(
+            name="Pooja Sharma (Student Complainant)",
+            email="user@aicte.gov.in",
+            role="USER",
+            designation="Citizen Complainant",
         )
-        director_monitoring.set_password("Director@12345")
+        user_citizen.set_password("user")
 
-        db.session.add_all([admin, officer_pgrc, officer_ab, officer_rpc, director_monitoring])
+        db.session.add_all([admin, industry_desk, officer_pgrc, officer_ab, officer_rpc, user_citizen])
         db.session.flush()
+
 
         print("Seeding Institutions across States...")
         institutions = [

@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from ..models import db, Institution, Complaint, AuditEvent
-from ..services.auth_service import jwt_required, roles_required, get_current_user
+from ..services.auth_service import jwt_required, roles_required, get_current_user, ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY
+
 from ..services.institution_service import get_institutions, get_institution_detail
 
 institutions_bp = Blueprint("institutions", __name__, url_prefix="/api/v1/institutions")
@@ -48,7 +49,7 @@ def get_institution(inst_id: int):
 
 @institutions_bp.route("", methods=["POST"])
 @jwt_required
-@roles_required("admin", "officer")
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def create_institution():
     data = request.get_json() or {}
     code = data.get("institution_code", "").strip()
@@ -82,7 +83,7 @@ def create_institution():
 
 @institutions_bp.route("/<int:inst_id>", methods=["PATCH"])
 @jwt_required
-@roles_required("admin", "officer")
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def update_institution(inst_id: int):
     inst = db.session.get(Institution, inst_id)
     if not inst:
@@ -107,6 +108,7 @@ def update_institution(inst_id: int):
 
 @institutions_bp.route("/<int:inst_id>/complaints", methods=["GET"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def list_institution_complaints(inst_id: int):
     inst = db.session.get(Institution, inst_id)
     if not inst:
@@ -114,3 +116,4 @@ def list_institution_complaints(inst_id: int):
 
     complaints = db.session.query(Complaint).filter_by(institution_id=inst_id).order_by(Complaint.created_at.desc()).all()
     return jsonify({"complaints": [c.to_dict() for c in complaints]})
+

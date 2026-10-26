@@ -18,8 +18,12 @@ async function handleLogin() {
   const ok = await auth.login(email.value, password.value)
   if (ok) {
     ui.isDemoMode = false
-    const destination = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
-    router.replace(destination)
+    if (auth.isUser) {
+      router.replace('/user')
+    } else {
+      const destination = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
+      router.replace(destination)
+    }
   }
 }
 
@@ -27,6 +31,7 @@ function chooseAccount(nextEmail: string, nextPassword: string) {
   email.value = nextEmail
   password.value = nextPassword
 }
+
 
 function enterDemo() {
   sessionStorage.setItem('casework_demo_mode', '1')
@@ -102,7 +107,7 @@ function enterDemo() {
           </button>
         </form>
 
-        <!-- Compact quick-fill chips -->
+        <!-- Compact quick-fill chips for 3 User Levels -->
         <div class="login-quick-section">
           <div class="quick-title-row">
             <span>Quick fill:</span>
@@ -112,25 +117,26 @@ function enterDemo() {
                 :class="['quick-chip', { 'quick-chip-active': email === 'admin' }]"
                 @click="chooseAccount('admin', 'admin')"
               >
-                Admin
+                System Admin
               </button>
               <button
                 type="button"
-                :class="['quick-chip', { 'quick-chip-active': email === 'authority' }]"
-                @click="chooseAccount('authority', 'authority')"
+                :class="['quick-chip', { 'quick-chip-active': email === 'industry' }]"
+                @click="chooseAccount('industry', 'industry')"
               >
-                Authority
+                Industry
               </button>
               <button
                 type="button"
                 :class="['quick-chip', { 'quick-chip-active': email === 'user' }]"
                 @click="chooseAccount('user', 'user')"
               >
-                Caseworker
+                Complainant
               </button>
             </div>
           </div>
         </div>
+
 
         <div class="login-alt-actions">
           <button type="button" class="demo-link-btn" @click="enterDemo">

@@ -1,6 +1,14 @@
 from flask import Blueprint, request, jsonify
+from sqlalchemy import or_, desc
 from ..models import db, Complaint
-from ..services.auth_service import jwt_required, roles_required, get_current_user
+from ..services.auth_service import (
+    jwt_required,
+    roles_required,
+    get_current_user,
+    ROLE_SYSTEM_ADMIN,
+    ROLE_INDUSTRY,
+    ROLE_USER,
+)
 from ..services.complaint_service import (
     get_complaints,
     create_complaint,
@@ -14,6 +22,27 @@ complaints_bp = Blueprint("complaints", __name__, url_prefix="/api/v1/complaints
 @complaints_bp.route("", methods=["GET"])
 @jwt_required
 def list_complaints():
+    user = get_current_user()
+
+    # User / Complainant role enforcement:
+    # Public complainants can ONLY view their own complaints, strictly sanitized
+    if user.is_user:
+        query = db.session.query(Complaint).filter(
+            or_(
+                Complaint.created_by_user_id == user.id,
+                Complaint.complainant_email.ilike(user.email)
+            )
+        ).order_by(desc(Complaint.created_at))
+        items = query.all()
+        return jsonify({
+            "items": [c.to_public_dict(include_history=True) for c in items],
+            "total": len(items),
+            "page": 1,
+            "per_page": len(items),
+            "pages": 1,
+        })
+
+    # Industry / System Admin: full view across all industries/departments
     search = request.args.get("search")
     status = request.args.get("status")
     priority = request.args.get("priority")
@@ -24,8 +53,6 @@ def list_complaints():
     sort_dir = request.args.get("sort_dir", "desc")
     page = int(request.args.get("page", 1))
     per_page = int(request.args.get("per_page", 15))
-
-    user = get_current_user()
 
     data = get_complaints(
         search=search,
@@ -60,8 +87,8 @@ def get_complaints_meta():
         "General Administration"
     ]
     categories = sorted(list(set(db_cats + canonical_cats)))
-    statuses = ["New", "Under Review", "Action Required", "Resolved", "Rejected"]
-    priorities = ["Urgent", "High", "Medium", "Low"]
+    statuses = ["New", "Received", "Under Review", "Action Required", "Awaiting Response", "Escalated", "Disposed", "Closed"]
+    priorities = ["Critical", "High", "Medium", "Low"]
     return jsonify({
         "categories": categories,
         "statuses": statuses,
@@ -74,11 +101,22 @@ def get_complaint(comp_id: int):
     comp = db.session.get(Complaint, comp_id)
     if not comp:
         return jsonify({"error": "Complaint not found"}), 404
+
+    user = get_current_user()
+    if user.is_user:
+        # Strict privacy enforcement: cannot view other people's complaints
+        is_owner = (comp.created_by_user_id == user.id) or (
+            comp.complainant_email and comp.complainant_email.strip().lower() == user.email.strip().lower()
+        )
+        if not is_owner:
+            return jsonify({"error": "Forbidden: You do not have permission to access this complaint"}), 403
+        return jsonify({"complaint": comp.to_public_dict(include_history=True)})
+
+    # Industry / System Admin: full complaint details with actions & overlap matches
     return jsonify({"complaint": comp.to_dict(include_details=True)})
 
 @complaints_bp.route("", methods=["POST"])
 @jwt_required
-@roles_required("admin", "officer")
 def lodge_complaint():
     data = request.get_json() or {}
     user = get_current_user()
@@ -86,11 +124,19 @@ def lodge_complaint():
     if not data.get("subject") or not data.get("description"):
         return jsonify({"error": "Subject and description are required"}), 400
 
+    if user.is_user:
+        # Auto-bind complainant credentials
+        data["complainant_name"] = data.get("complainant_name") or user.name
+        data["complainant_email"] = user.email
+
     try:
         complaint = create_complaint(data, user)
+        res_data = complaint.to_public_dict(include_history=True) if user.is_user else complaint.to_dict(include_details=True)
         return jsonify({
             "message": "Complaint successfully registered",
-            "complaint": complaint.to_dict(include_details=True)
+            "ticket_number": complaint.ticket_number,
+            "case_number": complaint.case_number,
+            "complaint": res_data
         }), 201
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
@@ -99,7 +145,7 @@ def lodge_complaint():
 
 @complaints_bp.route("/<int:comp_id>/actions", methods=["POST"])
 @jwt_required
-@roles_required("admin", "officer")
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def update_status(comp_id: int):
     data = request.get_json() or {}
     new_status = data.get("status")
@@ -120,7 +166,7 @@ def update_status(comp_id: int):
 
 @complaints_bp.route("/<int:comp_id>/assign", methods=["POST"])
 @jwt_required
-@roles_required("admin", "officer")
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def assign_officer(comp_id: int):
     data = request.get_json() or {}
     assign_to_user_id = data.get("user_id")
@@ -138,7 +184,7 @@ def assign_officer(comp_id: int):
 
 @complaints_bp.route("/<int:comp_id>/transfer", methods=["POST"])
 @jwt_required
-@roles_required("admin", "officer")
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def transfer_case(comp_id: int):
     data = request.get_json() or {}
     target_bureau_id = data.get("target_bureau_id")

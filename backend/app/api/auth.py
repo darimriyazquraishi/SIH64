@@ -16,16 +16,23 @@ def login():
 
     if identifier in ("admin", "admin@aicte.gov.in"):
         user = db.session.query(User).filter((User.email == "admin@aicte.gov.in") | (User.email == "admin")).first()
-        valid_shortcut = (password == "admin")
+        valid_shortcut = (password in ("admin", "Admin@12345"))
+    elif identifier in ("industry", "industry@aicte.gov.in"):
+        user = db.session.query(User).filter((User.email == "industry@aicte.gov.in") | (User.email == "officer.pgrc@aicte.gov.in")).first()
+        valid_shortcut = (password in ("industry", "Officer@12345"))
     elif identifier in ("authority", "authority@aicte.gov.in", "director.monitoring@aicte.gov.in"):
         user = db.session.query(User).filter((User.email == "authority@aicte.gov.in") | (User.email == "director.monitoring@aicte.gov.in")).first()
         valid_shortcut = (password in ("authority", "Director@12345"))
-    elif identifier in ("user", "user@aicte.gov.in", "officer", "officer.pgrc@aicte.gov.in"):
-        user = db.session.query(User).filter((User.email == "user@aicte.gov.in") | (User.email == "officer.pgrc@aicte.gov.in")).first()
-        valid_shortcut = (password in ("user", "Officer@12345"))
+    elif identifier in ("officer", "officer.pgrc@aicte.gov.in"):
+        user = db.session.query(User).filter_by(email="officer.pgrc@aicte.gov.in").first()
+        valid_shortcut = (password in ("officer", "Officer@12345"))
+    elif identifier in ("user", "user@aicte.gov.in", "citizen"):
+        user = db.session.query(User).filter((User.email == "user@aicte.gov.in") | (User.email == "user")).first()
+        valid_shortcut = (password in ("user", "User@12345"))
     else:
         user = db.session.query(User).filter_by(email=identifier).first()
         valid_shortcut = False
+
 
     if not user:
         return jsonify({"error": "Invalid email or password credentials"}), 401

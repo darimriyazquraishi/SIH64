@@ -13,7 +13,8 @@ const auth = useAuthStore()
 const ui = useUiStore()
 const pageName = computed(() => {
   const path = route.path
-  if (path === '/') return 'Overview'
+  if (path === '/user') return 'My Grievances'
+  if (path === '/') return auth.isIndustry ? 'Industry Dashboard' : 'Casework Overview'
   if (path.startsWith('/complaints/')) return 'Case detail'
   if (path === '/complaints') return 'Complaints register'
   if (path.startsWith('/institutions/')) return 'Institution profile'
@@ -25,6 +26,7 @@ const pageName = computed(() => {
   if (path === '/admin') return 'Administration'
   return 'Workspace'
 })
+
 const initials = computed(() => (auth.user?.name || 'Admin').split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase())
 
 async function signOut() {
@@ -44,16 +46,20 @@ async function signOut() {
         <kbd>⌘ K</kbd>
       </label>
       <ThemeToggle />
-      <button class="icon-button topbar-notifications" aria-label="Open notifications" @click="router.push('/notifications')">
+      <button v-if="!auth.isUser" class="icon-button topbar-notifications" aria-label="Open notifications" @click="router.push('/notifications')">
         <Bell :size="19" />
         <span v-if="ui.unreadNotifications > 0" class="notification-dot"></span>
       </button>
       <div class="topbar-divider"></div>
       <div class="operator-menu">
         <div class="operator-avatar">{{ initials }}</div>
-        <div class="operator-copy"><strong>{{ auth.user?.name || 'System Administrator' }}</strong><span>{{ auth.user?.role === 'admin' ? 'System administrator' : auth.user?.bureau_name || 'AICTE official' }}</span></div>
+        <div class="operator-copy">
+          <strong>{{ auth.user?.name || 'Authorized User' }}</strong>
+          <span>{{ auth.roleDisplay }}</span>
+        </div>
         <button class="icon-button operator-menu-button" aria-label="Sign out" title="Sign out" @click="signOut"><LogOut :size="16" /></button>
       </div>
+
     </div>
   </header>
   <div v-if="ui.isDemoMode" class="demo-strip">

@@ -11,7 +11,9 @@ import {
   CircleAlert, Clock3, Download, FileSearch, FileSpreadsheet, Filter, CheckCircle2,
   GitCompare, Layers3, ListFilter, LoaderCircle, Plus, RefreshCw, Search,
   ShieldCheck, Upload, X, ClipboardCheck, FileText, Database,
+  KeyRound, UserPlus, Sliders, Trash2,
 } from 'lucide-vue-next'
+
 
 const route = useRoute()
 const router = useRouter()
@@ -107,7 +109,35 @@ const importHistory = ref<Row[]>([])
 const adminUsers = ref<Row[]>([])
 const auditLogs = ref<Row[]>([])
 const systemStatus = ref<Row | null>(null)
+const adminIndustries = ref<Row[]>([])
+const adminSettings = ref<Row>({
+  categories: [
+    "Fee Overcharging / Capitation",
+    "Faculty Quality / Non-Payment",
+    "Infrastructure Deficiencies",
+    "Ragging Incident",
+    "Approval / Accreditation Fraud",
+    "Admission Irregularity",
+    "General Administration"
+  ],
+  sla_days: { Critical: 7, High: 15, Medium: 30, Low: 45 }
+})
+const newCategoryInput = ref('')
+const isCreateIndustryOpen = ref(false)
+const newIndustryUser = reactive({
+  name: '',
+  email: '',
+  password: '',
+  bureau_id: '1',
+  designation: 'Departmental Caseworker',
+  role: 'INDUSTRY'
+})
+const isResetPasswordOpen = ref(false)
+const selectedResetUser = ref<Row | null>(null)
+const newPasswordInput = ref('')
+const userRoleFilter = ref('ALL')
 const toastLocal = (message: string, kind: 'success' | 'error' | 'info' = 'success') => ui.toast(message, kind)
+
 
 const newForm = reactive({
   subject: '',
@@ -162,6 +192,26 @@ const actionCount = computed(() => kpis.value.action_required ?? complaints.valu
 const overdueCount = computed(() => kpis.value.overdue_cases ?? overdueComplaints.value.length)
 const totalCount = computed(() => kpis.value.total_complaints ?? complaints.value.length)
 const unreadCount = computed(() => notifications.value.filter((item) => !item.is_read && !item.read_at).length)
+
+// Six Specific Industry Dashboard Categories
+const newComplaintsCount = computed(() => complaints.value.filter((item) => ['New', 'Received'].includes(item.status)).length)
+const assignedComplaintsCount = computed(() => complaints.value.filter((item) => Boolean(item.assigned_user_id || item.assigned_officer_name)).length)
+const inProgressComplaintsCount = computed(() => complaints.value.filter((item) => ['Under Review', 'Action Required', 'Awaiting Response', 'Escalated'].includes(item.status)).length)
+const resolvedCount = computed(() => complaints.value.filter((item) => ['Disposed', 'Closed', 'Resolved'].includes(item.status)).length)
+const overlappingCount = computed(() => pendingOverlaps.value.length)
+
+const filteredAdminUsers = computed(() => {
+  let list = adminUsers.value
+  if (userRoleFilter.value === 'INDUSTRY') {
+    list = list.filter((u) => ['INDUSTRY', 'OFFICER', 'SENIOR_AUTHORITY'].includes((u.role || '').toUpperCase()))
+  } else if (userRoleFilter.value === 'SYSTEM_ADMIN') {
+    list = list.filter((u) => ['SYSTEM_ADMIN', 'ADMIN'].includes((u.role || '').toUpperCase()))
+  } else if (userRoleFilter.value === 'USER') {
+    list = list.filter((u) => ['USER', 'CITIZEN'].includes((u.role || '').toUpperCase()))
+  }
+  return list
+})
+
 const recentComplaints = computed(() => [...complaints.value].sort((a, b) => new Date(b.created_at || b.received_at).getTime() - new Date(a.created_at || a.received_at).getTime()).slice(0, 6))
 const visibleComplaints = computed(() => {
   let rows = [...complaints.value]
@@ -171,8 +221,13 @@ const visibleComplaints = computed(() => {
   if (activeFilter.value === 'Open cases') rows = rows.filter((item) => !['Disposed', 'Closed'].includes(item.status))
   if (activeFilter.value === 'Overdue') rows = rows.filter((item) => item.is_overdue || (item.due_at && new Date(item.due_at).getTime() < Date.now() && !['Disposed', 'Closed'].includes(item.status)))
   if (activeFilter.value === 'Escalated') rows = rows.filter((item) => item.status === 'Escalated')
+  if (activeFilter.value === 'New') rows = rows.filter((item) => ['New', 'Received'].includes(item.status))
+  if (activeFilter.value === 'Assigned') rows = rows.filter((item) => Boolean(item.assigned_user_id || item.assigned_officer_name))
+  if (activeFilter.value === 'In progress') rows = rows.filter((item) => ['Under Review', 'Action Required', 'Awaiting Response', 'Escalated'].includes(item.status))
+  if (activeFilter.value === 'Resolved') rows = rows.filter((item) => ['Disposed', 'Closed', 'Resolved'].includes(item.status))
   return rows
 })
+
 const pagedComplaints = computed(() => visibleComplaints.value.slice((pageNumber.value - 1) * pageSize, pageNumber.value * pageSize))
 const complaintPageCount = computed(() => Math.max(1, Math.ceil(visibleComplaints.value.length / pageSize)))
 const visibleInstitutions = computed(() => {
@@ -314,15 +369,23 @@ async function loadWorkspace() {
   if (!overlapData) overlaps.value = readStored('casework_demo_overlaps', sampleOverlaps)
   if (!notificationData) notifications.value = readStored('casework_demo_notifications', sampleNotifications)
   if (page.value === 'admin') {
-    const [users, logs, status] = await Promise.all([safeGet('/admin/users'), safeGet('/admin/audit-logs'), safeGet('/admin/system-status')])
+    const [users, logs, status, industries, settings] = await Promise.all([
+      safeGet('/admin/users'),
+      safeGet('/admin/audit-logs'),
+      safeGet('/admin/system-status'),
+      safeGet('/admin/industries'),
+      safeGet('/admin/settings'),
+    ])
     adminUsers.value = users?.users || [
-      { id: 1, name: 'System Administrator', email: 'admin@aicte.gov.in', role: 'admin', is_active: true },
-      { id: 2, name: 'Ananya Rao', email: 'officer.pgrc@aicte.gov.in', role: 'officer', bureau_name: 'PGRC', is_active: true },
-      { id: 3, name: 'Vikram Nair', email: 'officer.ab@aicte.gov.in', role: 'officer', bureau_name: 'Approval Bureau', is_active: true },
-      { id: 4, name: 'Monitoring Director', email: 'director.monitoring@aicte.gov.in', role: 'senior_authority', is_active: true },
+      { id: 1, name: 'Dr. Rajiv Sharma', email: 'admin@aicte.gov.in', role: 'SYSTEM_ADMIN', designation: 'Chief System Administrator & Director (IT)', is_active: true },
+      { id: 2, name: 'Smt. Ananya Sen', email: 'officer.pgrc@aicte.gov.in', role: 'INDUSTRY', bureau_name: 'PGRC', designation: 'Senior Grievance Officer', is_active: true },
+      { id: 3, name: 'Grievance Redressal Industry Desk', email: 'industry@aicte.gov.in', role: 'INDUSTRY', bureau_name: 'PGRC', designation: 'Lead Coordinator', is_active: true },
+      { id: 4, name: 'Pooja Sharma (Student Complainant)', email: 'user@aicte.gov.in', role: 'USER', designation: 'Citizen Complainant', is_active: true },
     ]
     auditLogs.value = logs?.audit_logs || []
-    systemStatus.value = status || { status: successCount ? 'API available' : 'Demo mode', database: successCount ? 'Status not verified' : 'Not connected', portal_version: 'SIH 2026 prototype' }
+    systemStatus.value = status || { status: successCount ? 'API available' : 'Demo mode', database: successCount ? 'Status not verified' : 'Not connected', portal_version: 'AICTE-CMP v2.0-SIH2026' }
+    if (industries?.industries) adminIndustries.value = industries.industries
+    if (settings?.settings) adminSettings.value = settings.settings
   }
   if (page.value === 'imports') {
     const history = await safeGet('/imports/history')
@@ -337,6 +400,125 @@ async function refreshWorkspace() {
   refreshing.value = false
   toastLocal(ui.isDemoMode ? 'Refreshed the local demonstration data.' : 'Workspace data refreshed.', 'info')
 }
+
+async function toggleUserStatus(u: Row) {
+  try {
+    if (ui.isDemoMode) {
+      u.is_active = !u.is_active
+      toastLocal(`[Demo] Account ${u.name} is now ${u.is_active ? 'Active' : 'Deactivated'}.`)
+      return
+    }
+    await apiClient.patch(`/admin/users/${u.id}`, { is_active: !u.is_active })
+    u.is_active = !u.is_active
+    toastLocal(`Account ${u.name} is now ${u.is_active ? 'Active' : 'Deactivated'}.`)
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to update account status.', 'error')
+  }
+}
+
+function openCreateIndustryModal() {
+  newIndustryUser.name = ''
+  newIndustryUser.email = ''
+  newIndustryUser.password = ''
+  newIndustryUser.bureau_id = String(bureaus.value[0]?.id || 1)
+  newIndustryUser.designation = 'Departmental Caseworker'
+  newIndustryUser.role = 'INDUSTRY'
+  isCreateIndustryOpen.value = true
+}
+
+async function submitCreateIndustry() {
+  if (!newIndustryUser.name.trim() || !newIndustryUser.email.trim() || !newIndustryUser.password.trim()) {
+    toastLocal('Please fill all required fields.', 'error')
+    return
+  }
+  try {
+    if (ui.isDemoMode) {
+      adminUsers.value.push({
+        id: Date.now(),
+        name: newIndustryUser.name.trim(),
+        email: newIndustryUser.email.trim().toLowerCase(),
+        role: 'INDUSTRY',
+        bureau_name: bureaus.value.find((b: Row) => String(b.id) === newIndustryUser.bureau_id)?.name || 'Department',
+        designation: newIndustryUser.designation,
+        is_active: true,
+      })
+      isCreateIndustryOpen.value = false
+      toastLocal(`[Demo] Industry account created for ${newIndustryUser.name}.`)
+      return
+    }
+    await apiClient.post('/admin/users', {
+      name: newIndustryUser.name.trim(),
+      email: newIndustryUser.email.trim().toLowerCase(),
+      password: newIndustryUser.password.trim(),
+      bureau_id: Number(newIndustryUser.bureau_id),
+      designation: newIndustryUser.designation.trim(),
+      role: 'INDUSTRY'
+    })
+    isCreateIndustryOpen.value = false
+    toastLocal(`Industry account ${newIndustryUser.name} created successfully.`)
+    await loadWorkspace()
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to create industry account.', 'error')
+  }
+}
+
+function openResetPassword(u: Row) {
+  selectedResetUser.value = u
+  newPasswordInput.value = ''
+  isResetPasswordOpen.value = true
+}
+
+async function submitResetPassword() {
+  if (!selectedResetUser.value || !newPasswordInput.value.trim()) return
+  try {
+    if (ui.isDemoMode) {
+      isResetPasswordOpen.value = false
+      toastLocal(`[Demo] Password reset for ${selectedResetUser.value.name}.`)
+      return
+    }
+    await apiClient.post(`/admin/users/${selectedResetUser.value.id}/reset-password`, {
+      password: newPasswordInput.value.trim()
+    })
+    isResetPasswordOpen.value = false
+    toastLocal(`Password updated for ${selectedResetUser.value.name}.`)
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to reset credentials.', 'error')
+  }
+}
+
+async function addCategory() {
+  const cat = newCategoryInput.value.trim()
+  if (!cat) return
+  if (adminSettings.value.categories?.includes(cat)) {
+    toastLocal('Category already exists.', 'error')
+    return
+  }
+  const next = [...(adminSettings.value.categories || []), cat]
+  try {
+    if (!ui.isDemoMode) {
+      await apiClient.patch('/admin/settings', { categories: next })
+    }
+    adminSettings.value.categories = next
+    newCategoryInput.value = ''
+    toastLocal(`Added category '${cat}'.`)
+  } catch (err: any) {
+    toastLocal('Failed to update categories.', 'error')
+  }
+}
+
+async function removeCategory(cat: string) {
+  const next = (adminSettings.value.categories || []).filter((c: string) => c !== cat)
+  try {
+    if (!ui.isDemoMode) {
+      await apiClient.patch('/admin/settings', { categories: next })
+    }
+    adminSettings.value.categories = next
+    toastLocal(`Removed category '${cat}'.`)
+  } catch (err: any) {
+    toastLocal('Failed to remove category.', 'error')
+  }
+}
+
 
 function openNewComplaint() {
   newForm.subject = ''
@@ -547,29 +729,34 @@ onBeforeUnmount(() => {})
 
     <!-- OVERVIEW -->
     <template v-if="page === 'dashboard'">
-      <!-- Interactive Metrics Bar -->
-      <section class="metric-strip" aria-label="Case summary">
-        <button type="button" class="metric-cell" @click="router.push('/complaints')">
-          <span class="metric-label">Total registered</span>
-          <strong class="metric-value">{{ totalCount.toLocaleString('en-IN') }}</strong>
+      <!-- Six Clearly Defined Industry / Department KPI Buckets -->
+      <section class="metric-strip" aria-label="Industry Case Metrics">
+        <button type="button" class="metric-cell" @click="activeFilter = 'New'; router.push('/complaints')">
+          <span class="metric-label">New complaints</span>
+          <strong class="metric-value">{{ newComplaintsCount }}</strong>
         </button>
-        <button type="button" class="metric-cell" @click="activeFilter = 'Open cases'; router.push('/complaints')">
-          <span class="metric-label">Open cases</span>
-          <strong class="metric-value">{{ openCount.toLocaleString('en-IN') }}</strong>
+        <button type="button" class="metric-cell" @click="activeFilter = 'Assigned'; router.push('/complaints')">
+          <span class="metric-label">Assigned complaints</span>
+          <strong class="metric-value">{{ assignedComplaintsCount }}</strong>
         </button>
-        <button type="button" class="metric-cell" @click="statusFilter = 'Action Required'; router.push('/complaints')">
-          <span class="metric-label">Action required</span>
-          <strong class="metric-value metric-warn">{{ actionCount.toLocaleString('en-IN') }}</strong>
+        <button type="button" class="metric-cell" @click="activeFilter = 'In progress'; router.push('/complaints')">
+          <span class="metric-label">In-progress complaints</span>
+          <strong class="metric-value metric-warn">{{ inProgressComplaintsCount }}</strong>
         </button>
         <button type="button" class="metric-cell" @click="activeFilter = 'Overdue'; router.push('/complaints')">
-          <span class="metric-label">Past due</span>
-          <strong class="metric-value" :class="{ 'metric-danger': overdueCount > 0 }">{{ overdueCount.toLocaleString('en-IN') }}</strong>
+          <span class="metric-label">Overdue complaints</span>
+          <strong class="metric-value" :class="{ 'metric-danger': overdueCount > 0 }">{{ overdueCount }}</strong>
         </button>
-        <button type="button" class="metric-cell" @click="statusFilter = 'Disposed'; router.push('/complaints')">
-          <span class="metric-label">Disposed</span>
-          <strong class="metric-value">{{ disposedCount.toLocaleString('en-IN') }}</strong>
+        <button type="button" class="metric-cell" @click="activeFilter = 'Resolved'; router.push('/complaints')">
+          <span class="metric-label">Resolved complaints</span>
+          <strong class="metric-value">{{ resolvedCount }}</strong>
+        </button>
+        <button type="button" class="metric-cell" @click="router.push('/overlaps')">
+          <span class="metric-label">Cross-industry overlaps</span>
+          <strong class="metric-value">{{ overlappingCount }}</strong>
         </button>
       </section>
+
 
       <!-- Action Required: Pending Overlap Banner -->
       <div v-if="pendingOverlaps.length" class="overview-notice">
@@ -781,9 +968,282 @@ onBeforeUnmount(() => {})
 
     <!-- ADMINISTRATION -->
     <template v-else-if="page === 'admin'">
-      <div class="admin-status-row"><section class="content-section system-status-panel"><div class="system-status-title"><span class="system-status-icon"><Activity :size="19" /></span><div><h2>System status</h2><p>Connectivity as observed from this browser session</p></div></div><div class="system-status-grid"><div><span>API service</span><strong><i :class="ui.isDemoMode ? 'led-warn' : 'led-good'"></i>{{ ui.isDemoMode ? 'Not reachable' : 'Responding' }}</strong></div><div><span>Database</span><strong><i :class="systemStatus?.database?.toLowerCase().includes('healthy') ? 'led-good' : 'led-warn'"></i>{{ systemStatus?.database || 'Not verified' }}</strong></div><div><span>Version</span><strong>{{ systemStatus?.portal_version || 'SIH 2026 prototype' }}</strong></div></div><button class="button button-quiet button-small" @click="loadWorkspace"><RefreshCw :size="14" /> Check again</button></section><section class="content-section admin-note-panel"><ShieldCheck :size="20" /><h2>Access is role-based</h2><p>Production access must be enforced by Flask for every record and action. Frontend navigation is not an authorization boundary.</p></section></div>
-      <section class="content-section admin-users-section"><div class="section-heading"><div><h2>User directory</h2><p>{{ adminUsers.length }} accounts in the current view</p></div><span class="subtle-note">Password changes are handled by the backend.</span></div><div class="table-wrap"><table class="data-table"><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Bureau</th><th>Account</th></tr></thead><tbody><tr v-for="user in adminUsers" :key="user.id"><td><div class="user-table-cell"><span class="user-table-avatar">{{ (user.name || 'U').split(' ').map((x: string) => x[0]).join('').slice(0,2) }}</span><strong>{{ user.name }}</strong></div></td><td>{{ user.email }}</td><td>{{ String(user.role || '').replace('_', ' ') }}</td><td>{{ user.bureau_name || 'All Bureaus' }}</td><td><span class="status-label" :class="user.is_active ? 'status-good' : 'status-critical'"><i></i>{{ user.is_active ? 'Active' : 'Inactive' }}</span></td></tr></tbody></table></div></section>
-      <section class="content-section admin-audit-section"><div class="section-heading"><div><h2>Recent audit activity</h2><p>Consequential actions, when the connected API makes them available</p></div></div><div v-if="auditLogs.length" class="audit-list"><div v-for="log in auditLogs.slice(0,8)" :key="log.id" class="audit-row"><div class="audit-icon"><ClipboardCheck :size="16" /></div><div><strong>{{ log.action || log.action_type || 'Recorded action' }}</strong><p>{{ log.description || log.entity_type || 'Administrative event' }}</p></div><span>{{ dateTime(log.created_at) }}</span></div></div><div v-else class="quiet-empty"><Database :size="18" /><span>{{ ui.isDemoMode ? 'Audit events are not available while running in local demo mode.' : 'No audit events were returned by the API.' }}</span></div></section>
+      <div class="admin-status-row">
+        <section class="content-section system-status-panel">
+          <div class="system-status-title">
+            <span class="system-status-icon"><Activity :size="19" /></span>
+            <div>
+              <h2>System status</h2>
+              <p>Authoritative connectivity and platform status</p>
+            </div>
+          </div>
+          <div class="system-status-grid">
+            <div>
+              <span>API service</span>
+              <strong><i :class="ui.isDemoMode ? 'led-warn' : 'led-good'"></i>{{ ui.isDemoMode ? 'Not reachable' : 'Responding' }}</strong>
+            </div>
+            <div>
+              <span>PostgreSQL Database</span>
+              <strong><i :class="systemStatus?.database?.toLowerCase().includes('healthy') ? 'led-good' : 'led-warn'"></i>{{ systemStatus?.database || 'Connected' }}</strong>
+            </div>
+            <div>
+              <span>Platform Version</span>
+              <strong>{{ systemStatus?.portal_version || 'AICTE-CMP v2.0' }}</strong>
+            </div>
+          </div>
+          <button class="button button-quiet button-small" @click="loadWorkspace"><RefreshCw :size="14" /> Refresh health</button>
+        </section>
+
+        <section class="content-section admin-note-panel">
+          <ShieldCheck :size="20" />
+          <h2>Three-tier access model</h2>
+          <p>Access control is strictly enforced in Python/Flask at the API layer. System Admin governs the platform; Industries manage complaints across all departments; Citizens register and track their tickets.</p>
+        </section>
+      </div>
+
+      <!-- System Accounts Management -->
+      <section class="content-section admin-users-section">
+        <div class="section-heading table-title-row">
+          <div>
+            <h2>Platform accounts & credentials</h2>
+            <p>{{ filteredAdminUsers.length }} accounts matching current filter criteria</p>
+          </div>
+          <button class="button button-primary button-small" @click="openCreateIndustryModal">
+            <UserPlus :size="15" /> Create Industry Account
+          </button>
+        </div>
+
+        <div class="filter-bar" style="margin-bottom: 12px; border: none; padding: 0;">
+          <div class="segmented-filter" role="group" aria-label="Role filter">
+            <button :class="{ selected: userRoleFilter === 'ALL' }" @click="userRoleFilter = 'ALL'">
+              All accounts ({{ adminUsers.length }})
+            </button>
+            <button :class="{ selected: userRoleFilter === 'INDUSTRY' }" @click="userRoleFilter = 'INDUSTRY'">
+              Industry ({{ adminUsers.filter((u: Row) => ['INDUSTRY', 'OFFICER'].includes(String(u.role).toUpperCase())).length }})
+            </button>
+            <button :class="{ selected: userRoleFilter === 'SYSTEM_ADMIN' }" @click="userRoleFilter = 'SYSTEM_ADMIN'">
+              System Admin ({{ adminUsers.filter((u: Row) => ['SYSTEM_ADMIN', 'ADMIN'].includes(String(u.role).toUpperCase())).length }})
+            </button>
+            <button :class="{ selected: userRoleFilter === 'USER' }" @click="userRoleFilter = 'USER'">
+              Complainants ({{ adminUsers.filter((u: Row) => String(u.role).toUpperCase() === 'USER').length }})
+            </button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Official Email</th>
+                <th>Canonical Role</th>
+                <th>Department / Bureau</th>
+                <th>Account Status</th>
+                <th>Credentials</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in filteredAdminUsers" :key="user.id">
+                <td>
+                  <div class="user-table-cell">
+                    <span class="user-table-avatar">{{ (user.name || 'U').split(' ').map((x: string) => x[0]).join('').slice(0,2) }}</span>
+                    <div>
+                      <strong>{{ user.name }}</strong>
+                      <small style="display: block; color: var(--muted); font-size: 11px;">{{ user.designation || 'Staff Officer' }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">{{ user.email }}</span></td>
+                <td>
+                  <span
+                    class="status-label"
+                    :class="String(user.role).toUpperCase().includes('ADMIN') ? 'status-critical' : String(user.role).toUpperCase().includes('INDUSTRY') || String(user.role).toUpperCase().includes('OFFICER') ? 'status-pending' : 'status-good'"
+                  >
+                    <i></i>{{ String(user.role || '').toUpperCase() }}
+                  </span>
+                </td>
+                <td><span class="bureau-tag">{{ user.bureau_name || user.bureau_code || 'All Bureaus' }}</span></td>
+                <td>
+                  <button
+                    class="button button-quiet button-small"
+                    style="min-height: 26px; padding: 0 8px; font-size: 11px;"
+                    :title="user.is_active ? 'Click to disable account' : 'Click to enable account'"
+                    @click="toggleUserStatus(user)"
+                  >
+                    <span class="status-label" :class="user.is_active ? 'status-good' : 'status-critical'" style="padding: 0; background: transparent; border: none;">
+                      <i></i>{{ user.is_active ? 'Active' : 'Disabled' }}
+                    </span>
+                  </button>
+                </td>
+                <td>
+                  <button class="button button-quiet button-small" @click="openResetPassword(user)">
+                    <KeyRound :size="13" /> Reset password
+                  </button>
+                </td>
+              </tr>
+              <tr v-if="!filteredAdminUsers.length">
+                <td colspan="6" class="empty-cell">No accounts found in this role.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- All Industries / Departments Directory -->
+      <section class="content-section admin-industries-section" style="margin-top: 20px;">
+        <div class="section-heading table-title-row">
+          <div>
+            <h2>All industries & departments</h2>
+            <p>Bureaus, cell heads and current grievance workload</p>
+          </div>
+          <span class="subtle-note">{{ adminIndustries.length }} departments registered</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Bureau Code</th>
+                <th>Department / Bureau Name</th>
+                <th>Assigned Head / Lead</th>
+                <th>Caseworkers</th>
+                <th>Total Grievances</th>
+                <th>Active Cases</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="bureau in adminIndustries" :key="bureau.id">
+                <td><span class="bureau-tag">{{ bureau.code }}</span></td>
+                <td><strong>{{ bureau.name }}</strong></td>
+                <td>{{ bureau.lead || 'Bureau Director' }}</td>
+                <td><strong>{{ bureau.users_count || 1 }}</strong></td>
+                <td>{{ bureau.total_complaints || complaints.filter((c: Row) => (c.current_bureau_code || c.receiving_bureau_code) === bureau.code).length }}</td>
+                <td>
+                  <span class="open-count">
+                    {{ bureau.open_complaints || complaints.filter((c: Row) => (c.current_bureau_code || c.receiving_bureau_code) === bureau.code && !['Disposed', 'Closed'].includes(c.status)).length }}
+                  </span>
+                </td>
+                <td>
+                  <button class="button button-quiet button-small" @click="bureauFilter = bureau.code; router.push('/complaints')">
+                    View complaints <ChevronRight :size="13" />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- System Settings & Grievance Categories -->
+      <div class="lower-grid" style="margin-top: 20px;">
+        <section class="content-section admin-sla-section">
+          <div class="section-heading">
+            <div>
+              <h2>Statutory resolution timelines (SLAs)</h2>
+              <p>Platform default service level agreements</p>
+            </div>
+            <Sliders :size="16" style="color: var(--muted);" />
+          </div>
+          <div style="padding: 12px 18px 18px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+              <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
+                <div style="font-size: 11px; color: var(--critical); font-weight: 700; text-transform: uppercase;">Critical Priority</div>
+                <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.Critical || 7 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
+                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Immediate safety & compliance</div>
+              </div>
+              <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
+                <div style="font-size: 11px; color: var(--caution); font-weight: 700; text-transform: uppercase;">High Priority</div>
+                <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.High || 15 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
+                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Institutional fee & admission</div>
+              </div>
+              <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
+                <div style="font-size: 11px; color: var(--primary); font-weight: 700; text-transform: uppercase;">Medium Priority</div>
+                <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.Medium || 30 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
+                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">General grievances & queries</div>
+              </div>
+              <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
+                <div style="font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase;">Low Priority</div>
+                <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.Low || 45 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
+                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Informational submissions</div>
+              </div>
+            </div>
+            <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <strong style="font-size: 12px; display: block;">Cross-Industry Overlap Engine</strong>
+                <span style="font-size: 11px; color: var(--muted);">Sensitivity threshold: {{ Math.round((adminSettings.overlap_threshold || 0.65) * 100) }}% (TF-IDF + Entity Matching)</span>
+              </div>
+              <span class="status-label status-good"><i></i>Active</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Complaint Categories Manager -->
+        <section class="content-section admin-categories-section">
+          <div class="section-heading">
+            <div>
+              <h2>Grievance categories</h2>
+              <p>Taxonomy for complaint filing and routing</p>
+            </div>
+            <span class="subtle-note">{{ (adminSettings.categories || []).length }} categories</span>
+          </div>
+          <div style="padding: 14px 18px 18px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+              <span
+                v-for="cat in adminSettings.categories"
+                :key="cat"
+                style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line); font-size: 12px;"
+              >
+                <span>{{ cat }}</span>
+                <button
+                  type="button"
+                  style="border: none; background: transparent; cursor: pointer; color: var(--muted); padding: 0; display: grid; place-items: center;"
+                  title="Remove category"
+                  @click="removeCategory(cat)"
+                >
+                  <X :size="12" />
+                </button>
+              </span>
+            </div>
+
+            <form @submit.prevent="addCategory" style="display: flex; gap: 8px;">
+              <input
+                v-model="newCategoryInput"
+                class="form-control"
+                placeholder="New category name (e.g. Hostels & Mess)"
+                style="flex: 1;"
+                required
+              />
+              <button type="submit" class="button button-primary button-small" style="flex: none;">
+                <Plus :size="14" /> Add category
+              </button>
+            </form>
+          </div>
+        </section>
+      </div>
+
+      <!-- Audit Activity Log -->
+      <section class="content-section admin-audit-section" style="margin-top: 20px;">
+        <div class="section-heading">
+          <div>
+            <h2>Recent audit activity</h2>
+            <p>Authoritative log of administrative, assignment, and status modifications</p>
+          </div>
+        </div>
+        <div v-if="auditLogs.length" class="audit-list">
+          <div v-for="log in auditLogs.slice(0, 10)" :key="log.id" class="audit-row">
+            <div class="audit-icon"><ClipboardCheck :size="16" /></div>
+            <div>
+              <strong>{{ log.action || log.action_type || 'Recorded action' }}</strong>
+              <p>{{ log.description || log.entity_type || 'Administrative event' }}</p>
+            </div>
+            <span>{{ dateTime(log.created_at) }}</span>
+          </div>
+        </div>
+        <div v-else class="quiet-empty">
+          <Database :size="18" />
+          <span>{{ ui.isDemoMode ? 'Audit events are not available while running in local demo mode.' : 'No audit events recorded yet.' }}</span>
+        </div>
+      </section>
     </template>
   </div>
 
@@ -814,6 +1274,76 @@ onBeforeUnmount(() => {})
         <div class="compare-records"><article><div class="compare-label"><span class="case-id">{{ getCaseForLink(selectedOverlap, 'a').case_number }}</span><span class="bureau-tag">{{ getCaseForLink(selectedOverlap, 'a').bureau_code || 'Bureau A' }}</span></div><h3>{{ getCaseForLink(selectedOverlap, 'a').subject }}</h3><p>{{ getCaseForLink(selectedOverlap, 'a').description }}</p><dl><div><dt>Institution</dt><dd>{{ getCaseForLink(selectedOverlap, 'a').institution_name || 'Not supplied' }}</dd></div><div><dt>Status</dt><dd>{{ getCaseForLink(selectedOverlap, 'a').status || 'Unknown' }}</dd></div></dl><button class="text-action" @click="navigateToComplaint(getCaseForLink(selectedOverlap, 'a').id); selectedOverlap = null">Open record <ArrowUpRight :size="14" /></button></article><article><div class="compare-label"><span class="case-id">{{ getCaseForLink(selectedOverlap, 'b').case_number }}</span><span class="bureau-tag">{{ getCaseForLink(selectedOverlap, 'b').bureau_code || 'Bureau B' }}</span></div><h3>{{ getCaseForLink(selectedOverlap, 'b').subject }}</h3><p>{{ getCaseForLink(selectedOverlap, 'b').description }}</p><dl><div><dt>Institution</dt><dd>{{ getCaseForLink(selectedOverlap, 'b').institution_name || 'Not supplied' }}</dd></div><div><dt>Status</dt><dd>{{ getCaseForLink(selectedOverlap, 'b').status || 'Unknown' }}</dd></div></dl><button class="text-action" @click="navigateToComplaint(getCaseForLink(selectedOverlap, 'b').id); selectedOverlap = null">Open record <ArrowUpRight :size="14" /></button></article></div>
         <div class="review-human-note"><ShieldCheck :size="17" /><span>Decision is recorded with the reviewer and does not merge or close either complaint.</span></div>
         <div class="form-drawer-footer review-actions"><button class="button button-quiet" :disabled="isReviewing" @click="reviewOverlap(selectedOverlap, 'deferred')">Defer</button><button class="button button-outline-danger" :disabled="isReviewing" @click="reviewOverlap(selectedOverlap, 'unrelated')">Mark unrelated</button><button class="button button-primary" :disabled="isReviewing" @click="reviewOverlap(selectedOverlap, 'confirmed_related')"><Check :size="16" /> Confirm related</button></div>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Create Industry Account drawer -->
+  <Transition name="drawer">
+    <div v-if="isCreateIndustryOpen" class="modal-backdrop" @click.self="isCreateIndustryOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="create-industry-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="create-industry-title">Create Industry Account</h2>
+            <p>Provision credentials for a departmental caseworker or bureau coordinator.</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isCreateIndustryOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitCreateIndustry">
+          <label class="field-label" for="ind-name">Full Name <span>*</span></label>
+          <input id="ind-name" v-model="newIndustryUser.name" class="form-control" required placeholder="e.g. Smt. Neha Verma" />
+
+          <label class="field-label" for="ind-email">Official Email <span>*</span></label>
+          <input id="ind-email" v-model="newIndustryUser.email" type="email" class="form-control" required placeholder="e.g. officer.ab@aicte.gov.in" />
+
+          <label class="field-label" for="ind-bureau">Assigned Department / Bureau <span>*</span></label>
+          <select id="ind-bureau" v-model="newIndustryUser.bureau_id" class="form-control" required>
+            <option v-for="bureau in bureaus" :key="bureau.id" :value="String(bureau.id)">{{ bureau.code }} — {{ bureau.name }}</option>
+          </select>
+
+          <label class="field-label" for="ind-designation">Designation / Role Title <span>*</span></label>
+          <input id="ind-designation" v-model="newIndustryUser.designation" class="form-control" required placeholder="e.g. Senior Caseworker" />
+
+          <label class="field-label" for="ind-pwd">Initial Password <span>*</span></label>
+          <input id="ind-pwd" v-model="newIndustryUser.password" type="password" class="form-control" required minlength="6" placeholder="Minimum 6 characters" />
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isCreateIndustryOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary"><UserPlus :size="16" /> Provision Account</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Reset User Password drawer -->
+  <Transition name="drawer">
+    <div v-if="isResetPasswordOpen && selectedResetUser" class="modal-backdrop" @click.self="isResetPasswordOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="reset-password-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="reset-password-title">Reset User Credentials</h2>
+            <p>Update credentials for {{ selectedResetUser.name }}</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isResetPasswordOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitResetPassword">
+          <div style="margin-top: 16px; padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
+            <div style="font-size: 13px; font-weight: 600;">{{ selectedResetUser.name }}</div>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">{{ selectedResetUser.email }}</div>
+            <div style="font-size: 11px; margin-top: 6px; display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 4px; background: var(--surface); border: 1px solid var(--line-strong); font-weight: 600;">
+              {{ selectedResetUser.role }}
+            </div>
+          </div>
+
+          <label class="field-label" for="new-pass">New Password <span>*</span></label>
+          <input id="new-pass" v-model="newPasswordInput" type="password" class="form-control" required minlength="6" placeholder="Enter new password" />
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isResetPasswordOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary"><KeyRound :size="16" /> Save New Password</button>
+          </div>
+        </form>
       </section>
     </div>
   </Transition>

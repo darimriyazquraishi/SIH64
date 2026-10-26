@@ -112,13 +112,14 @@ class Complaint(db.Model):
             data["related_links"] = links
         return data
 
-    def to_public_dict(self):
+    def to_public_dict(self, include_history: bool = False):
         """
-        Public tracking representation.
+        Public tracking representation for complainants.
         Strictly excludes internal officer names, user IDs, internal action remarks,
-        and internal audit events.
+        overlap match scores, and internal audit events.
         """
-        return {
+        data = {
+            "id": self.id,
             "ticket_number": self.ticket_number or self.case_number,
             "case_number": self.case_number,
             "status": self.status,
@@ -138,4 +139,17 @@ class Complaint(db.Model):
             "resolution_summary": self.resolution_summary,
             "has_supporting_document": bool(self.supporting_document_name),
             "supporting_document_name": self.supporting_document_name,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
         }
+        if include_history:
+            history = []
+            for a in self.actions:
+                history.append({
+                    "action_type": a.action_type,
+                    "date": a.created_at.isoformat() if a.created_at else None,
+                    "status": a.new_status or self.status,
+                    "description": a.description if a.action_type in ("status_change", "case_intake") and not ("Remarks:" in (a.description or "")) else f"Status updated to '{a.new_status or self.status}'"
+                })
+            data["updates"] = history
+        return data
+

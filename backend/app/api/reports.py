@@ -1,11 +1,12 @@
 from flask import Blueprint, request, jsonify, Response
-from ..services.auth_service import jwt_required
+from ..services.auth_service import jwt_required, roles_required, ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY
 from ..services.report_service import get_dashboard_kpis, get_analytics_breakdown, generate_cases_csv
 
 reports_bp = Blueprint("reports", __name__, url_prefix="/api/v1/reports")
 
 @reports_bp.route("/kpis", methods=["GET"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def get_kpis():
     bureau_id = request.args.get("bureau_id", type=int)
     data = get_dashboard_kpis(bureau_id=bureau_id)
@@ -13,6 +14,7 @@ def get_kpis():
 
 @reports_bp.route("/analytics", methods=["GET"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def get_analytics():
     bureau_id = request.args.get("bureau_id", type=int)
     state = request.args.get("state")
@@ -21,6 +23,7 @@ def get_analytics():
 
 @reports_bp.route("/export-csv", methods=["GET"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def export_csv():
     bureau_id = request.args.get("bureau_id", type=int)
     status = request.args.get("status")

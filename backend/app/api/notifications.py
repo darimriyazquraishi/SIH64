@@ -1,5 +1,11 @@
 from flask import Blueprint, request, jsonify
-from ..services.auth_service import jwt_required, get_current_user
+from ..services.auth_service import (
+    jwt_required,
+    roles_required,
+    get_current_user,
+    ROLE_SYSTEM_ADMIN,
+    ROLE_INDUSTRY,
+)
 from ..services.notification_service import (
     get_user_notifications,
     mark_notification_as_read,
@@ -11,6 +17,7 @@ notifications_bp = Blueprint("notifications", __name__, url_prefix="/api/v1/noti
 
 @notifications_bp.route("", methods=["GET"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def list_notifications():
     unread_only = request.args.get("unread_only", "").lower() == "true"
     user = get_current_user()
@@ -19,6 +26,7 @@ def list_notifications():
 
 @notifications_bp.route("/<int:notif_id>/read", methods=["PATCH"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def mark_read(notif_id: int):
     user = get_current_user()
     notif, err = mark_notification_as_read(notif_id, user)
@@ -28,6 +36,7 @@ def mark_read(notif_id: int):
 
 @notifications_bp.route("/read-all", methods=["POST"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def mark_all_read():
     user = get_current_user()
     mark_all_notifications_as_read(user)
@@ -35,6 +44,7 @@ def mark_all_read():
 
 @notifications_bp.route("/check-deadlines", methods=["POST"])
 @jwt_required
+@roles_required(ROLE_SYSTEM_ADMIN, ROLE_INDUSTRY)
 def trigger_deadline_check():
     created = check_and_create_deadline_alerts()
     return jsonify({"message": f"Deadline scan complete. Created {created} alerts."})

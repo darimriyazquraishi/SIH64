@@ -2,7 +2,8 @@ export interface User {
   id: number
   name: string
   email: string
-  role: 'admin' | 'officer' | 'senior_authority'
+  role: 'SYSTEM_ADMIN' | 'INDUSTRY' | 'USER' | 'admin' | 'officer' | 'senior_authority' | string
+
   bureau_id?: number | null
   bureau_code?: string | null
   bureau_name?: string | null
