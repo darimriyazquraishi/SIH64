@@ -42,6 +42,32 @@ def list_complaints():
     )
     return jsonify(data)
 
+@complaints_bp.route("/meta", methods=["GET"])
+@jwt_required
+def get_complaints_meta():
+    db_cats = [
+        c[0] for c in db.session.query(Complaint.category)
+        .filter(Complaint.category.isnot(None), Complaint.category != "")
+        .distinct().order_by(Complaint.category).all()
+    ]
+    canonical_cats = [
+        "Fee Overcharging / Capitation",
+        "Faculty Quality / Non-Payment",
+        "Infrastructure Deficiencies",
+        "Ragging Incident",
+        "Approval / Accreditation Fraud",
+        "Admission Irregularity",
+        "General Administration"
+    ]
+    categories = sorted(list(set(db_cats + canonical_cats)))
+    statuses = ["New", "Under Review", "Action Required", "Resolved", "Rejected"]
+    priorities = ["Urgent", "High", "Medium", "Low"]
+    return jsonify({
+        "categories": categories,
+        "statuses": statuses,
+        "priorities": priorities
+    })
+
 @complaints_bp.route("/<int:comp_id>", methods=["GET"])
 @jwt_required
 def get_complaint(comp_id: int):

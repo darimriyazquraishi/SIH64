@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import apiClient from '@/api/client'
 import { useAuthStore } from '@/stores/auth'
@@ -41,6 +41,7 @@ const kpis = ref<KPIs>({
 
 const recentComplaints = ref<Complaint[]>([])
 const bureauWorkload = ref<any[]>([])
+const rawBureaus = ref<any[]>([])
 
 // Demostack Quick Action Cards
 const actionCards = [
@@ -95,44 +96,61 @@ const operationalProtocols = [
   },
 ]
 
-// Demostack Bureau Resource Definitions with 3D Folders
-const bureauResources = [
-  {
-    code: 'PGRC',
-    name: 'Public Grievance Redressal Cell',
-    description: 'Student, faculty, and administrative grievance\u00A0intake',
+// Dynamic Bureau Resource Definitions with 3D Folders
+const bureauVisualMeta: Record<string, { iconName: string; folderColor: string; defaultDesc: string }> = {
+  PGRC: {
     iconName: 'FigLightbulbIcon',
     folderColor: '#007acc',
+    defaultDesc: 'Student, faculty, and administrative grievance intake',
   },
-  {
-    code: 'AB',
-    name: 'Approval Bureau',
-    description: 'Institutional affiliation, EOA, and faculty\u00A0deficiencies',
+  AB: {
     iconName: 'FigGraduationIcon',
     folderColor: '#1e3a8a',
+    defaultDesc: 'Institutional affiliation, EOA, and faculty deficiencies',
   },
-  {
-    code: 'RPC',
-    name: 'Ragging Prevention Cell',
-    description: 'Anti-ragging statutory compliance and FIR\u00A0tracking',
+  RPC: {
     iconName: 'FigPlayIcon',
     folderColor: '#0f766e',
+    defaultDesc: 'Anti-ragging statutory compliance and FIR tracking',
   },
-  {
-    code: 'PAPB',
-    name: 'Policy & Academic Planning',
-    description: 'Faculty pay scale norms and governance\u00A0standards',
+  PAPB: {
     iconName: 'FigSparkleIcon',
     folderColor: '#0369a1',
+    defaultDesc: 'Faculty pay scale norms and governance standards',
   },
-  {
-    code: 'FAB',
-    name: 'Finance & Accounts Bureau',
-    description: 'Grant disbursements and institutional financial\u00A0audits',
+  FAB: {
     iconName: 'DashboardFolderPlusIcon',
     folderColor: '#d97706',
+    defaultDesc: 'Grant disbursements and institutional financial audits',
   },
-]
+}
+
+const bureauResources = computed(() => {
+  if (rawBureaus.value.length === 0) {
+    return Object.entries(bureauVisualMeta).map(([code, meta]) => ({
+      code,
+      name: code,
+      description: meta.defaultDesc,
+      iconName: meta.iconName,
+      folderColor: meta.folderColor,
+    }))
+  }
+  return rawBureaus.value.map((b) => {
+    const meta = bureauVisualMeta[b.code] || {
+      iconName: 'DashboardFolderPlusIcon',
+      folderColor: '#0c2340',
+      defaultDesc: 'Autonomous council division and compliance monitoring',
+    }
+    return {
+      id: b.id,
+      code: b.code,
+      name: b.name,
+      description: b.description || meta.defaultDesc,
+      iconName: meta.iconName,
+      folderColor: meta.folderColor,
+    }
+  })
+})
 
 function getBureauStats(code: string) {
   const found = bureauWorkload.value.find((b) => b.code === code)
@@ -142,15 +160,17 @@ function getBureauStats(code: string) {
 async function loadDashboardData() {
   loading.value = true
   try {
-    const [kpiRes, complaintsRes, analyticsRes] = await Promise.all([
+    const [kpiRes, complaintsRes, analyticsRes, bureausRes] = await Promise.all([
       apiClient.get('/reports/kpis'),
       apiClient.get('/complaints', { params: { per_page: 8 } }),
       apiClient.get('/reports/analytics'),
+      apiClient.get('/bureaus'),
     ])
 
     kpis.value = kpiRes.data
-    recentComplaints.value = complaintsRes.data.items
+    recentComplaints.value = complaintsRes.data.items || []
     bureauWorkload.value = analyticsRes.data.bureau_workload || []
+    rawBureaus.value = bureausRes.data.bureaus || []
   } catch (err) {
     console.error('Failed to load dashboard data:', err)
   } finally {

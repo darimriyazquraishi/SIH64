@@ -21,15 +21,27 @@ const analytics = ref<any>({
   state_distribution: [],
 })
 
+const bureaus = ref<any[]>([])
+const statuses = ref<string[]>(['Received', 'Under Review', 'Action Required', 'Awaiting Response', 'Escalated', 'Disposed'])
+const priorities = ref<string[]>(['Critical', 'High', 'Medium', 'Low'])
+
 const exportBureauId = ref<number | ''>('')
 const exportStatus = ref('')
 const exportPriority = ref('')
+const isExporting = ref(false)
 
 async function loadAnalytics() {
   loading.value = true
   try {
-    const res = await apiClient.get('/reports/analytics')
-    analytics.value = res.data
+    const [analyticsRes, bureausRes, metaRes] = await Promise.all([
+      apiClient.get('/reports/analytics'),
+      apiClient.get('/bureaus'),
+      apiClient.get('/complaints/meta').catch(() => ({ data: {} })),
+    ])
+    analytics.value = analyticsRes.data
+    bureaus.value = bureausRes.data.bureaus || []
+    if (metaRes.data?.statuses) statuses.value = metaRes.data.statuses
+    if (metaRes.data?.priorities) priorities.value = metaRes.data.priorities
   } catch (err) {
     console.error('Failed to load analytics:', err)
   } finally {
@@ -41,14 +53,32 @@ onMounted(() => {
   loadAnalytics()
 })
 
-function triggerCsvExport() {
-  const params = new URLSearchParams()
-  if (exportBureauId.value) params.append('bureau_id', String(exportBureauId.value))
-  if (exportStatus.value) params.append('status', exportStatus.value)
-  if (exportPriority.value) params.append('priority', exportPriority.value)
+async function triggerCsvExport() {
+  isExporting.value = true
+  try {
+    const params: any = {}
+    if (exportBureauId.value) params.bureau_id = exportBureauId.value
+    if (exportStatus.value) params.status = exportStatus.value
+    if (exportPriority.value) params.priority = exportPriority.value
 
-  // Use token in query or download via link
-  window.open(`/api/v1/reports/export-csv?${params.toString()}`, '_blank')
+    const res = await apiClient.get('/reports/export-csv', {
+      params,
+      responseType: 'blob',
+    })
+    const blob = new Blob([res.data], { type: 'text/csv;charset=utf-8;' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `aicte_complaints_${new Date().toISOString().slice(0, 10)}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+  } catch (err) {
+    console.error('Failed to export CSV:', err)
+  } finally {
+    isExporting.value = false
+  }
 }
 </script>
 
@@ -67,12 +97,54 @@ function triggerCsvExport() {
 
       <button
         type="button"
-        class="inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] transition"
+        :disabled="isExporting"
+        class="inline-flex items-center gap-1.5 rounded bg-slate-900 dark:bg-[#007acc] px-3.5 py-1.5 text-xs font-medium text-white hover:bg-slate-800 dark:hover:bg-[#1177bb] disabled:opacity-60 transition"
         @click="triggerCsvExport"
       >
         <FileSpreadsheet class="w-3.5 h-3.5" />
-        Export CSV
+        {{ isExporting ? 'Exporting...' : 'Export CSV' }}
       </button>
+    </div>
+
+    <!-- Export Filter Bar -->
+    <div class="rounded border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-3.5 flex flex-wrap items-center gap-3">
+      <div class="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-[#989898]">
+        <Filter class="w-3.5 h-3.5" />
+        <span>Export Filters:</span>
+      </div>
+
+      <select
+        v-model="exportBureauId"
+        aria-label="Filter export by bureau"
+        class="px-2.5 py-1 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc]"
+      >
+        <option :value="''">All Bureaus</option>
+        <option v-for="b in bureaus" :key="b.id" :value="b.id">
+          {{ b.code }} — {{ b.name }}
+        </option>
+      </select>
+
+      <select
+        v-model="exportStatus"
+        aria-label="Filter export by status"
+        class="px-2.5 py-1 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc]"
+      >
+        <option value="">All Statuses</option>
+        <option v-for="st in statuses" :key="st" :value="st">{{ st }}</option>
+      </select>
+
+      <select
+        v-model="exportPriority"
+        aria-label="Filter export by priority"
+        class="px-2.5 py-1 text-xs border border-slate-300 dark:border-[#3e3e42] rounded bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc]"
+      >
+        <option value="">All Priorities</option>
+        <option v-for="p in priorities" :key="p" :value="p">{{ p }}</option>
+      </select>
+
+      <span class="text-xs text-slate-400 dark:text-[#989898] ml-auto">
+        Generates standard CSV matching CPGRAMS & central audit format
+      </span>
     </div>
 
     <!-- Charts Row 1: Bureau Workload & Status Breakdown -->

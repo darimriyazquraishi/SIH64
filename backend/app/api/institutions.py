@@ -23,6 +23,21 @@ def list_institutions():
     )
     return jsonify(data)
 
+@institutions_bp.route("/meta", methods=["GET"])
+@jwt_required
+def get_institution_meta():
+    states = [
+        s[0] for s in db.session.query(Institution.state)
+        .filter(Institution.state.isnot(None), Institution.state != "")
+        .distinct().order_by(Institution.state).all()
+    ]
+    types = [
+        t[0] for t in db.session.query(Institution.institution_type)
+        .filter(Institution.institution_type.isnot(None), Institution.institution_type != "")
+        .distinct().order_by(Institution.institution_type).all()
+    ]
+    return jsonify({"states": states, "institution_types": types})
+
 @institutions_bp.route("/<int:inst_id>", methods=["GET"])
 @jwt_required
 def get_institution(inst_id: int):

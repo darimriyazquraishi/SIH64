@@ -22,17 +22,19 @@ const perPage = ref(12)
 const pages = ref(1)
 const loading = ref(false)
 
-const states = [
-  'Karnataka',
-  'Maharashtra',
-  'Delhi',
-  'Odisha',
-  'Uttar Pradesh',
-  'Tamil Nadu',
-  'Telangana',
-  'Gujarat',
-  'Kerala',
-]
+const states = ref<string[]>([])
+const institutionTypes = ref<string[]>([])
+
+async function loadMetadata() {
+  try {
+    const res = await apiClient.get('/institutions/meta')
+    states.value = res.data.states || []
+    institutionTypes.value = res.data.institution_types || []
+  } catch (err) {
+    states.value = ['Delhi', 'Karnataka', 'Maharashtra', 'Odisha', 'Tamil Nadu', 'Uttar Pradesh']
+    institutionTypes.value = ['Engineering & Technology', 'Management', 'Pharmacy', 'Polytechnic']
+  }
+}
 
 async function fetchInstitutions() {
   loading.value = true
@@ -66,6 +68,7 @@ watch(search, () => {
 })
 
 onMounted(() => {
+  loadMetadata()
   fetchInstitutions()
 })
 </script>
@@ -122,10 +125,9 @@ onMounted(() => {
           @change="page = 1; fetchInstitutions()"
         >
           <option value="">All Institution Types</option>
-          <option value="Engineering & Technology">Engineering & Technology</option>
-          <option value="Pharmacy">Pharmacy</option>
-          <option value="Management">Management</option>
-          <option value="Polytechnic">Polytechnic</option>
+          <option v-for="t in institutionTypes" :key="t" :value="t">
+            {{ t }}
+          </option>
         </select>
       </div>
     </div>

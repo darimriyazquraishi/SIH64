@@ -4,13 +4,15 @@ import apiClient from '@/api/client'
 import type { CaseLink } from '@/types'
 
 export const useOverlapsStore = defineStore('overlaps', () => {
+  const activeTab = ref('pending')
   const overlaps = ref<CaseLink[]>([])
   const pendingCount = ref(0)
   const total = ref(0)
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  async function fetchOverlaps(reviewStatus = 'pending') {
+  async function fetchOverlaps(reviewStatus = activeTab.value) {
+    activeTab.value = reviewStatus
     loading.value = true
     error.value = null
     try {
@@ -34,7 +36,7 @@ export const useOverlapsStore = defineStore('overlaps', () => {
         remarks,
       })
       // Refresh current queue
-      await fetchOverlaps()
+      await fetchOverlaps(activeTab.value)
       return { success: true, overlap: response.data.overlap }
     } catch (err: any) {
       return { success: false, error: err.response?.data?.error || 'Failed to submit review' }

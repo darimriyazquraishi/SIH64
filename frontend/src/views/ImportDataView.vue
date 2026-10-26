@@ -34,8 +34,20 @@ onMounted(() => {
   loadHistory()
 })
 
-function downloadTemplate() {
-  window.open('/api/v1/imports/template', '_blank')
+async function downloadTemplate() {
+  try {
+    const res = await apiClient.get('/imports/template', { responseType: 'blob' })
+    const url = window.URL.createObjectURL(new Blob([res.data], { type: 'text/csv;charset=utf-8;' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'aicte_complaints_import_template.csv')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+  } catch (err) {
+    console.error('Failed to download template:', err)
+  }
 }
 
 function handleFileDrop(e: DragEvent) {

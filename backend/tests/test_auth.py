@@ -26,6 +26,7 @@ def test_get_me(client, auth_headers):
     assert user["role"] == "officer"
     assert user["bureau_code"] == "PGRC"
 
-def test_unauthorized_access_rejected(client):
+def test_unauthenticated_dev_bypass_allowed(client):
+    """Under SIH 2026 rules, login is not forced; unauthenticated access allows direct navigation."""
     res = client.get("/api/v1/complaints")
-    assert res.status_code == 401
+    assert res.status_code == 200

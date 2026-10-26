@@ -43,7 +43,7 @@ const form = ref({
 const formError = ref<string | null>(null)
 const isSubmitting = ref(false)
 
-const categories = [
+const categories = ref<string[]>([
   'Fee Overcharging / Capitation',
   'Faculty Quality / Non-Payment',
   'Infrastructure Deficiencies',
@@ -51,16 +51,36 @@ const categories = [
   'Approval / Accreditation Fraud',
   'Admission Irregularity',
   'General Administration',
-]
+])
+const statuses = ref<string[]>([
+  'Received',
+  'Under Review',
+  'Action Required',
+  'Awaiting Response',
+  'Escalated',
+  'Disposed',
+])
+const priorities = ref<string[]>(['Critical', 'High', 'Medium', 'Low'])
 
 async function loadMetadata() {
   try {
-    const [bRes, iRes] = await Promise.all([
+    const [bRes, iRes, metaRes] = await Promise.all([
       apiClient.get('/bureaus'),
-      apiClient.get('/institutions', { params: { per_page: 50 } }),
+      apiClient.get('/institutions', { params: { per_page: 100 } }),
+      apiClient.get('/complaints/meta').catch(() => ({ data: {} })),
     ])
     bureaus.value = bRes.data.bureaus || []
     institutions.value = iRes.data.items || []
+
+    if (metaRes.data?.categories?.length) {
+      categories.value = metaRes.data.categories
+    }
+    if (metaRes.data?.statuses?.length) {
+      statuses.value = metaRes.data.statuses
+    }
+    if (metaRes.data?.priorities?.length) {
+      priorities.value = metaRes.data.priorities
+    }
 
     if (bureaus.value.length > 0 && !form.value.receiving_bureau_id) {
       form.value.receiving_bureau_id = String(authStore.user?.bureau_id || bureaus.value[0].id)
@@ -73,15 +93,24 @@ async function loadMetadata() {
   }
 }
 
-onMounted(async () => {
-  await loadMetadata()
-
-  // Read URL query params
+function applyQueryParams() {
   if (route.query.action === 'new' && !authStore.isSeniorAuthority) {
     isNewModalOpen.value = true
   }
   if (route.query.is_overdue === 'true') {
     store.isOverdueFilter = true
+  } else if (route.query.is_overdue === 'false') {
+    store.isOverdueFilter = false
+  }
+  if (route.query.q || route.query.search) {
+    store.search = String(route.query.q || route.query.search)
+  }
+  if (route.query.bureau) {
+    const bCode = String(route.query.bureau).toUpperCase()
+    const found = bureaus.value.find((b) => b.code.toUpperCase() === bCode)
+    if (found) {
+      store.bureauFilter = found.id
+    }
   }
   if (route.query.bureau_id) {
     store.bureauFilter = Number(route.query.bureau_id)
@@ -89,9 +118,24 @@ onMounted(async () => {
   if (route.query.status) {
     store.statusFilter = String(route.query.status)
   }
+  if (route.query.priority) {
+    store.priorityFilter = String(route.query.priority)
+  }
+}
 
+onMounted(async () => {
+  await loadMetadata()
+  applyQueryParams()
   store.fetchComplaints()
 })
+
+watch(
+  () => route.query,
+  () => {
+    applyQueryParams()
+    store.fetchComplaints()
+  }
+)
 
 // Debounced search
 let searchTimer: any = null
@@ -196,10 +240,7 @@ async function handleCreateComplaint() {
             @change="store.page = 1; store.fetchComplaints()"
           >
             <option value="">All Priorities</option>
-            <option value="Critical">Critical</option>
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
+            <option v-for="p in priorities" :key="p" :value="p">{{ p }}</option>
           </select>
         </div>
       </div>
@@ -209,7 +250,7 @@ async function handleCreateComplaint() {
         <div class="flex flex-wrap items-center gap-1.5">
           <span class="text-xs font-medium text-slate-400 dark:text-[#989898] mr-1">Status:</span>
           <button
-            v-for="st in ['', 'Received', 'Under Review', 'Action Required', 'Awaiting Response', 'Escalated', 'Disposed']"
+            v-for="st in ['', ...statuses]"
             :key="st"
             type="button"
             :class="[

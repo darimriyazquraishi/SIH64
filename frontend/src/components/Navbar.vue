@@ -211,10 +211,10 @@ function handleNotificationClick(notif: any) {
           </div>
           <div class="text-left hidden lg:block">
             <p class="text-xs font-medium text-slate-900 dark:text-white leading-none">
-              {{ authStore.user?.name || 'Dr. Rajiv Sharma' }}
+              {{ authStore.user?.name || 'Authorized Officer' }}
             </p>
             <p class="text-xs text-slate-500 dark:text-[#989898] mt-0.5">
-              {{ authStore.user?.designation || authStore.user?.role || 'Director IT & Chief Admin' }}
+              {{ authStore.user?.designation || (authStore.isAdmin ? 'System Administrator' : (authStore.user?.role || 'Portal Operator')) }}
             </p>
           </div>
         </button>
@@ -225,8 +225,8 @@ function handleNotificationClick(notif: any) {
           class="absolute right-0 mt-2 w-52 rounded-md border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] shadow-lg z-50 p-1"
         >
           <div class="px-3 py-2 border-b border-slate-100 dark:border-[#2d2d2d]">
-            <p class="text-xs font-semibold text-slate-900 dark:text-white">{{ authStore.user?.name || 'Dr. Rajiv Sharma' }}</p>
-            <p class="text-xs text-slate-500 dark:text-[#989898] truncate">{{ authStore.user?.email || 'admin@aicte.gov.in' }}</p>
+            <p class="text-xs font-semibold text-slate-900 dark:text-white">{{ authStore.user?.name || 'Authorized Officer' }}</p>
+            <p class="text-xs text-slate-500 dark:text-[#989898] truncate">{{ authStore.user?.email || 'officer@aicte.gov.in' }}</p>
           </div>
           <button
             type="button"

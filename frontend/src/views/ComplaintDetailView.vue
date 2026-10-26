@@ -661,4 +661,34 @@ async function handleTransferBureau() {
       </template>
     </Modal>
   </div>
+
+  <!-- Loading Skeleton -->
+  <div v-else-if="store.loading" class="space-y-6 animate-pulse">
+    <div class="h-4 bg-slate-200 dark:bg-[#2d2d2d] rounded w-1/4"></div>
+    <div class="rounded-xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-6 space-y-4">
+      <div class="h-6 bg-slate-200 dark:bg-[#2d2d2d] rounded w-2/5"></div>
+      <div class="h-4 bg-slate-200 dark:bg-[#2d2d2d] rounded w-3/5"></div>
+      <div class="h-24 bg-slate-100 dark:bg-[#1e1e1e] rounded w-full"></div>
+    </div>
+  </div>
+
+  <!-- Not Found State -->
+  <div v-else class="rounded-xl border border-slate-200 dark:border-[#2d2d2d] bg-white dark:bg-[#252526] p-12 text-center space-y-4">
+    <div class="inline-flex p-3 rounded-full bg-red-50 dark:bg-[#3b1214] text-red-600 dark:text-[#f48771]">
+      <AlertCircle class="w-6 h-6" />
+    </div>
+    <h2 class="text-base font-semibold text-slate-900 dark:text-white">Complaint Not Found</h2>
+    <p class="text-xs text-slate-500 dark:text-[#989898] max-w-sm mx-auto [text-wrap:pretty]">
+      The requested grievance case could not be located. It may have been archived, transferred, or does not exist.
+    </p>
+    <div>
+      <router-link
+        to="/complaints"
+        class="inline-flex items-center gap-1.5 rounded-lg bg-[#c2410c] hover:bg-[#9a3412] px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all"
+      >
+        <ArrowLeft class="w-3.5 h-3.5" />
+        Back to Complaints Registry
+      </router-link>
+    </div>
+  </div>
 </template>

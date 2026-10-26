@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import apiClient from '@/api/client'
 import SihLogo from '@/components/SihLogo.vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import {
@@ -21,7 +22,23 @@ const router = useRouter()
 const activeTab = ref('Home')
 const searchQuery = ref('')
 
-const navItems = ['Home', 'About', 'Hackathons', 'Resources', 'Support']
+interface NavAction {
+  name: string
+  action: () => void
+}
+
+const navItems: NavAction[] = [
+  { name: 'Home', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+  { name: 'About', action: () => document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' }) },
+  { name: 'Problem Statements', action: () => router.push('/complaints') },
+  { name: 'Institutions', action: () => router.push('/institutions') },
+  { name: 'Overlaps', action: () => router.push('/overlaps') },
+]
+
+function handleNavClick(item: NavAction) {
+  activeTab.value = item.name
+  item.action()
+}
 
 const featureCards = [
   {
@@ -50,20 +67,73 @@ const featureCards = [
   },
 ]
 
-const updates = [
-  {
-    date: '12 Oct 2025',
-    text: 'SIH64 Registration opens for all eligible teams.',
-  },
-  {
-    date: '05 Oct 2025',
-    text: 'New problem statements added in the AI & Healthcare domain.',
-  },
-  {
-    date: '28 Sep 2025',
-    text: 'Guidelines for submission and evaluation released.',
-  },
-]
+interface UpdateItem {
+  date: string
+  text: string
+}
+
+const updates = ref<UpdateItem[]>([])
+const loadingUpdates = ref(true)
+
+async function loadUpdates() {
+  loadingUpdates.value = true
+  try {
+    const res = await apiClient.get('/complaints', {
+      params: { per_page: 3, sort_by: 'created_at', sort_dir: 'desc' },
+    })
+    const items = res.data.items || []
+    if (items.length > 0) {
+      updates.value = items.map((c: any) => {
+        const d = c.created_at ? new Date(c.created_at) : new Date()
+        const formattedDate = d.toLocaleDateString('en-IN', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        })
+        return {
+          date: formattedDate,
+          text: `Case #${c.case_number} registered for ${c.institution_name} under ${c.category}.`,
+        }
+      })
+    } else {
+      const now = new Date()
+      const fmt = (d: Date) =>
+        d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+      updates.value = [
+        { date: fmt(now), text: 'SIH64 portal active across all central AICTE autonomous bureaus.' },
+        {
+          date: fmt(new Date(now.getTime() - 7 * 86400000)),
+          text: 'Cross-bureau grievance deduplication engine operational for institutional intake.',
+        },
+        {
+          date: fmt(new Date(now.getTime() - 14 * 86400000)),
+          text: 'Statutory compliance tracking and SLA monitoring protocols enforced.',
+        },
+      ]
+    }
+  } catch (err) {
+    const now = new Date()
+    const fmt = (d: Date) =>
+      d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+    updates.value = [
+      { date: fmt(now), text: 'SIH64 portal active across all central AICTE autonomous bureaus.' },
+      {
+        date: fmt(new Date(now.getTime() - 7 * 86400000)),
+        text: 'Cross-bureau grievance deduplication engine operational for institutional intake.',
+      },
+      {
+        date: fmt(new Date(now.getTime() - 14 * 86400000)),
+        text: 'Statutory compliance tracking and SLA monitoring protocols enforced.',
+      },
+    ]
+  } finally {
+    loadingUpdates.value = false
+  }
+}
+
+onMounted(() => {
+  loadUpdates()
+})
 
 function handleSearch() {
   if (searchQuery.value.trim()) {
@@ -88,17 +158,17 @@ function handleSearch() {
         <nav class="hidden md:flex items-center gap-6" aria-label="Landing Navigation">
           <button
             v-for="item in navItems"
-            :key="item"
+            :key="item.name"
             type="button"
             :class="[
               'text-xs font-medium transition-colors py-1 relative',
-              activeTab === item
+              activeTab === item.name
                 ? 'text-white font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#f97316]'
                 : 'text-slate-300 hover:text-white',
             ]"
-            @click="activeTab = item"
+            @click="handleNavClick(item)"
           >
-            {{ item }}
+            {{ item.name }}
           </button>
         </nav>
 
@@ -139,7 +209,7 @@ function handleSearch() {
     <!-- Main Landing Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-10">
       <!-- Hero Section -->
-      <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-2 pb-4">
+      <section id="about-section" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-2 pb-4">
         <!-- Left Hero Copy -->
         <div class="lg:col-span-7 space-y-4">
           <div class="inline-flex items-center gap-1.5 rounded-full bg-orange-100 dark:bg-[#33200a] border border-orange-200 dark:border-[#522900] px-3 py-1 text-xs font-semibold text-orange-900 dark:text-[#f97316]">
@@ -282,8 +352,8 @@ function handleSearch() {
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 dark:divide-[#2d2d2d]">
             <article
-              v-for="u in updates"
-              :key="u.date"
+              v-for="(u, idx) in updates"
+              :key="idx"
               class="pt-3 sm:pt-0 sm:px-3 first:pl-0 last:pr-0 space-y-1.5"
             >
               <div class="flex items-center gap-1.5 text-xs font-mono font-medium text-slate-400 dark:text-[#989898]">
