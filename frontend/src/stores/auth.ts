@@ -3,39 +3,31 @@ import { ref, computed } from 'vue'
 import apiClient from '@/api/client'
 import type { User } from '@/types'
 
-const defaultAdminUser: User = {
-  id: 1,
-  name: 'System Administrator',
-  email: 'admin@aicte.gov.in',
-  role: 'admin',
-  bureau_id: null,
-  bureau_code: null,
-  bureau_name: null,
-  is_active: true,
-  created_at: new Date().toISOString(),
-}
-
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref<string | null>(localStorage.getItem('aicte_token') || 'dev_bypass_token')
+  const token = ref<string | null>(localStorage.getItem('aicte_token'))
   const user = ref<User | null>(
     localStorage.getItem('aicte_user')
       ? JSON.parse(localStorage.getItem('aicte_user')!)
-      : defaultAdminUser
+      : null
   )
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  const isAuthenticated = computed(() => true)
-  const isAdmin = computed(() => !user.value || user.value?.role === 'admin')
+  const isAuthenticated = computed(() => !!token.value && !!user.value)
+  const isAdmin = computed(() => user.value?.role === 'admin')
   const isOfficer = computed(() => user.value?.role === 'officer')
   const isSeniorAuthority = computed(() => user.value?.role === 'senior_authority')
   const userBureauCode = computed(() => user.value?.bureau_code || null)
 
-  async function login(email: string, password: string): Promise<boolean> {
+  async function login(identifier: string, password: string): Promise<boolean> {
     loading.value = true
     error.value = null
     try {
-      const response = await apiClient.post('/auth/login', { email, password })
+      const response = await apiClient.post('/auth/login', {
+        email: identifier.trim(),
+        username: identifier.trim(),
+        password,
+      })
       token.value = response.data.token
       user.value = response.data.user
       localStorage.setItem('aicte_token', response.data.token)
@@ -50,6 +42,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchMe() {
+    if (!token.value) return
     try {
       const response = await apiClient.get('/auth/me')
       if (response.data?.user) {
@@ -57,23 +50,18 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('aicte_user', JSON.stringify(response.data.user))
       }
     } catch (err) {
-      // Keep default admin user fallback if not logged in
-      if (!user.value) {
-        user.value = defaultAdminUser
-      }
+      logout()
     }
   }
 
   async function logout() {
     try {
-      if (token.value && token.value !== 'dev_bypass_token') {
-        await apiClient.post('/auth/logout')
+      if (token.value) {
+        await apiClient.post('/auth/logout').catch(() => {})
       }
-    } catch (err) {
-      // Ignore network errors on logout
     } finally {
-      token.value = 'dev_bypass_token'
-      user.value = defaultAdminUser
+      token.value = null
+      user.value = null
       localStorage.removeItem('aicte_token')
       localStorage.removeItem('aicte_user')
     }

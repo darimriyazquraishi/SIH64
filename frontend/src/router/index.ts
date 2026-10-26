@@ -97,8 +97,17 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // Login is not forced: allow direct access to all views
-  next()
+  const authStore = useAuthStore()
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const isGuestOnly = to.matched.some((record) => record.meta.guestOnly)
+
+  if (requiresAuth && !authStore.isAuthenticated) {
+    next({ name: 'login', query: { redirect: to.fullPath } })
+  } else if (isGuestOnly && authStore.isAuthenticated) {
+    next({ name: 'dashboard' })
+  } else {
+    next()
+  }
 })
 
 export default router

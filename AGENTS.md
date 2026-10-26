@@ -15,8 +15,9 @@ All routes must pass with 0 anti-patterns and 0 warnings.
 - **Padding**: Use standard Tailwind spacing (`p-4`, `p-5`, `p-6`). Do not use fractional arbitrary padding like `p-4.5`.
 
 ## 2. Authentication Policy
-- Login is **optional / not forced**. Users must be able to directly navigate to `/`, `/complaints`, `/overlaps`, `/institutions`, `/reports`, `/admin` without being redirected to `/login`.
-- Dev bypass tokens and default admin user fallback ensure all live queries work seamlessly.
+- Login is **mandatory**. Unauthenticated visits to protected routes redirect to `/login`.
+- Default credentials: User ID `admin` / Password `admin` (also supports official email `admin@aicte.gov.in`).
+- Quick-fill credentials buttons are available on `/login` for seamless access.
 
 ## 3. Humanized Copywriting
 - Do not use AI jargon, inflated claims, staged triads, or promotional filler.

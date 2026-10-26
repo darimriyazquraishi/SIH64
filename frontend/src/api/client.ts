@@ -21,7 +21,11 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Login not forced: pass error through without forced redirect to /login
+    if (error.response?.status === 401 && window.location.pathname !== '/login') {
+      localStorage.removeItem('aicte_token')
+      localStorage.removeItem('aicte_user')
+      window.location.href = '/login'
+    }
     return Promise.reject(error)
   }
 )

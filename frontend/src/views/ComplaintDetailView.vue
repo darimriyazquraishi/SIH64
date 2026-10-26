@@ -203,7 +203,7 @@ async function handleTransferBureau() {
 
           <button
             type="button"
-            class="inline-flex items-center gap-1.5 rounded-lg bg-[#f97316] hover:bg-[#ea580c] px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-all"
+            class="inline-flex items-center gap-1.5 rounded-lg bg-[#c2410c] hover:bg-[#9a3412] px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-all"
             @click="isStatusModalOpen = true"
           >
             <FileCheck2 class="w-3.5 h-3.5" />

@@ -31,13 +31,15 @@ const institutions = ref<Institution[]>([])
 const isNewModalOpen = ref(false)
 
 // New Complaint Form
+const useCustomInstitution = ref(false)
 const form = ref({
   institution_id: '',
+  institution_name: '',
   category: 'Fee Overcharging / Capitation',
   subject: '',
   description: '',
   receiving_bureau_id: '',
-  priority: 'Medium',
+  priority: 'High',
   external_reference: '',
 })
 const formError = ref<string | null>(null)
@@ -151,6 +153,14 @@ watch(
 )
 
 async function handleCreateComplaint() {
+  if (!useCustomInstitution.value && !form.value.institution_id) {
+    formError.value = 'Please select an institution or enter its name.'
+    return
+  }
+  if (useCustomInstitution.value && !form.value.institution_name.trim()) {
+    formError.value = 'Please enter the institution name.'
+    return
+  }
   if (!form.value.subject || !form.value.description) {
     formError.value = 'Subject and description are required.'
     return
@@ -158,11 +168,18 @@ async function handleCreateComplaint() {
   isSubmitting.value = true
   formError.value = null
 
-  const res = await store.createComplaint({
+  const payload: any = {
     ...form.value,
-    institution_id: Number(form.value.institution_id),
     receiving_bureau_id: Number(form.value.receiving_bureau_id),
-  })
+  }
+  if (useCustomInstitution.value) {
+    payload.institution_name = form.value.institution_name.trim()
+    delete payload.institution_id
+  } else {
+    payload.institution_id = Number(form.value.institution_id)
+  }
+
+  const res = await store.createComplaint(payload)
 
   isSubmitting.value = false
   if (res.success) {
@@ -170,6 +187,8 @@ async function handleCreateComplaint() {
     form.value.subject = ''
     form.value.description = ''
     form.value.external_reference = ''
+    form.value.institution_name = ''
+    useCustomInstitution.value = false
     router.push(`/complaints/${res.complaint.id}`)
   } else {
     formError.value = res.error
@@ -475,15 +494,38 @@ async function handleCreateComplaint() {
         </div>
 
         <div>
-          <label for="complaint-institution" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">Institution *</label>
+          <div class="flex items-center justify-between mb-1">
+            <label for="complaint-institution" class="block text-xs font-medium text-slate-700 dark:text-[#cccccc]">
+              Target Institution *
+            </label>
+            <button
+              type="button"
+              class="text-xs text-blue-600 dark:text-[#38bdf8] hover:underline"
+              @click="useCustomInstitution = !useCustomInstitution"
+            >
+              {{ useCustomInstitution ? '← Pick from Directory' : '+ Enter custom institution name' }}
+            </button>
+          </div>
+
+          <input
+            v-if="useCustomInstitution"
+            id="complaint-custom-inst"
+            v-model="form.institution_name"
+            type="text"
+            required
+            placeholder="e.g. Apex Institute of Technology and Management"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#161716] text-slate-900 dark:text-[#cccccc] dark:placeholder-[#aaaaaa]"
+          />
+
           <select
+            v-else
             id="complaint-institution"
             v-model="form.institution_id"
             required
-            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-[#007acc] focus:border-[#007acc] bg-white dark:bg-[#3c3c3c] text-slate-900 dark:text-[#cccccc]"
+            class="mt-1 block w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-[#3e3e42] rounded focus:ring-1 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#161716] text-slate-900 dark:text-[#cccccc]"
           >
             <option v-for="inst in institutions" :key="inst.id" :value="inst.id">
-              {{ inst.name }} (ID: {{ inst.institution_code }}) · {{ inst.state }}
+              {{ inst.name }} (ID: {{ inst.institution_code || inst.state }})
             </option>
           </select>
         </div>

@@ -111,6 +111,23 @@ def create_complaint(data: dict, current_user: User):
                 institution_id = inst.id
     
     if not institution_id:
+        inst_name = (data.get("institution_name") or "").strip()
+        if inst_name:
+            inst = db.session.query(Institution).filter(Institution.name.ilike(inst_name)).first()
+            if not inst:
+                import random
+                code = f"1-{random.randint(10000000, 99999999)}"
+                inst = Institution(
+                    institution_code=code,
+                    name=inst_name,
+                    state=data.get("institution_state") or "All India",
+                    institution_type="Engineering & Technology"
+                )
+                db.session.add(inst)
+                db.session.flush()
+            institution_id = inst.id
+
+    if not institution_id:
         raise ValueError("Valid institution reference is required")
 
     inst = db.session.get(Institution, institution_id)
