@@ -8,6 +8,7 @@ from .reports import reports_bp
 from .notifications import notifications_bp
 from .imports import imports_bp
 from .admin import admin_bp
+from .public import public_bp
 
 def register_blueprints(app):
     app.register_blueprint(auth_bp)
@@ -19,3 +20,4 @@ def register_blueprints(app):
     app.register_blueprint(notifications_bp)
     app.register_blueprint(imports_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(public_bp)

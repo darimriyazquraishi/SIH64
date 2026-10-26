@@ -1,7 +1,26 @@
+import secrets
+import string
 from datetime import datetime, timezone, timedelta
 from sqlalchemy import or_, and_, desc, asc
 from ..models import db, Complaint, CaseAction, Institution, Bureau, User, AuditEvent, Notification
 from .overlap_service import scan_complaint_overlaps
+
+def generate_ticket_number() -> str:
+    """
+    Generate globally unique ticket number in format AICTE-2026-XXXXXX.
+    Uses 6 alphanumeric characters and checks for database uniqueness.
+    """
+    year = 2026
+    alphabet = string.ascii_uppercase + string.digits
+    for _ in range(30):
+        suffix = "".join(secrets.choice(alphabet) for _ in range(6))
+        candidate = f"AICTE-{year}-{suffix}"
+        exists = db.session.query(Complaint.id).filter_by(ticket_number=candidate).first()
+        if not exists:
+            return candidate
+    # Fallback to microsecond-based suffix
+    fallback_suffix = f"{int(datetime.now(timezone.utc).timestamp() * 1000) % 1000000:06d}"
+    return f"AICTE-{year}-{fallback_suffix}"
 
 def generate_case_number(bureau_id: int) -> str:
     bureau = db.session.get(Bureau, bureau_id)
@@ -100,7 +119,21 @@ def get_complaints(
         "pages": (total + per_page - 1) // per_page if per_page > 0 else 1
     }
 
-def create_complaint(data: dict, current_user: User):
+def get_complaint_by_ticket(ticket_or_case: str):
+    """
+    Search for a complaint by unique ticket number (AICTE-2026-XXXXXX) or case number.
+    """
+    if not ticket_or_case:
+        return None
+    val = ticket_or_case.strip()
+    return db.session.query(Complaint).filter(
+        or_(
+            Complaint.ticket_number.ilike(val),
+            Complaint.case_number.ilike(val)
+        )
+    ).first()
+
+def create_complaint(data: dict, current_user: User = None):
     institution_id = data.get("institution_id")
     if not institution_id:
         # Check if institution_code provided
@@ -134,20 +167,58 @@ def create_complaint(data: dict, current_user: User):
     if not inst:
         raise ValueError(f"Institution with ID {institution_id} does not exist")
 
-    receiving_bureau_id = data.get("receiving_bureau_id") or (current_user.bureau_id if current_user.bureau_id else 1)
-    current_bureau_id = data.get("current_bureau_id") or receiving_bureau_id
-    priority = data.get("priority", "Medium")
+    category = (data.get("category") or "General Administration").strip()
+    priority = data.get("priority")
+    if not priority:
+        if "ragging" in category.lower():
+            priority = "Critical"
+        else:
+            priority = "Medium"
 
+    receiving_bureau_id = data.get("receiving_bureau_id")
+    if not receiving_bureau_id and current_user and current_user.bureau_id:
+        receiving_bureau_id = current_user.bureau_id
+    
+    if not receiving_bureau_id:
+        cat_lower = category.lower()
+        if "ragging" in cat_lower:
+            rpc = db.session.query(Bureau).filter_by(code="RPC").first()
+            receiving_bureau_id = rpc.id if rpc else 4
+        elif any(k in cat_lower for k in ["approval", "accreditation", "infrastructure", "eoa"]):
+            ab = db.session.query(Bureau).filter_by(code="AB").first()
+            receiving_bureau_id = ab.id if ab else 2
+        elif any(k in cat_lower for k in ["curriculum", "academic", "faculty", "syllabus"]):
+            papb = db.session.query(Bureau).filter_by(code="PAPB").first()
+            receiving_bureau_id = papb.id if papb else 3
+        elif any(k in cat_lower for k in ["fee", "finance", "scholarship", "fund", "capitation"]):
+            fab = db.session.query(Bureau).filter_by(code="FAB").first()
+            receiving_bureau_id = fab.id if fab else 5
+        else:
+            pgrc = db.session.query(Bureau).filter_by(code="PGRC").first()
+            receiving_bureau_id = pgrc.id if pgrc else 1
+
+    current_bureau_id = data.get("current_bureau_id") or receiving_bureau_id
+
+    # Automatically generate backend-enforced unique ticket number (AICTE-2026-XXXXXX)
+    ticket_number = generate_ticket_number()
     case_number = data.get("case_number") or generate_case_number(receiving_bureau_id)
     due_at = data.get("due_at") or calculate_due_date(priority)
+    source = data.get("source") or ("Public Portal" if not current_user else "Casework Intake")
 
     complaint = Complaint(
+        ticket_number=ticket_number,
         case_number=case_number,
         external_reference=data.get("external_reference"),
         institution_id=institution_id,
-        category=data.get("category", "General Administration"),
+        category=category,
         subject=data.get("subject", "").strip(),
         description=data.get("description", "").strip(),
+        complainant_name=(data.get("complainant_name") or "").strip() or None,
+        complainant_email=(data.get("complainant_email") or "").strip() or None,
+        complainant_mobile=(data.get("complainant_mobile") or "").strip() or None,
+        supporting_document_name=data.get("supporting_document_name"),
+        supporting_document_url=data.get("supporting_document_url"),
+        source=source,
         receiving_bureau_id=receiving_bureau_id,
         current_bureau_id=current_bureau_id,
         assigned_user_id=data.get("assigned_user_id"),
@@ -163,7 +234,7 @@ def create_complaint(data: dict, current_user: User):
     action = CaseAction(
         complaint_id=complaint.id,
         action_type="case_intake",
-        description=f"Complaint lodged and registered under Bureau '{complaint.receiving_bureau.code if complaint.receiving_bureau else ''}'. Initial status set to '{complaint.status}'.",
+        description=f"Complaint lodged via {complaint.source}. Ticket: {complaint.ticket_number}. Assigned to Bureau '{complaint.receiving_bureau.code if complaint.receiving_bureau else ''}'. Initial status: '{complaint.status}'.",
         old_status=None,
         new_status=complaint.status,
         old_bureau_id=None,
@@ -180,10 +251,12 @@ def create_complaint(data: dict, current_user: User):
         entity_id=complaint.id,
     )
     audit.set_details({
+        "ticket_number": complaint.ticket_number,
         "case_number": complaint.case_number,
         "institution_id": complaint.institution_id,
         "priority": complaint.priority,
-        "category": complaint.category
+        "category": complaint.category,
+        "source": complaint.source,
     })
     db.session.add(audit)
     db.session.commit()

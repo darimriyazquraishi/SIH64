@@ -63,3 +63,7 @@ Thumbs.db
 .pgsql_bin/
 *.log
 logfile
+
+# Uploads
+backend/uploads/*
+!backend/uploads/.gitkeep

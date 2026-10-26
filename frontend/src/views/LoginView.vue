@@ -53,7 +53,12 @@ function enterDemo() {
       <div class="login-side-footer"><span>Smart India Hackathon 2026</span><span>Problem statement 26264</span></div>
     </aside>
     <section class="login-main">
-      <div class="login-main-top"><span>Authorized personnel</span><span class="login-lock"><LockKeyhole :size="14" /> Secure sign in</span></div>
+      <div class="login-main-top">
+        <span>Authorized personnel</span>
+        <router-link to="/register" class="public-portal-top-link">
+          Citizen / Student Portal <ArrowUpRight :size="13" />
+        </router-link>
+      </div>
       <div class="login-form-wrap">
         <div class="login-heading">
           <div class="login-title-row">
@@ -61,6 +66,15 @@ function enterDemo() {
             <h2>Sign in to Casework</h2>
           </div>
           <p class="login-subtitle">Use your official credentials to access the monitoring workspace.</p>
+        </div>
+        <div class="login-public-banner">
+          <div class="public-banner-copy">
+            <strong>Public Citizen or Student?</strong>
+            <span>Register or track a grievance without an internal staff account.</span>
+          </div>
+          <router-link to="/register" class="button button-quiet button-small">
+            Register Grievance <ArrowRight :size="13" />
+          </router-link>
         </div>
         <div v-if="auth.error" class="login-error" role="alert">{{ auth.error }}</div>
         <form class="login-form" @submit.prevent="handleLogin">

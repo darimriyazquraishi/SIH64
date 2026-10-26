@@ -28,6 +28,7 @@ class Config:
     
     # Administrative & Demo Configuration
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max upload
+    UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads")
     CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000").split(",")
 
 

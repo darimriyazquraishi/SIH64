@@ -3,9 +3,15 @@ import { useAuthStore } from '@/stores/auth'
 import AppLayout from '@/layouts/AppLayout.vue'
 import WorkspaceView from '@/views/WorkspaceView.vue'
 import LoginView from '@/views/LoginView.vue'
+import PublicRegisterView from '@/views/PublicRegisterView.vue'
+import PublicTrackView from '@/views/PublicTrackView.vue'
+import PublicConfirmationView from '@/views/PublicConfirmationView.vue'
 
 const routes: RouteRecordRaw[] = [
-  { path: '/landing', redirect: '/' },
+  { path: '/landing', redirect: '/register' },
+  { path: '/register', name: 'public-register', component: PublicRegisterView, meta: { public: true } },
+  { path: '/track', name: 'public-track', component: PublicTrackView, meta: { public: true } },
+  { path: '/confirmation', name: 'public-confirmation', component: PublicConfirmationView, meta: { public: true } },
   { path: '/login', name: 'login', component: LoginView, meta: { guestOnly: true } },
   {
     path: '/', component: AppLayout, meta: { requiresAuth: true }, children: [
@@ -21,13 +27,16 @@ const routes: RouteRecordRaw[] = [
       { path: 'admin', name: 'admin', component: WorkspaceView, meta: { requiresRole: 'admin' } },
     ],
   },
-  { path: '/:pathMatch(.*)*', redirect: '/' },
+  { path: '/:pathMatch(.*)*', redirect: '/login' },
 ]
 
 const router = createRouter({ history: createWebHistory(), routes })
 
 router.beforeEach((to) => {
   const auth = useAuthStore()
+  if (to.meta.public) {
+    return true
+  }
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
     return { path: '/login', query: { redirect: to.fullPath } }
   }
