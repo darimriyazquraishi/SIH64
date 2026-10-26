@@ -18,55 +18,57 @@ const props = defineProps<{
 const valueColor = computed(() => {
   switch (props.variant) {
     case 'danger':
-      return 'text-red-700 dark:text-[#f48771]'
+      return 'text-red-700 dark:text-[#ff6b6b]'
     case 'warning':
-      return 'text-amber-700 dark:text-[#cca700]'
+      return 'text-[#b86f00] dark:text-[#fdd878]'
     case 'success':
-      return 'text-emerald-700 dark:text-[#34d399]'
+      return 'text-[#5e9a2e] dark:text-[#b8ee82]'
     case 'info':
-      return 'text-blue-700 dark:text-[#4fc1ff]'
+      return 'text-[#2a6838] dark:text-[#b8ee82]'
     default:
-      return 'text-[#22261f] dark:text-white'
+      return 'text-[#22261f] dark:text-[#e6eae2]'
   }
 })
 </script>
 
 <template>
   <div
-    class="bg-white dark:bg-[#1e201d] rounded-xl border border-[#dfe7d6] dark:border-[#2f332b] p-3.5 transition-all duration-150 hover:border-[#c5d4bc] dark:hover:border-[#3d4337] shadow-sm flex flex-col justify-between"
+    class="bg-white dark:bg-[#1e201d] rounded-xl border border-[#dfe7d6] dark:border-[#2f332b] p-4 sm:p-5 transition-all duration-150 hover:border-[#c5d4bc] dark:hover:border-[#3d4337] shadow-sm flex flex-col justify-between"
   >
     <div>
       <div class="flex items-center justify-between">
-        <p class="text-xs font-medium text-[#5f6656] dark:text-[#989898]">
-          {{ props.title }}
-        </p>
+        <!-- Colored Icon Container (Mockup Style) -->
         <div
           v-if="props.icon"
           :class="[
-            'flex size-7 items-center justify-center rounded-lg border',
+            'flex size-9 items-center justify-center rounded-lg border',
             props.iconBg || 'bg-[#f0f5e8] dark:bg-[#1e2518] border-[#dfe7d6] dark:border-[#2f3d20]',
             props.iconColor || 'text-[#5e9a2e] dark:text-[#b8ee82]',
           ]"
         >
-          <component :is="props.icon" class="w-3.5 h-3.5" aria-hidden="true" />
+          <component :is="props.icon" class="w-4 h-4" aria-hidden="true" />
         </div>
         <slot name="icon" />
       </div>
 
-      <div class="mt-2 flex items-baseline gap-2">
+      <p class="mt-3 text-xs font-medium text-[#5f6656] dark:text-[#989e92]">
+        {{ props.title }}
+      </p>
+
+      <div class="mt-1 flex items-baseline gap-2">
         <div v-if="props.loading" class="h-8 w-16 animate-pulse rounded bg-[#e8efe0] dark:bg-[#252922]" />
-        <span v-else :class="['text-2xl font-bold tracking-tight tabular-nums', valueColor]">
+        <span v-else :class="['text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums', valueColor]">
           {{ props.value }}
         </span>
       </div>
 
-      <p v-if="props.subtitle" class="mt-1 text-xs text-[#5f6656] dark:text-[#989898]">
+      <p v-if="props.subtitle" class="mt-1 text-xs text-[#5f6656] dark:text-[#989e92]">
         {{ props.subtitle }}
       </p>
     </div>
 
-    <!-- Bottom Action Link (Optional) -->
-    <div v-if="props.actionLabel && props.actionRoute" class="mt-3 pt-2 border-t border-[#edf3e6] dark:border-[#282c24]">
+    <!-- Bottom Action Link (Mockup Style) -->
+    <div v-if="props.actionLabel && props.actionRoute" class="mt-3.5 pt-2.5 border-t border-[#edf3e6] dark:border-[#282c24]">
       <router-link
         :to="props.actionRoute"
         class="inline-flex items-center gap-1 text-xs font-semibold text-[#5e9a2e] dark:text-[#b8ee82] hover:text-[#457321] dark:hover:text-[#cbf59b] transition-colors"

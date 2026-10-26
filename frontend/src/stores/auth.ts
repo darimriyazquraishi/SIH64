@@ -3,38 +3,51 @@ import { ref, computed } from 'vue'
 import apiClient from '@/api/client'
 import type { User } from '@/types'
 
+function readStoredUser(): User | null {
+  try {
+    const raw = localStorage.getItem('aicte_user')
+    return raw ? JSON.parse(raw) as User : null
+  } catch {
+    return null
+  }
+}
+
+function isExplicitDemoSession() {
+  try { return sessionStorage.getItem('casework_demo_mode') === '1' } catch { return false }
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem('aicte_token'))
-  const user = ref<User | null>(
-    localStorage.getItem('aicte_user')
-      ? JSON.parse(localStorage.getItem('aicte_user')!)
-      : null
-  )
+  const user = ref<User | null>(readStoredUser())
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  const isAuthenticated = computed(() => !!token.value && !!user.value)
+  // A development identity is accepted only after the user explicitly enters the
+  // offline demo. It is never treated as a valid API credential.
+  const isAuthenticated = computed(() => Boolean(
+    token.value && user.value && (token.value !== 'dev_bypass_token' || isExplicitDemoSession())
+  ))
   const isAdmin = computed(() => user.value?.role === 'admin')
   const isOfficer = computed(() => user.value?.role === 'officer')
   const isSeniorAuthority = computed(() => user.value?.role === 'senior_authority')
   const userBureauCode = computed(() => user.value?.bureau_code || null)
 
-  async function login(identifier: string, password: string): Promise<boolean> {
+  async function login(email: string, password: string): Promise<boolean> {
     loading.value = true
     error.value = null
     try {
-      const response = await apiClient.post('/auth/login', {
-        email: identifier.trim(),
-        username: identifier.trim(),
-        password,
-      })
+      const response = await apiClient.post('/auth/login', { email, password })
+      if (!response.data?.token || !response.data?.user) {
+        throw new Error('The server did not return a valid session.')
+      }
+      try { sessionStorage.removeItem('casework_demo_mode') } catch { /* unavailable storage */ }
       token.value = response.data.token
       user.value = response.data.user
       localStorage.setItem('aicte_token', response.data.token)
       localStorage.setItem('aicte_user', JSON.stringify(response.data.user))
       return true
     } catch (err: any) {
-      error.value = err.response?.data?.error || 'Authentication failed. Please verify credentials.'
+      error.value = err.response?.data?.error || err.message || 'Authentication failed. Please verify your credentials and API connection.'
       return false
     } finally {
       loading.value = false
@@ -43,23 +56,17 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchMe() {
     if (!token.value) return
+    if (token.value === 'dev_bypass_token' && isExplicitDemoSession()) return
+
     try {
       const response = await apiClient.get('/auth/me')
       if (response.data?.user) {
         user.value = response.data.user
         localStorage.setItem('aicte_user', JSON.stringify(response.data.user))
+      } else {
+        throw new Error('Session could not be verified.')
       }
-    } catch (err) {
-      logout()
-    }
-  }
-
-  async function logout() {
-    try {
-      if (token.value) {
-        await apiClient.post('/auth/logout').catch(() => {})
-      }
-    } finally {
+    } catch {
       token.value = null
       user.value = null
       localStorage.removeItem('aicte_token')
@@ -67,18 +74,25 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function logout() {
+    try {
+      if (token.value && token.value !== 'dev_bypass_token') {
+        await apiClient.post('/auth/logout')
+      }
+    } catch {
+      // Clear the local session even when the API is unavailable.
+    } finally {
+      token.value = null
+      user.value = null
+      error.value = null
+      localStorage.removeItem('aicte_token')
+      localStorage.removeItem('aicte_user')
+      try { sessionStorage.removeItem('casework_demo_mode') } catch { /* unavailable storage */ }
+    }
+  }
+
   return {
-    token,
-    user,
-    loading,
-    error,
-    isAuthenticated,
-    isAdmin,
-    isOfficer,
-    isSeniorAuthority,
-    userBureauCode,
-    login,
-    logout,
-    fetchMe,
+    token, user, loading, error, isAuthenticated, isAdmin, isOfficer,
+    isSeniorAuthority, userBureauCode, login, logout, fetchMe,
   }
 })
