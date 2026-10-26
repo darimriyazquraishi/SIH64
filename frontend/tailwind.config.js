@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // 10FastFingers Themes: Lemondrop (Light) & Glow (Dark)
+        // Color Schemes: Lemondrop (Light) & Glow (Dark)
         lemondrop: {
           bg: '#e8efe0',
           card: '#ffffff',

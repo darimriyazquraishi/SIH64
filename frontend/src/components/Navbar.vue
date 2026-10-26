@@ -61,16 +61,16 @@ function handleNotificationClick(notif: any) {
     <div class="flex items-center gap-3">
       <router-link to="/" class="flex items-center gap-3 group">
         <SihLogo size="md" :show-subtitle="false" />
-        <div class="hidden sm:block border-l border-[#dfe7d6] dark:border-[#2f332b] pl-3">
+        <div class="hidden sm:block border-l border-slate-200 dark:border-[#2f332b] pl-3">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold text-[#22261f] dark:text-[#e6eae2]">
+            <span class="text-xs font-semibold text-slate-800 dark:text-[#e6eae2]">
               AICTE Complaint Monitoring Portal
             </span>
-            <span class="rounded bg-[#fef3c7] dark:bg-[#202716] text-[#b86f00] dark:text-[#b8ee82] px-1.5 py-0.5 text-xs font-bold border border-[#fde68a] dark:border-[#33421d]">
+            <span class="rounded bg-orange-100 dark:bg-[#33200a] text-orange-700 dark:text-[#f97316] px-1.5 py-0.5 text-xs font-bold border border-orange-200 dark:border-[#522900]">
               SIH 2026
             </span>
           </div>
-          <p class="text-xs text-[#5f6656] dark:text-[#989e92] leading-tight">
+          <p class="text-xs text-slate-400 dark:text-[#989e92] leading-tight">
             All India Council for Technical Education
           </p>
         </div>
@@ -78,17 +78,17 @@ function handleNotificationClick(notif: any) {
     </div>
 
     <!-- Center: Demostack Quick Search Input with Ctrl+K -->
-    <div class="hidden md:flex items-center bg-[#f3f7ed] dark:bg-[#1e201d] rounded-lg px-3 py-1.5 w-64 lg:w-80 border border-[#dfe7d6] dark:border-[#2f332b] focus-within:border-[#7eaa3b] dark:focus-within:border-[#b8ee82] transition">
-      <Search class="w-3.5 h-3.5 text-[#5f6656] dark:text-[#989e92] shrink-0 mr-2" />
+    <div class="hidden md:flex items-center bg-[#f3f7ed] dark:bg-[#1e201d] rounded-lg px-3 py-1.5 w-64 lg:w-80 border border-[#dfe7d6] dark:border-[#2f332b] focus-within:border-blue-500 dark:focus-within:border-[#b8ee82] transition">
+      <Search class="w-3.5 h-3.5 text-slate-400 dark:text-[#989e92] shrink-0 mr-2" />
       <input
         ref="searchInput"
         v-model="searchQuery"
         type="text"
         placeholder="Search cases, colleges, dockets..."
-        class="bg-transparent text-xs w-full text-[#22261f] dark:text-[#e6eae2] placeholder-[#5f6656] dark:placeholder-[#aaaaaa] focus:outline-none"
+        class="bg-transparent text-xs w-full text-slate-900 dark:text-[#e6eae2] placeholder-slate-400 dark:placeholder-[#aaaaaa] focus:outline-none"
         @keydown.enter="handleSearchSubmit"
       />
-      <div class="flex items-center gap-0.5 rounded bg-white dark:bg-[#161716] px-1.5 py-0.5 border border-[#dfe7d6] dark:border-[#2f332b] text-xs font-mono text-[#5f6656] dark:text-[#989e92]">
+      <div class="flex items-center gap-0.5 rounded bg-white dark:bg-[#161716] px-1.5 py-0.5 border border-[#dfe7d6] dark:border-[#2f332b] text-xs font-mono text-slate-400 dark:text-[#989e92]">
         <span>Ctrl</span>
         <span>K</span>
       </div>
@@ -99,9 +99,9 @@ function handleNotificationClick(notif: any) {
       <!-- Public Landing Page Link -->
       <router-link
         to="/landing"
-        class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium text-[#22261f] dark:text-[#e6eae2] hover:bg-[#f3f7ed] dark:hover:bg-[#252922] border border-transparent hover:border-[#dfe7d6] dark:hover:border-[#2f332b] transition-colors"
+        class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium text-slate-700 dark:text-[#e6eae2] hover:bg-slate-100 dark:hover:bg-[#252922] border border-transparent hover:border-slate-200 dark:hover:border-[#2f332b] transition-colors"
       >
-        <Compass class="w-3.5 h-3.5 text-[#b86f00] dark:text-[#b8ee82]" aria-hidden="true" />
+        <Compass class="w-3.5 h-3.5 text-[#f97316]" aria-hidden="true" />
         <span>Landing Page</span>
       </router-link>
 
@@ -109,16 +109,16 @@ function handleNotificationClick(notif: any) {
       <ThemeToggle />
 
       <!-- Bureau / Role Badge -->
-      <div v-if="authStore.user?.bureau_code" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#f0f6e9] dark:bg-[#1a2417] border border-[#d8e5cb] dark:border-[#2a3c23] text-xs font-medium text-[#465f29] dark:text-[#b8ee82]">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#7eaa3b] dark:bg-[#b8ee82]"></span>
+      <div v-if="authStore.user?.bureau_code" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-100 dark:bg-[#093554] border border-slate-200 dark:border-[#14496b] text-xs font-medium text-slate-700 dark:text-[#4fc1ff]">
+        <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-[#4fc1ff]"></span>
         {{ authStore.user.bureau_name || authStore.user.bureau_code }}
       </div>
-      <div v-else-if="authStore.isAdmin" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#fef9c3] dark:bg-[#242616] border border-[#fef08a] dark:border-[#3a3e1f] text-xs font-medium text-[#854d0e] dark:text-[#b8ee82]">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#b86f00] dark:bg-[#b8ee82]"></span>
+      <div v-else-if="authStore.isAdmin" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-50 dark:bg-[#332b00] border border-amber-200 dark:border-[#554400] text-xs font-medium text-amber-800 dark:text-[#cca700]">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-[#cca700]"></span>
         System Administrator
       </div>
-      <div v-else-if="authStore.isSeniorAuthority" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#fae8ff] dark:bg-[#271d2b] border border-[#f0abfc] dark:border-[#422a4b] text-xs font-medium text-[#86198f] dark:text-[#e879f9]">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#c026d3] dark:bg-[#e879f9]"></span>
+      <div v-else-if="authStore.isSeniorAuthority" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-purple-50 dark:bg-[#3b1c47] border border-purple-200 dark:border-[#562868] text-xs font-medium text-purple-800 dark:text-[#c586c0]">
+        <span class="w-1.5 h-1.5 rounded-full bg-purple-500 dark:bg-[#c586c0]"></span>
         Senior Authority (Read-Only)
       </div>
 

@@ -147,7 +147,7 @@ function handleSearch() {
 <template>
   <div class="min-h-screen bg-[#e8efe0] dark:bg-[#161716] text-[#22261f] dark:text-[#e6eae2] flex flex-col font-sans transition-colors">
     <!-- Top Landing Header -->
-    <header class="sticky top-0 z-40 bg-[#1b1e18] dark:bg-[#101110] border-b border-[#2d3326] dark:border-[#242820] text-white px-4 sm:px-8 py-3 transition-colors shadow-sm select-none">
+    <header class="sticky top-0 z-40 bg-[#0c2340] border-b border-[#14325a] text-white px-4 sm:px-8 py-3 transition-colors shadow-sm select-none">
       <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-3">
@@ -163,8 +163,8 @@ function handleSearch() {
             :class="[
               'text-xs font-medium transition-colors py-1 relative',
               activeTab === item.name
-                ? 'text-white font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#b86f00] dark:after:bg-[#b8ee82]'
-                : 'text-[#a7ada0] hover:text-white dark:text-[#989e92] dark:hover:text-[#e6eae2]',
+                ? 'text-white font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#f97316]'
+                : 'text-slate-300 hover:text-white',
             ]"
             @click="handleNavClick(item)"
           >
@@ -175,13 +175,13 @@ function handleSearch() {
         <!-- Right Search & Access CTAs -->
         <div class="flex items-center gap-3">
           <!-- Search Box -->
-          <div class="hidden lg:flex items-center bg-[#141612] dark:bg-[#0c0d0c] border border-[#2d3326] dark:border-[#20241b] rounded-lg px-2.5 py-1.5 w-48 text-xs text-[#e6eae2] focus-within:border-[#7eaa3b] dark:focus-within:border-[#b8ee82] transition">
-            <Search class="w-3.5 h-3.5 text-[#878e80] mr-2 shrink-0" />
+          <div class="hidden lg:flex items-center bg-[#071728] border border-[#16355d] rounded-lg px-2.5 py-1.5 w-48 text-xs text-slate-300 focus-within:border-[#38bdf8] transition">
+            <Search class="w-3.5 h-3.5 text-slate-400 mr-2 shrink-0" />
             <input
               v-model="searchQuery"
               type="text"
               placeholder="Search..."
-              class="bg-transparent w-full focus:outline-none placeholder-[#878e80] text-xs text-white"
+              class="bg-transparent w-full focus:outline-none placeholder-slate-400 text-xs text-white"
               @keydown.enter="handleSearch"
             />
           </div>
@@ -190,14 +190,14 @@ function handleSearch() {
 
           <router-link
             to="/login"
-            class="hidden sm:inline-block px-3 py-1.5 text-xs font-medium text-[#a7ada0] hover:text-white transition-colors"
+            class="hidden sm:inline-block px-3 py-1.5 text-xs font-medium text-slate-200 hover:text-white transition-colors"
           >
             Login
           </router-link>
 
           <router-link
             to="/"
-            class="inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#c2410c] hover:bg-[#9a3412] dark:bg-[#b8ee82] dark:text-[#10140d] dark:hover:bg-[#cbf995] text-white text-xs font-semibold shadow-sm transition-all"
+            class="inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#c2410c] hover:bg-[#9a3412] text-white text-xs font-semibold shadow-sm transition-all"
           >
             <span>Enter Portal</span>
             <ArrowRight class="w-3.5 h-3.5" />
@@ -212,22 +212,22 @@ function handleSearch() {
       <section id="about-section" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-2 pb-4">
         <!-- Left Hero Copy -->
         <div class="lg:col-span-7 space-y-4">
-          <div class="inline-flex items-center gap-1.5 rounded-full bg-[#fef9c3] dark:bg-[#202716] border border-[#fef08a] dark:border-[#384920] px-3 py-1 text-xs font-semibold text-[#854d0e] dark:text-[#b8ee82]">
+          <div class="inline-flex items-center gap-1.5 rounded-full bg-orange-100 dark:bg-[#33200a] border border-orange-200 dark:border-[#522900] px-3 py-1 text-xs font-semibold text-orange-900 dark:text-[#f97316]">
             <span>Welcome to SIH64</span>
           </div>
 
           <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#22261f] dark:text-white [text-wrap:balance]">
-            Innovate <span class="text-[#b86f00] dark:text-[#b8ee82]">•</span> Build <span class="text-[#b86f00] dark:text-[#b8ee82]">•</span> Transform
+            Innovate <span class="text-[#f97316]">•</span> Build <span class="text-[#f97316]">•</span> Transform
           </h1>
 
-          <p class="text-[#5f6656] dark:text-[#989e92] text-sm sm:text-base leading-relaxed max-w-xl [text-wrap:pretty]">
+          <p class="text-[#5f6656] dark:text-[#989898] text-sm sm:text-base leading-relaxed max-w-xl [text-wrap:pretty]">
             SIH64 is a platform to bring together bright minds, innovative ideas and real-world problem statements to build solutions for a better tomorrow.
           </p>
 
           <div class="flex flex-wrap items-center gap-3 pt-2">
             <router-link
               to="/"
-              class="inline-flex items-center gap-2 rounded-lg bg-[#c2410c] hover:bg-[#9a3412] dark:bg-[#b8ee82] dark:text-[#10140d] dark:hover:bg-[#cbf995] px-5 py-2.5 text-xs font-semibold text-white shadow-md transition-all duration-150"
+              class="inline-flex items-center gap-2 rounded-lg bg-[#c2410c] hover:bg-[#9a3412] px-5 py-2.5 text-xs font-semibold text-white shadow-md transition-all duration-150"
             >
               <span>Explore Problem Statements</span>
               <ArrowRight class="w-4 h-4" />
@@ -235,9 +235,9 @@ function handleSearch() {
 
             <router-link
               to="/complaints"
-              class="inline-flex items-center gap-2 rounded-lg border border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#1e201d] hover:bg-[#f8faf4] dark:hover:bg-[#252922] px-4 py-2.5 text-xs font-semibold text-[#22261f] dark:text-[#cccccc] transition-colors"
+              class="inline-flex items-center gap-2 rounded-lg border border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#1e201d] hover:bg-slate-50 dark:hover:bg-[#252922] px-4 py-2.5 text-xs font-semibold text-slate-700 dark:text-[#cccccc] transition-colors"
             >
-              <Play class="w-3.5 h-3.5 text-[#b86f00] dark:text-[#b8ee82] fill-current" />
+              <Play class="w-3.5 h-3.5 text-[#f97316] fill-current" />
               <span>How It Works</span>
             </router-link>
           </div>
@@ -245,35 +245,47 @@ function handleSearch() {
 
         <!-- Right Hero Illustration Graphic -->
         <div class="lg:col-span-5 relative flex items-center justify-center">
-          <div class="relative w-full max-w-md aspect-square rounded-2xl bg-white/70 dark:bg-[#1e201d] border border-[#dfe7d6] dark:border-[#2f332b] p-6 flex flex-col items-center justify-center overflow-hidden shadow-sm">
-            <!-- Center Motif -->
+          <div class="relative w-full max-w-md aspect-square rounded-2xl bg-gradient-to-br from-blue-50/70 to-indigo-50/40 dark:from-[#1b263b]/40 dark:to-[#0f172a]/60 border border-[#dfe7d6] dark:border-[#2f332b] p-6 flex flex-col items-center justify-center overflow-hidden shadow-sm">
+            <!-- India Map Silhouette Outline in background -->
+            <div class="absolute inset-0 pointer-events-none -z-0 flex items-center justify-center">
+              <svg
+                class="w-full h-full text-blue-200/40 dark:text-blue-900/15"
+                viewBox="0 0 400 400"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M200,40 Q240,60 220,100 T260,160 T220,220 T200,320 T180,220 T140,160 T180,100 Z" opacity="0.4" />
+              </svg>
+            </div>
+
+            <!-- Center Illuminated Bulb Motif -->
             <div class="relative z-10 flex flex-col items-center">
               <div class="relative w-28 h-28 flex items-center justify-center">
-                <div class="absolute inset-0 rounded-full bg-[#b86f00]/15 dark:bg-[#b8ee82]/15 blur-xl animate-pulse"></div>
+                <div class="absolute inset-0 rounded-full bg-orange-400/20 dark:bg-orange-500/10 blur-xl animate-pulse"></div>
                 <!-- Glowing Brain Bulb Vector -->
                 <svg viewBox="0 0 64 64" fill="none" class="w-24 h-24">
                   <!-- Bulb Base -->
-                  <path d="M22 42C19 39 17 34 17 28C17 19.7 23.7 13 32 13C40.3 13 47 19.7 47 28C47 34 45 39 42 42" stroke="#7eaa3b" stroke-width="2.5" stroke-linecap="round" />
+                  <path d="M22 42C19 39 17 34 17 28C17 19.7 23.7 13 32 13C40.3 13 47 19.7 47 28C47 34 45 39 42 42" stroke="#0284c7" stroke-width="2.5" stroke-linecap="round" />
                   <!-- Saffron Brain Left -->
-                  <path d="M32 17C26 17 21 21.5 21 27.5C21 32 24 36.5 26 39.5V42H32V17Z" fill="#b86f00" />
-                  <!-- Mint Brain Right -->
-                  <path d="M32 17C38 17 43 21.5 43 27.5C43 32 40 36.5 38 39.5V42H32V17Z" fill="#7eaa3b" />
+                  <path d="M32 17C26 17 21 21.5 21 27.5C21 32 24 36.5 26 39.5V42H32V17Z" fill="#f97316" />
+                  <!-- Cyan Brain Right -->
+                  <path d="M32 17C38 17 43 21.5 43 27.5C43 32 40 36.5 38 39.5V42H32V17Z" fill="#0ea5e9" />
                   <line x1="32" y1="16" x2="32" y2="42" stroke="#ffffff" stroke-width="2" />
                   <rect x="27" y="44" width="10" height="3" rx="1.5" fill="#94a3b8" />
                   <rect x="28.5" y="48.5" width="7" height="2.5" rx="1" fill="#cbd5e1" />
-                  <path d="M29.5 52.5C29.5 54 30.5 55 32 55C33.5 55 34.5 54 34.5 52.5H29.5Z" fill="#b86f00" />
+                  <path d="M29.5 52.5C29.5 54 30.5 55 32 55C33.5 55 34.5 54 34.5 52.5H29.5Z" fill="#f97316" />
                 </svg>
               </div>
 
               <!-- Surrounding Domain Badges -->
               <div class="flex items-center gap-3 mt-4">
-                <span class="p-2 rounded-full bg-[#f0f6e9] dark:bg-[#202716] shadow-sm border border-[#dfe7d6] dark:border-[#384920] text-[#5e8428] dark:text-[#b8ee82]" title="Engineering">
+                <span class="p-2 rounded-full bg-white dark:bg-[#252526] shadow-sm border border-slate-200 dark:border-[#383838] text-blue-600 dark:text-[#38bdf8]" title="Engineering">
                   <Building2 class="w-4 h-4" />
                 </span>
-                <span class="p-2 rounded-full bg-[#ecfdf5] dark:bg-[#132921] shadow-sm border border-[#a7f3d0] dark:border-[#1e4839] text-[#059669] dark:text-[#34d399]" title="Sustainability">
+                <span class="p-2 rounded-full bg-white dark:bg-[#252526] shadow-sm border border-slate-200 dark:border-[#383838] text-[#10b981]" title="Sustainability">
                   <ShieldCheck class="w-4 h-4" />
                 </span>
-                <span class="p-2 rounded-full bg-[#fef9c3] dark:bg-[#202716] shadow-sm border border-[#fef08a] dark:border-[#384920] text-[#b86f00] dark:text-[#b8ee82]" title="Innovation">
+                <span class="p-2 rounded-full bg-white dark:bg-[#252526] shadow-sm border border-slate-200 dark:border-[#383838] text-[#f97316]" title="Innovation">
                   <Lightbulb class="w-4 h-4" />
                 </span>
               </div>
@@ -281,14 +293,14 @@ function handleSearch() {
 
             <!-- Vertical Tagline + Tricolor bar -->
             <div class="mt-6 flex flex-col items-center text-center relative z-10">
-              <span class="text-xs font-bold tracking-wider uppercase text-[#22261f] dark:text-white">
+              <span class="text-xs font-bold tracking-wider uppercase text-slate-800 dark:text-white">
                 Smart India Hackathon 64
               </span>
               <!-- Indian Tricolor Line -->
               <div class="flex items-center gap-1 mt-1.5">
-                <span class="w-6 h-1 rounded-full bg-[#b86f00] dark:bg-[#b8ee82]"></span>
-                <span class="w-6 h-1 rounded-full bg-[#dfe7d6] dark:bg-[#3d4237]"></span>
-                <span class="w-6 h-1 rounded-full bg-[#7eaa3b] dark:bg-[#b8ee82]"></span>
+                <span class="w-6 h-1 rounded-full bg-[#f97316]"></span>
+                <span class="w-6 h-1 rounded-full bg-slate-300 dark:bg-slate-500"></span>
+                <span class="w-6 h-1 rounded-full bg-[#10b981]"></span>
               </div>
             </div>
           </div>
@@ -300,26 +312,26 @@ function handleSearch() {
         <div
           v-for="card in featureCards"
           :key="card.title"
-          class="group rounded-xl border border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#1e201d] p-5 flex flex-col justify-between hover:border-[#cbd7bf] dark:hover:border-[#3d4237] transition-all duration-150 shadow-sm"
+          class="group rounded-xl border border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#1e201d] p-5 flex flex-col justify-between hover:border-slate-300 dark:hover:border-[#3e3e42] transition-all duration-150 shadow-sm"
         >
           <div class="space-y-3">
             <div class="flex items-center gap-3">
-              <div class="flex size-8 items-center justify-center rounded-lg bg-[#f0f6e9] dark:bg-[#1a2417] text-[#5e8428] dark:text-[#b8ee82] shrink-0 border border-[#d8e5cb] dark:border-[#2a3c23]">
+              <div class="flex size-8 items-center justify-center rounded-lg bg-blue-50 dark:bg-[#142e4e] text-blue-600 dark:text-[#38bdf8] shrink-0 border border-blue-100 dark:border-[#1d4370]">
                 <component :is="card.icon" class="w-4 h-4" aria-hidden="true" />
               </div>
-              <h2 class="text-xs font-semibold uppercase tracking-wider text-[#22261f] dark:text-white [text-wrap:balance]">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white [text-wrap:balance]">
                 {{ card.title }}
               </h2>
             </div>
 
-            <p class="text-xs text-[#5f6656] dark:text-[#989e92] leading-relaxed [text-wrap:pretty]">
+            <p class="text-xs text-[#5f6656] dark:text-[#989898] leading-relaxed [text-wrap:pretty]">
               {{ card.description }}
             </p>
           </div>
 
           <router-link
             :to="card.link"
-            class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#5e8428] dark:text-[#b8ee82] hover:text-[#425e1a] dark:hover:underline mt-4 pt-3 border-t border-[#dfe7d6] dark:border-[#2f332b] transition-colors"
+            class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-[#38bdf8] hover:text-blue-800 dark:hover:text-[#60cdff] mt-4 pt-3 border-t border-[#dfe7d6] dark:border-[#2f332b] transition-colors"
           >
             <span>Learn More</span>
             <ArrowRight class="w-3.5 h-3.5" />
@@ -332,8 +344,8 @@ function handleSearch() {
         <!-- Latest Updates (8 cols) -->
         <div class="lg:col-span-8 rounded-xl border border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#1e201d] p-5 shadow-sm">
           <div class="flex items-center gap-2 border-b border-[#dfe7d6] dark:border-[#2f332b] pb-3">
-            <span class="w-1 h-4 rounded-full bg-[#b86f00] dark:bg-[#b8ee82]"></span>
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-[#22261f] dark:text-white">
+            <span class="w-1 h-4 rounded-full bg-[#f97316]"></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white">
               Latest Updates
             </h2>
           </div>
@@ -344,22 +356,22 @@ function handleSearch() {
               :key="idx"
               class="pt-3 sm:pt-0 sm:px-3 first:pl-0 last:pr-0 space-y-1.5"
             >
-              <div class="flex items-center gap-1.5 text-xs font-mono font-medium text-[#5f6656] dark:text-[#989e92]">
-                <Calendar class="w-3 h-3 text-[#b86f00] dark:text-[#b8ee82]" />
+              <div class="flex items-center gap-1.5 text-xs font-mono font-medium text-slate-400 dark:text-[#989898]">
+                <Calendar class="w-3 h-3 text-[#f97316]" />
                 <span>{{ u.date }}</span>
               </div>
-              <p class="text-xs text-[#5f6656] dark:text-[#cccccc] leading-relaxed [text-wrap:pretty]">
+              <p class="text-xs text-slate-600 dark:text-[#cccccc] leading-relaxed [text-wrap:pretty]">
                 {{ u.text }}
               </p>
             </article>
           </div>
         </div>
 
-        <!-- Deep Olive/Obsidian Grounding Callout Box (4 cols) -->
-        <div class="lg:col-span-4 rounded-xl bg-[#1b1e18] dark:bg-[#101110] text-white p-5 flex flex-col justify-between shadow-md border border-[#2d3326] dark:border-[#242820]">
+        <!-- Deep Navy Callout Box (4 cols) -->
+        <div class="lg:col-span-4 rounded-xl bg-[#0c2340] dark:bg-[#0b1a30] text-white p-5 flex flex-col justify-between shadow-md border border-[#14325a]">
           <div class="space-y-3">
             <div class="flex items-center gap-3">
-              <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#282d23] dark:bg-[#1e2518] text-[#b86f00] dark:text-[#b8ee82]">
+              <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#183a66] text-[#f97316]">
                 <Lightbulb class="w-4 h-4 fill-current" />
               </div>
 
@@ -368,14 +380,14 @@ function handleSearch() {
               </h2>
             </div>
 
-            <p class="text-xs text-[#a7ada0] dark:text-[#989e92] leading-relaxed [text-wrap:pretty]">
+            <p class="text-xs text-slate-300 leading-relaxed [text-wrap:pretty]">
               Register your institution or evaluate live problem statements across central technical bureaus.
             </p>
           </div>
 
           <router-link
             to="/"
-            class="inline-flex items-center justify-center gap-1.5 mt-5 rounded-lg bg-white dark:bg-[#b8ee82] text-[#1b1e18] dark:text-[#10140d] hover:bg-slate-100 dark:hover:bg-[#cbf995] px-4 py-2 text-xs font-bold transition-all shadow-sm"
+            class="inline-flex items-center justify-center gap-1.5 mt-5 rounded-lg bg-white text-[#0c2340] hover:bg-slate-100 px-4 py-2 text-xs font-bold transition-all shadow-sm"
           >
             <span>Register Now</span>
             <ArrowRight class="w-3.5 h-3.5" />
@@ -385,17 +397,17 @@ function handleSearch() {
     </main>
 
     <!-- Footer -->
-    <footer class="mt-auto border-t border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#101110] py-6 px-4 sm:px-8 text-xs text-[#5f6656] dark:text-[#989e92]">
+    <footer class="mt-auto border-t border-[#dfe7d6] dark:border-[#2f332b] bg-white dark:bg-[#101110] py-6 px-4 sm:px-8 text-xs text-[#5f6656] dark:text-[#989898]">
       <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center gap-2">
-          <span class="font-bold text-[#22261f] dark:text-white">SIH64</span>
+          <span class="font-bold text-slate-800 dark:text-white">SIH64</span>
           <span>— All India Council for Technical Education</span>
         </div>
         <div class="flex items-center gap-4">
-          <router-link to="/" class="hover:text-[#5e8428] dark:hover:text-white transition">Dashboard</router-link>
-          <router-link to="/complaints" class="hover:text-[#5e8428] dark:hover:text-white transition">Complaints</router-link>
-          <router-link to="/overlaps" class="hover:text-[#5e8428] dark:hover:text-white transition">Overlaps</router-link>
-          <router-link to="/institutions" class="hover:text-[#5e8428] dark:hover:text-white transition">Institutions</router-link>
+          <router-link to="/" class="hover:text-blue-600 dark:hover:text-white transition">Dashboard</router-link>
+          <router-link to="/complaints" class="hover:text-blue-600 dark:hover:text-white transition">Complaints</router-link>
+          <router-link to="/overlaps" class="hover:text-blue-600 dark:hover:text-white transition">Overlaps</router-link>
+          <router-link to="/institutions" class="hover:text-blue-600 dark:hover:text-white transition">Institutions</router-link>
         </div>
       </div>
     </footer>

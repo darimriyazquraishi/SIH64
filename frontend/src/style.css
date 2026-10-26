@@ -4,12 +4,12 @@
 
 @layer base {
   body {
-    /* 10FastFingers Lemondrop (Light Mode) background & text */
+    /* Lemondrop (Light Mode) background & text */
     @apply text-[#22261f] bg-[#e8efe0] antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  /* 10FastFingers Glow (Dark Mode) background & text */
+  /* Glow (Dark Mode) background & text */
   html.dark body {
     @apply bg-[#161716] text-[#e6eae2];
   }
@@ -35,7 +35,7 @@
   }
 }
 
-/* 10FastFingers Custom Scrollbars */
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 9px;
   height: 9px;
@@ -59,15 +59,5 @@
 }
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #3e4439;
-}
-
-/* 10FastFingers Word Highlighting Utilities */
-.lemondrop-highlight {
-  background-color: rgba(242, 201, 76, 0.3);
-  box-shadow: -2px 0 0 0 #b86f00;
-}
-.dark .glow-highlight {
-  background-color: rgba(184, 238, 130, 0.2);
-  box-shadow: -2px 0 0 0 #b8ee82;
 }
 
