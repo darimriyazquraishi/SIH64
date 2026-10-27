@@ -59,6 +59,8 @@ Thumbs.db
 # Database files & Portable runtimes
 *.sqlite3
 *.db
+pgsql/
+pgsql.zip
 .pgsql_data/
 .pgsql_bin/
 *.log

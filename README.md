@@ -131,6 +131,25 @@ aicte-complaint-portal/
 
 ## 4. Quick Start Guide (Local Development)
 
+### 1-Click Automated Launch (Windows)
+Simply double-click [`run.bat`](file:///f:/SIH64/run.bat) in the project root, or execute:
+```cmd
+run.bat
+```
+`run.bat` automatically handles the entire lifecycle:
+1. **System Check**: Verifies Python (3.11+) and Node.js/npm.
+2. **Portable PostgreSQL**: Detects local PostgreSQL; downloads, extracts, and initializes portable PostgreSQL 16 into `SIH64\pgsql` automatically if missing.
+3. **Database Readiness**: Starts the local database service, creates databases, and seeds initial records.
+4. **Environment & Dependencies**: Creates `backend\.venv`, installs `requirements.txt`, and runs `npm install` if missing.
+5. **Orchestrated Startup**: Launches the Flask REST API on `http://localhost:5000` and Vue 3 frontend on `http://localhost:5173`.
+6. **Browser Auto-Launch**: Automatically opens `http://localhost:5173` with 1-click credential switchers ready.
+
+To stop all servers and PostgreSQL cleanly, press `[Q]` in the launcher or run [`stop.bat`](file:///f:/SIH64/stop.bat).
+
+---
+
+### Manual Setup Workflow
+
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+ and npm

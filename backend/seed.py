@@ -184,6 +184,126 @@ def seed_database():
         db.session.add_all(institutions)
         db.session.flush()
 
+        print("Seeding Initial Complaint Records...")
+        now = datetime.now(timezone.utc)
+        c1 = Complaint(
+            case_number="AICTE-26-PGRC-0101",
+            ticket_number="AICTE-2026-PG0101",
+            external_reference="CPGRAMS/2026/004189",
+            institution_id=institutions[0].id,
+            category="Fee irregularity",
+            subject="Reported capitation fee collection during admission",
+            description="The complainant reports an additional payment being requested outside the published fee schedule.",
+            receiving_bureau_id=bureau_map["PGRC"].id,
+            current_bureau_id=bureau_map["PGRC"].id,
+            assigned_user_id=officer_pgrc.id,
+            priority="Critical",
+            status="Action Required",
+            received_at=now - timedelta(days=18),
+            due_at=now - timedelta(days=2),
+            last_action_at=now - timedelta(days=5),
+            created_at=now - timedelta(days=18),
+        )
+        c2 = Complaint(
+            case_number="AICTE-26-AB-0102",
+            ticket_number="AICTE-2026-AB0102",
+            external_reference="CPGRAMS/2026/004189",
+            institution_id=institutions[0].id,
+            category="Admission irregularity",
+            subject="Review of admission-related fee complaint",
+            description="Review requested on the institution fee schedule and additional admission charges reported by applicants.",
+            receiving_bureau_id=bureau_map["AB"].id,
+            current_bureau_id=bureau_map["AB"].id,
+            assigned_user_id=officer_ab.id,
+            priority="High",
+            status="Under Review",
+            received_at=now - timedelta(days=14),
+            due_at=now + timedelta(days=3),
+            last_action_at=now - timedelta(days=1),
+            created_at=now - timedelta(days=14),
+        )
+        c3 = Complaint(
+            case_number="AICTE-26-PAPB-0103",
+            ticket_number="AICTE-2026-PA0103",
+            institution_id=institutions[0].id,
+            category="Faculty compliance",
+            subject="Faculty qualification records need verification",
+            description="Submitted faculty qualification documents appear incomplete and require a bureau-level review.",
+            receiving_bureau_id=bureau_map["PAPB"].id,
+            current_bureau_id=bureau_map["PAPB"].id,
+            priority="Medium",
+            status="Awaiting Response",
+            received_at=now - timedelta(days=9),
+            due_at=now + timedelta(days=6),
+            last_action_at=now - timedelta(days=2),
+            created_at=now - timedelta(days=9),
+        )
+        c4 = Complaint(
+            case_number="AICTE-26-RPC-0104",
+            ticket_number="AICTE-2026-RP0104",
+            institution_id=institutions[1].id,
+            category="Student safety",
+            subject="Follow-up required on student safety report",
+            description="A follow-up report requested from the institution has not yet been received.",
+            receiving_bureau_id=bureau_map["RPC"].id,
+            current_bureau_id=bureau_map["RPC"].id,
+            assigned_user_id=officer_rpc.id,
+            priority="High",
+            status="Escalated",
+            received_at=now - timedelta(days=23),
+            due_at=now - timedelta(days=7),
+            last_action_at=now - timedelta(days=8),
+            created_at=now - timedelta(days=23),
+        )
+        c5 = Complaint(
+            case_number="AICTE-26-FAB-0105",
+            ticket_number="AICTE-2026-JB92C9",
+            institution_id=institutions[1].id,
+            category="Financial records",
+            subject="Scholarship disbursement reconciliation",
+            description="Request to reconcile the recorded disbursement and the payment schedule supplied by the institution.",
+            complainant_name=user_citizen.name,
+            complainant_email=user_citizen.email,
+            created_by_user_id=user_citizen.id,
+            receiving_bureau_id=bureau_map["FAB"].id,
+            current_bureau_id=bureau_map["FAB"].id,
+            priority="Medium",
+            status="Under Review",
+            received_at=now - timedelta(days=7),
+            due_at=now + timedelta(days=8),
+            last_action_at=now - timedelta(days=2),
+            created_at=now - timedelta(days=7),
+        )
+        db.session.add_all([c1, c2, c3, c4, c5])
+        db.session.flush()
+
+        link = CaseLink(
+            complaint_id_a=c1.id,
+            complaint_id_b=c2.id,
+            relationship_type="potential_overlap",
+            match_score=0.93,
+            match_method="Identifier + text similarity",
+            match_reason="Both records reference the same institution and external complaint reference. The descriptions concern admission-related fees.",
+            review_status="pending",
+        )
+        db.session.add(link)
+
+        act1 = CaseAction(
+            complaint_id=c5.id,
+            action_type="Submitted",
+            description="Grievance registered in the centralized complaint register.",
+            performed_by_id=user_citizen.id,
+            created_at=now - timedelta(days=7),
+        )
+        act2 = CaseAction(
+            complaint_id=c5.id,
+            action_type="Under Review",
+            description="Assigned to Finance & Accounts Bureau for scholarship audit reconciliation.",
+            performed_by_id=industry_desk.id,
+            created_at=now - timedelta(days=2),
+        )
+        db.session.add_all([act1, act2])
+
         db.session.commit()
 
         print("\nMaster seed data loaded successfully!")
