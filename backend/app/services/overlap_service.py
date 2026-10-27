@@ -1,7 +1,7 @@
 import re
 from datetime import datetime, timezone
 from rapidfuzz import fuzz
-from ..models import db, Complaint, CaseLink, Notification, Institution, AuditEvent
+from ..models import db, Complaint, CaseLink, Notification, Institution, AuditEvent, CaseAction, User
 
 def normalize_text(text: str) -> str:
     if not text:
@@ -257,42 +257,91 @@ def scan_complaint_overlaps(complaint_id: int):
 def review_case_link(link_id: int, decision: str, user_id: int, remarks: str = ""):
     """
     Review a potential overlap:
-    - decision: "confirmed_related", "unrelated", "deferred"
+    - decision: "confirmed_overlap" / "confirmed_related", "false_alert" / "unrelated", "needs_review" / "deferred"
     """
     link = db.session.get(CaseLink, link_id)
     if not link:
         return None, "Overlap link not found"
 
-    valid_decisions = {
-        "confirmed_related": "confirmed",
-        "unrelated": "dismissed",
-        "deferred": "deferred"
+    norm_decision = decision.strip().lower()
+    canonical_map = {
+        "confirmed_overlap": ("confirmed_overlap", "confirmed"),
+        "confirmed_related": ("confirmed_overlap", "confirmed"),
+        "confirmed": ("confirmed_overlap", "confirmed"),
+        "false_alert": ("false_alert", "dismissed"),
+        "unrelated": ("false_alert", "dismissed"),
+        "dismissed": ("false_alert", "dismissed"),
+        "needs_review": ("needs_review", "deferred"),
+        "deferred": ("needs_review", "deferred"),
     }
 
-    if decision not in valid_decisions:
-        return None, f"Invalid decision. Must be one of: {list(valid_decisions.keys())}"
+    if norm_decision not in canonical_map:
+        return None, f"Invalid decision '{decision}'. Must be one of: Confirmed Overlap, False Alert, Needs Review."
 
-    link.relationship_type = decision
-    link.review_status = valid_decisions[decision]
+    rel_type, rev_status = canonical_map[norm_decision]
+    link.relationship_type = rel_type
+    link.review_status = rev_status
     link.reviewed_by_id = user_id
     link.reviewed_at = datetime.now(timezone.utc)
     link.review_remarks = remarks
 
+    reviewer = db.session.get(User, user_id) if user_id else None
+    reviewer_name = reviewer.name if reviewer else "Authorized Official"
+
+    # If Confirmed Overlap: record coordination actions on both complaints and notify relevant Bureaus
+    if rev_status == "confirmed":
+        comp_a = link.complaint_a
+        comp_b = link.complaint_b
+        if comp_a and comp_b:
+            action_desc_a = f"Confirmed Overlap with Case #{comp_b.case_number}. Reviewer: {reviewer_name}. Remarks: {remarks or 'No remarks provided'}"
+            action_desc_b = f"Confirmed Overlap with Case #{comp_a.case_number}. Reviewer: {reviewer_name}. Remarks: {remarks or 'No remarks provided'}"
+            
+            db.session.add(CaseAction(
+                complaint_id=comp_a.id,
+                action_type="overlap_confirmed",
+                description=action_desc_a,
+                performed_by_name=reviewer_name,
+                user_id=user_id,
+                created_at=datetime.now(timezone.utc)
+            ))
+            db.session.add(CaseAction(
+                complaint_id=comp_b.id,
+                action_type="overlap_confirmed",
+                description=action_desc_b,
+                performed_by_name=reviewer_name,
+                user_id=user_id,
+                created_at=datetime.now(timezone.utc)
+            ))
+            comp_a.last_action_at = datetime.now(timezone.utc)
+            comp_b.last_action_at = datetime.now(timezone.utc)
+
+            # Notify Bureau Officers
+            notif_title = f"Overlap Confirmed: {comp_a.case_number} & {comp_b.case_number}"
+            notif_msg = f"Official {reviewer_name} verified cross-bureau overlap regarding '{comp_a.institution.name}'. Coordination actions are now active."
+            db.session.add(Notification(
+                notification_type="overlap_confirmed",
+                title=notif_title,
+                message=notif_msg,
+                related_complaint_id=comp_a.id,
+                related_case_link_id=link.id
+            ))
+
     # Record audit event
     audit = AuditEvent(
         user_id=user_id,
-        action="OVERLAP_REVIEW",
+        action="OVERLAP_VERIFICATION",
         entity_type="CaseLink",
         entity_id=link.id,
     )
     audit.set_details({
         "complaint_id_a": link.complaint_id_a,
         "complaint_id_b": link.complaint_id_b,
-        "decision": decision,
-        "review_status": link.review_status,
+        "decision": rel_type,
+        "review_status": rev_status,
         "remarks": remarks
     })
     db.session.add(audit)
     db.session.commit()
 
     return link, None
+

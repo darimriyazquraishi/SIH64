@@ -1,8 +1,9 @@
 import os
 import uuid
+from datetime import datetime, timezone
 from flask import Blueprint, request, jsonify, current_app, send_from_directory
 from werkzeug.utils import secure_filename
-from ..models import db, Institution, Bureau, Complaint
+from ..models import db, Institution, Bureau, Complaint, CaseAction, Notification
 from ..services.complaint_service import create_complaint, get_complaint_by_ticket
 
 public_bp = Blueprint("public", __name__, url_prefix="/api/v1/public")
@@ -117,6 +118,71 @@ def track_complaint(ticket_number: str):
 
     return jsonify({
         "success": True,
+        "complaint": comp.to_public_dict()
+    })
+
+@public_bp.route("/complaints/track/<ticket_number>/respond", methods=["POST"])
+def public_respond_to_inquiry(ticket_number: str):
+    """
+    Public complainant responds to an official inquiry or uploads missing documents without filing a new complaint.
+    """
+    comp = get_complaint_by_ticket(ticket_number)
+    if not comp:
+        return jsonify({"error": "Complaint not found for ticket reference"}), 404
+
+    if request.is_json:
+        data = request.get_json() or {}
+        uploaded_file = None
+    else:
+        data = request.form.to_dict()
+        uploaded_file = request.files.get("file") or request.files.get("document")
+
+    message = (data.get("message") or data.get("remarks") or "").strip()
+    if not message and not uploaded_file:
+        return jsonify({"error": "Please provide a response message or upload a document"}), 400
+
+    doc_name = None
+    doc_url = None
+    if uploaded_file and uploaded_file.filename:
+        if not allowed_file(uploaded_file.filename):
+            return jsonify({"error": "File type not supported."}), 400
+        safe_name = secure_filename(uploaded_file.filename)
+        upload_dir = current_app.config.get("UPLOAD_FOLDER") or os.path.join(current_app.root_path, "..", "uploads")
+        os.makedirs(upload_dir, exist_ok=True)
+        unique_name = f"{uuid.uuid4().hex[:12]}_{safe_name}"
+        uploaded_file.save(os.path.join(upload_dir, unique_name))
+        doc_name = uploaded_file.filename
+        doc_url = f"/api/v1/public/files/{unique_name}"
+        comp.supporting_document_name = doc_name
+        comp.supporting_document_url = doc_url
+
+    action = CaseAction(
+        complaint_id=comp.id,
+        action_type="complainant_response",
+        description=f"Complainant Response: {message}" + (f" (Attached: {doc_name})" if doc_name else ""),
+        performed_by_name=comp.complainant_name or "Complainant",
+        created_at=datetime.now(timezone.utc),
+    )
+    db.session.add(action)
+
+    if comp.status == "Awaiting Response":
+        comp.status = "Under Review"
+
+    comp.last_action_at = datetime.now(timezone.utc)
+
+    notif = Notification(
+        notification_type="complainant_reply",
+        title=f"Additional Info Received for Case #{comp.case_number}",
+        message=f"Complainant {comp.complainant_name} replied with additional details: '{message[:100]}...'",
+        related_complaint_id=comp.id,
+        user_id=comp.assigned_user_id
+    )
+    db.session.add(notif)
+    db.session.commit()
+
+    return jsonify({
+        "success": True,
+        "message": "Additional information recorded successfully",
         "complaint": comp.to_public_dict()
     })
 

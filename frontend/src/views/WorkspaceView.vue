@@ -186,6 +186,256 @@ function requestConfirm(options: { title: string; message: string; actionLabel?:
 
 const toastLocal = (message: string, kind: 'success' | 'error' | 'info' = 'success') => ui.toast(message, kind)
 
+// Ageing & Next Action Utilities
+function getAgeingDays(item: Row): number {
+  const dateStr = item?.received_at || item?.created_at
+  if (!dateStr) return 0
+  return Math.max(0, Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000))
+}
+function getAgeingClass(days: number): string {
+  if (days > 30) return 'ageing-critical'
+  if (days > 15) return 'ageing-warning'
+  return 'ageing-normal'
+}
+function getNextAction(item: Row): string {
+  if (item?.next_action) return item.next_action
+  const s = String(item?.status || '').toLowerCase()
+  if (s === 'received' || s === 'new') return 'Awaiting initial review & officer assignment'
+  if (s === 'under review') return 'Examine institutional records & documentation'
+  if (s === 'action required' || s === 'awaiting response') return 'Follow up on statutory inquiry notice to institution'
+  if (s === 'escalated') return 'Senior authority review & hearing schedule'
+  if (s === 'disposed' || s === 'closed') return 'Case closed · Directives issued'
+  return 'Review case particulars'
+}
+
+const defaultBureauOfficers = [
+  { id: 2, name: 'Ananya Rao', email: 'officer.pgrc@aicte.gov.in', bureau_name: 'PGRC', designation: 'Senior Grievance Officer' },
+  { id: 3, name: 'Vikram Nair', email: 'officer.ab@aicte.gov.in', bureau_name: 'AB', designation: 'Approval Bureau Officer' },
+  { id: 4, name: 'Meera Shah', email: 'officer.papb@aicte.gov.in', bureau_name: 'PAPB', designation: 'Academic Planning Officer' },
+  { id: 5, name: 'Kunal Mehta', email: 'officer.rpc@aicte.gov.in', bureau_name: 'RPC', designation: 'Ragging Prevention Officer' },
+  { id: 6, name: 'Sana Khan', email: 'officer.fab@aicte.gov.in', bureau_name: 'FAB', designation: 'Finance & Accounts Officer' },
+]
+const bureauOfficers = computed(() => {
+  const fromAdmin = adminUsers.value.filter((u: Row) => ['INDUSTRY', 'OFFICER'].includes(String(u.role).toUpperCase()))
+  return fromAdmin.length ? fromAdmin : defaultBureauOfficers
+})
+
+// Reassign Case Modal
+const isReassignOpen = ref(false)
+const reassignUserId = ref('')
+const reassignRemarks = ref('')
+const isReassigning = ref(false)
+
+async function submitReassign() {
+  const item = currentComplaint.value
+  if (!item || !reassignUserId.value) return
+  isReassigning.value = true
+  try {
+    const selectedOfficer = bureauOfficers.value.find((o: Row) => String(o.id) === String(reassignUserId.value))
+    if (!ui.isDemoMode) {
+      await apiClient.post(`/complaints/${item.id}/assign`, {
+        assign_to_user_id: Number(reassignUserId.value),
+        remarks: reassignRemarks.value.trim() || 'Case reassigned by officer'
+      })
+    }
+    item.assigned_user_id = Number(reassignUserId.value)
+    item.assigned_officer_name = selectedOfficer?.name || 'Assigned Officer'
+    item.last_action_at = new Date().toISOString()
+    if (!item.actions) item.actions = []
+    item.actions.unshift({
+      id: Date.now(),
+      action_type: 'case_reassigned',
+      description: `Reassigned to ${item.assigned_officer_name}. Remarks: ${reassignRemarks.value.trim() || 'Officer reassignment'}`,
+      performed_by_name: auth.user?.name || 'Officer',
+      created_at: new Date().toISOString()
+    })
+    complaints.value = complaints.value.map((c) => Number(c.id) === Number(item.id) ? { ...c, ...item } : c)
+    persistDemoData()
+    toastLocal(`Case #${item.case_number} reassigned to ${item.assigned_officer_name}.`)
+    isReassignOpen.value = false
+    reassignRemarks.value = ''
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to reassign case.', 'error')
+  } finally {
+    isReassigning.value = false
+  }
+}
+
+// Transfer Case Modal
+const isTransferOpen = ref(false)
+const transferBureauId = ref('2')
+const transferRemarks = ref('')
+const isTransferring = ref(false)
+
+async function submitTransfer() {
+  const item = currentComplaint.value
+  if (!item || !transferBureauId.value) return
+  isTransferring.value = true
+  try {
+    const targetBureau = bureaus.value.find((b: Row) => String(b.id) === String(transferBureauId.value)) || bureaus.value[0]
+    if (!ui.isDemoMode) {
+      await apiClient.post(`/complaints/${item.id}/transfer`, {
+        target_bureau_id: Number(transferBureauId.value),
+        remarks: transferRemarks.value.trim() || 'Inter-bureau transfer'
+      })
+    }
+    item.current_bureau_id = Number(transferBureauId.value)
+    item.current_bureau_code = targetBureau.code
+    item.current_bureau_name = targetBureau.name
+    item.status = 'Under Review'
+    item.last_action_at = new Date().toISOString()
+    if (!item.actions) item.actions = []
+    item.actions.unshift({
+      id: Date.now(),
+      action_type: 'case_transferred',
+      description: `Transferred jurisdiction to ${targetBureau.code} (${targetBureau.name}). Directives: ${transferRemarks.value.trim() || 'Jurisdiction realignment'}`,
+      performed_by_name: auth.user?.name || 'Bureau Officer',
+      created_at: new Date().toISOString()
+    })
+    complaints.value = complaints.value.map((c) => Number(c.id) === Number(item.id) ? { ...c, ...item } : c)
+    persistDemoData()
+    toastLocal(`Case #${item.case_number} transferred to ${targetBureau.code}.`)
+    isTransferOpen.value = false
+    transferRemarks.value = ''
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to transfer case.', 'error')
+  } finally {
+    isTransferring.value = false
+  }
+}
+
+// Add Coordination Note Modal
+const isCoordinationNoteOpen = ref(false)
+const coordinationPartnerBureau = ref('AB')
+const coordinationNoteText = ref('')
+const isSubmittingCoordination = ref(false)
+
+async function submitCoordinationNote() {
+  const item = currentComplaint.value
+  if (!item || !coordinationNoteText.value.trim()) return
+  isSubmittingCoordination.value = true
+  try {
+    if (!ui.isDemoMode) {
+      await apiClient.post(`/complaints/${item.id}/coordination-note`, {
+        partner_bureau_code: coordinationPartnerBureau.value,
+        note: coordinationNoteText.value.trim()
+      })
+    }
+    item.last_action_at = new Date().toISOString()
+    if (!item.actions) item.actions = []
+    item.actions.unshift({
+      id: Date.now(),
+      action_type: 'coordination_note',
+      description: `Inter-Bureau Coordination [${item.current_bureau_code || 'PGRC'} ↔ ${coordinationPartnerBureau.value}]: ${coordinationNoteText.value.trim()}`,
+      performed_by_name: auth.user?.name || 'Bureau Officer',
+      created_at: new Date().toISOString()
+    })
+    complaints.value = complaints.value.map((c) => Number(c.id) === Number(item.id) ? { ...c, ...item } : c)
+    persistDemoData()
+    toastLocal('Cross-Bureau coordination note recorded successfully.')
+    isCoordinationNoteOpen.value = false
+    coordinationNoteText.value = ''
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to record coordination note.', 'error')
+  } finally {
+    isSubmittingCoordination.value = false
+  }
+}
+
+// Link Related Case Modal
+const isLinkRelatedOpen = ref(false)
+const linkTargetRef = ref('')
+const linkReason = ref('')
+const isLinking = ref(false)
+
+async function submitLinkRelated() {
+  const item = currentComplaint.value
+  if (!item || !linkTargetRef.value.trim()) return
+  isLinking.value = true
+  try {
+    if (!ui.isDemoMode) {
+      await apiClient.post(`/complaints/${item.id}/link-related`, {
+        target_case_number: linkTargetRef.value.trim(),
+        reason: linkReason.value.trim() || 'Related institutional matter'
+      })
+    }
+    const targetComp = complaints.value.find((c) => c.case_number === linkTargetRef.value.trim() || String(c.id) === linkTargetRef.value.trim())
+    const nextLinkId = Math.max(900, ...overlaps.value.map((o) => Number(o.id) || 0)) + 1
+    overlaps.value.unshift({
+      id: nextLinkId,
+      complaint_id_a: item.id,
+      complaint_id_b: targetComp?.id || 102,
+      relationship_type: 'confirmed_related',
+      match_score: 1.0,
+      match_method: 'Manual Case Linking',
+      match_reason: linkReason.value.trim() || 'Manual cross-reference established by bureau official',
+      review_status: 'confirmed',
+      case_a: item,
+      case_b: targetComp || { case_number: linkTargetRef.value.trim(), subject: 'Cross-referenced Case' },
+      created_at: new Date().toISOString()
+    })
+    if (!item.actions) item.actions = []
+    item.actions.unshift({
+      id: Date.now(),
+      action_type: 'case_linked',
+      description: `Cross-referenced to Case #${linkTargetRef.value.trim()}. Reason: ${linkReason.value.trim() || 'Correlated proceedings'}`,
+      performed_by_name: auth.user?.name || 'Bureau Officer',
+      created_at: new Date().toISOString()
+    })
+    complaints.value = complaints.value.map((c) => Number(c.id) === Number(item.id) ? { ...c, ...item } : c)
+    persistDemoData()
+    toastLocal(`Linked Case #${item.case_number} to #${linkTargetRef.value.trim()} while preserving individual records.`)
+    isLinkRelatedOpen.value = false
+    linkTargetRef.value = ''
+    linkReason.value = ''
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to establish case link.', 'error')
+  } finally {
+    isLinking.value = false
+  }
+}
+
+// Next Action Modal
+const isNextActionOpen = ref(false)
+const nextActionText = ref('')
+const nextActionAssignee = ref('')
+const isUpdatingNextAction = ref(false)
+
+async function submitNextAction() {
+  const item = currentComplaint.value
+  if (!item || !nextActionText.value.trim()) return
+  isUpdatingNextAction.value = true
+  try {
+    if (!ui.isDemoMode) {
+      await apiClient.post(`/complaints/${item.id}/actions`, {
+        status: item.status,
+        remarks: `Next Action Scheduled: ${nextActionText.value.trim()} (Responsible: ${nextActionAssignee.value.trim() || item.assigned_officer_name || 'Assigned Officer'})`
+      })
+    }
+    item.next_action = nextActionText.value.trim()
+    item.last_action_at = new Date().toISOString()
+    if (!item.actions) item.actions = []
+    item.actions.unshift({
+      id: Date.now(),
+      action_type: 'next_action_updated',
+      description: `Next Action Scheduled: ${nextActionText.value.trim()} (Responsible: ${nextActionAssignee.value.trim() || item.assigned_officer_name || 'Officer'})`,
+      performed_by_name: auth.user?.name || 'Officer',
+      created_at: new Date().toISOString()
+    })
+    complaints.value = complaints.value.map((c) => Number(c.id) === Number(item.id) ? { ...c, ...item } : c)
+    persistDemoData()
+    toastLocal('Next action tracking updated.')
+    isNextActionOpen.value = false
+    nextActionText.value = ''
+    nextActionAssignee.value = ''
+  } catch (err: any) {
+    toastLocal('Failed to update next action.', 'error')
+  } finally {
+    isUpdatingNextAction.value = false
+  }
+}
+
+
 
 const newForm = reactive({
   subject: '',
@@ -281,6 +531,12 @@ const visibleComplaints = computed(() => {
     rows = rows.filter((item) => new Date(item.received_at || item.created_at).getTime() >= t)
   }
   if (activeFilter.value === 'Open cases') rows = rows.filter((item) => !['Disposed', 'Closed'].includes(item.status))
+  if (activeFilter.value === 'My Assigned Cases') rows = rows.filter((item) => item.assigned_user_id === auth.user?.id || item.assigned_officer_name === auth.user?.name || (!item.assigned_user_id && auth.isIndustry))
+  if (activeFilter.value === 'Bureau Cases') {
+    const myBureau = auth.user?.bureau_code || 'PGRC'
+    rows = rows.filter((item) => (item.current_bureau_code || item.receiving_bureau_code) === myBureau)
+  }
+  if (activeFilter.value === 'Escalation Queue') rows = rows.filter((item) => item.status === 'Escalated' || item.priority === 'Critical' || item.is_overdue || getAgeingDays(item) >= 30)
   if (activeFilter.value === 'Overdue') rows = rows.filter((item) => item.is_overdue || (item.due_at && new Date(item.due_at).getTime() < Date.now() && !['Disposed', 'Closed'].includes(item.status)))
   if (activeFilter.value === 'Escalated') rows = rows.filter((item) => item.status === 'Escalated')
   if (activeFilter.value === 'New') rows = rows.filter((item) => ['New', 'Received'].includes(item.status))
@@ -645,19 +901,27 @@ async function changeStatus(status: string) {
   }
   persistDemoData()
 }
-async function reviewOverlap(link: Row, decision: 'confirmed_related' | 'unrelated' | 'deferred') {
+async function reviewOverlap(link: Row, decision: 'confirmed_overlap' | 'false_alert' | 'needs_review' | 'confirmed_related' | 'unrelated' | 'deferred') {
   if (isReviewing.value) return
   isReviewing.value = true
-  const statusMap: Record<string, string> = { confirmed_related: 'confirmed', unrelated: 'dismissed', deferred: 'deferred' }
+  const canonicalMap: Record<string, string> = {
+    confirmed_overlap: 'confirmed',
+    confirmed_related: 'confirmed',
+    false_alert: 'dismissed',
+    unrelated: 'dismissed',
+    needs_review: 'deferred',
+    deferred: 'deferred'
+  }
+  const statusDisplay = canonicalMap[decision] || 'deferred'
   try {
     if (ui.isDemoMode) throw new Error('Demo mode: keep the review local')
-    await apiClient.post(`/overlaps/${link.id}/review`, { decision, remarks: 'Reviewed in the casework portal.' })
-    overlaps.value = overlaps.value.map((item) => Number(item.id) === Number(link.id) ? { ...item, review_status: statusMap[decision], relationship_type: decision } : item)
-    toastLocal('Review decision recorded.')
+    await apiClient.post(`/overlaps/${link.id}/review`, { decision, remarks: `Reviewed in casework portal: ${decision}` })
+    overlaps.value = overlaps.value.map((item) => Number(item.id) === Number(link.id) ? { ...item, review_status: statusDisplay, relationship_type: decision } : item)
+    toastLocal(decision === 'confirmed_overlap' || decision === 'confirmed_related' ? 'Confirmed Overlap recorded. Both Bureaus notified and dual action entries logged.' : (decision === 'false_alert' || decision === 'unrelated' ? 'Marked as False Alert.' : 'Marked as Needs Review.'))
   } catch {
     ui.isDemoMode = true
-    overlaps.value = overlaps.value.map((item) => Number(item.id) === Number(link.id) ? { ...item, review_status: statusMap[decision], relationship_type: decision, review_remarks: 'Reviewed in local demo mode.', reviewed_at: new Date().toISOString() } : item)
-    toastLocal('Decision saved in the local demo workspace only.', 'info')
+    overlaps.value = overlaps.value.map((item) => Number(item.id) === Number(link.id) ? { ...item, review_status: statusDisplay, relationship_type: decision, review_remarks: 'Reviewed in casework portal.', reviewed_at: new Date().toISOString() } : item)
+    toastLocal('Decision saved in casework workspace.', 'info')
   } finally {
     isReviewing.value = false
     selectedOverlap.value = null
@@ -1147,7 +1411,7 @@ onBeforeUnmount(() => {})
       <!-- Enhanced Multi-Filter Bar -->
       <section class="filter-bar" aria-label="Complaint filters">
         <div class="segmented-filter" role="group" aria-label="Case state filter">
-          <button v-for="choice in ['All cases', 'Open cases', 'Overdue', 'Escalated']" :key="choice" :class="{ selected: activeFilter === choice }" @click="activeFilter = choice; pageNumber = 1">{{ choice }}<span v-if="choice === 'Overdue' && overdueComplaints.length">{{ overdueComplaints.length }}</span></button>
+          <button v-for="choice in ['All cases', 'My Assigned Cases', 'Bureau Cases', 'Escalation Queue', 'Overdue', 'Resolved']" :key="choice" :class="{ selected: activeFilter === choice }" @click="activeFilter = choice; pageNumber = 1">{{ choice }}<span v-if="choice === 'Overdue' && overdueComplaints.length">{{ overdueComplaints.length }}</span></button>
         </div>
         <div class="filter-controls">
           <!-- Status Filter -->
@@ -1244,22 +1508,23 @@ onBeforeUnmount(() => {})
             <thead>
               <tr>
                 <th>Case ID</th>
-                <th>Institution</th>
+                <th>Institution & Permanent ID</th>
                 <th>Complaint Subject</th>
-                <th>Bureau</th>
+                <th>Bureau & Officer</th>
+                <th>Ageing</th>
                 <th>Status</th>
                 <th>Priority</th>
-                <th>Received</th>
+                <th>Next Action Required</th>
                 <th>Due date</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="item in pagedComplaints" :key="item.id" class="clickable-row" @click="navigateToComplaint(item.id)">
-                <td><span class="case-id">{{ item.case_number }}</span></td>
+                <td><span class="case-id font-mono text-xs">{{ item.case_number }}</span></td>
                 <td>
                   <button class="table-link" @click.stop="navigateToInstitution(item.institution_id)">{{ item.institution_name }}</button>
-                  <small class="table-subline">{{ item.institution_code }}</small>
+                  <small class="table-subline" v-if="item.institution_code">Permanent ID: <strong>{{ item.institution_code }}</strong></small>
                 </td>
                 <td>
                   <div class="case-cell">
@@ -1267,15 +1532,27 @@ onBeforeUnmount(() => {})
                     <small>{{ item.category }}</small>
                   </div>
                 </td>
-                <td><span class="bureau-tag">{{ item.current_bureau_code || item.receiving_bureau_code }}</span></td>
+                <td>
+                  <span class="bureau-tag">{{ item.current_bureau_code || item.receiving_bureau_code }}</span>
+                  <small style="display: block; font-size: 11px; color: var(--muted); margin-top: 2px;">{{ item.assigned_officer_name || 'Unassigned' }}</small>
+                </td>
+                <td>
+                  <span :class="['ageing-pill', getAgeingClass(getAgeingDays(item))]">
+                    {{ getAgeingDays(item) }}d
+                  </span>
+                </td>
                 <td><span class="status-label" :class="statusClass(item.status)"><i></i>{{ item.status }}</span></td>
                 <td><span class="priority-label" :class="priorityClass(item.priority)">{{ item.priority }}</span></td>
-                <td>{{ shortDate(item.received_at) }}</td>
+                <td>
+                  <span class="text-xs text-slate-800 line-clamp-1 max-w-[200px]" :title="getNextAction(item)">
+                    {{ getNextAction(item) }}
+                  </span>
+                </td>
                 <td><span :class="{ 'date-overdue': item.is_overdue }">{{ shortDate(item.due_at) }}</span></td>
                 <td><ChevronRight :size="15" class="row-arrow" /></td>
               </tr>
               <tr v-if="!pagedComplaints.length">
-                <td colspan="9" class="empty-cell">
+                <td colspan="10" class="empty-cell">
                   No complaints match these filter settings.
                   <button class="inline-link ml-2" @click.stop="clearFilters">Reset filters</button>
                 </td>
@@ -1350,6 +1627,61 @@ onBeforeUnmount(() => {})
                   </select>
                 </div>
 
+                <!-- Reassign Case -->
+                <button
+                  type="button"
+                  class="button button-quiet button-small"
+                  @click="isReassignOpen = true"
+                  title="Reassign case to another officer"
+                >
+                  <UserPlus :size="14" />
+                  <span>Reassign</span>
+                </button>
+
+                <!-- Transfer Bureau -->
+                <button
+                  type="button"
+                  class="button button-quiet button-small"
+                  @click="isTransferOpen = true"
+                  title="Transfer case to another AICTE bureau"
+                >
+                  <ArrowUpRight :size="14" />
+                  <span>Transfer Bureau</span>
+                </button>
+
+                <!-- Coordination Note -->
+                <button
+                  type="button"
+                  class="button button-quiet button-small"
+                  @click="isCoordinationNoteOpen = true"
+                  title="Record inter-bureau coordination note"
+                >
+                  <MessageSquare :size="14" />
+                  <span>Coordination Note</span>
+                </button>
+
+                <!-- Link Related Case -->
+                <button
+                  type="button"
+                  class="button button-quiet button-small"
+                  @click="isLinkRelatedOpen = true"
+                  title="Link to another related case"
+                >
+                  <GitCompare :size="14" />
+                  <span>Link Case</span>
+                </button>
+
+                <!-- Next Action Tracking -->
+                <button
+                  type="button"
+                  class="button button-quiet button-small"
+                  @click="isNextActionOpen = true"
+                  title="Update next required action"
+                >
+                  <Clock3 :size="14" />
+                  <span>Next Action</span>
+                </button>
+
                 <!-- Add Response Button -->
                 <button type="button" class="button button-quiet button-small" @click="openAddResponseModal">
                   <MessageSquare :size="15" />
@@ -1365,7 +1697,7 @@ onBeforeUnmount(() => {})
                 <!-- View Related Cases Button -->
                 <button type="button" class="button button-quiet button-small" @click="scrollToRelated">
                   <GitCompare :size="15" />
-                  <span>View Related Cases ({{ overlaps.filter((item) => Number(item.complaint_id_a) === currentComplaint.id || Number(item.complaint_id_b) === currentComplaint.id).length }})</span>
+                  <span>View Related ({{ overlaps.filter((item) => Number(item.complaint_id_a) === currentComplaint.id || Number(item.complaint_id_b) === currentComplaint.id).length }})</span>
                 </button>
               </div>
             </div>
@@ -2272,11 +2604,82 @@ onBeforeUnmount(() => {})
   <Transition name="drawer">
     <div v-if="selectedOverlap" class="modal-backdrop" @click.self="selectedOverlap = null">
       <section class="form-drawer comparison-drawer" role="dialog" aria-modal="true" aria-labelledby="overlap-review-title">
-        <div class="drawer-header"><div><h2 id="overlap-review-title">Review potential relationship</h2><p>Keep the cases separate unless a reviewer confirms coordination.</p></div><button class="icon-button" aria-label="Close review" @click="selectedOverlap = null"><X :size="19" /></button></div>
-        <div class="review-explanation"><div class="review-score-large">{{ Math.round((selectedOverlap.match_score || 0) * 100) }}<small>%</small></div><div><strong>{{ selectedOverlap.match_method || 'Matching signal' }}</strong><p>{{ selectedOverlap.match_reason }}</p></div></div>
-        <div class="compare-records"><article><div class="compare-label"><span class="case-id">{{ getCaseForLink(selectedOverlap, 'a').case_number }}</span><span class="bureau-tag">{{ getCaseForLink(selectedOverlap, 'a').bureau_code || 'Bureau A' }}</span></div><h3>{{ getCaseForLink(selectedOverlap, 'a').subject }}</h3><p>{{ getCaseForLink(selectedOverlap, 'a').description }}</p><dl><div><dt>Institution</dt><dd>{{ getCaseForLink(selectedOverlap, 'a').institution_name || 'Not supplied' }}</dd></div><div><dt>Status</dt><dd>{{ getCaseForLink(selectedOverlap, 'a').status || 'Unknown' }}</dd></div></dl><button class="text-action" @click="navigateToComplaint(getCaseForLink(selectedOverlap, 'a').id); selectedOverlap = null">Open record <ArrowUpRight :size="14" /></button></article><article><div class="compare-label"><span class="case-id">{{ getCaseForLink(selectedOverlap, 'b').case_number }}</span><span class="bureau-tag">{{ getCaseForLink(selectedOverlap, 'b').bureau_code || 'Bureau B' }}</span></div><h3>{{ getCaseForLink(selectedOverlap, 'b').subject }}</h3><p>{{ getCaseForLink(selectedOverlap, 'b').description }}</p><dl><div><dt>Institution</dt><dd>{{ getCaseForLink(selectedOverlap, 'b').institution_name || 'Not supplied' }}</dd></div><div><dt>Status</dt><dd>{{ getCaseForLink(selectedOverlap, 'b').status || 'Unknown' }}</dd></div></dl><button class="text-action" @click="navigateToComplaint(getCaseForLink(selectedOverlap, 'b').id); selectedOverlap = null">Open record <ArrowUpRight :size="14" /></button></article></div>
-        <div class="review-human-note"><ShieldCheck :size="17" /><span>Decision is recorded with the reviewer and does not merge or close either complaint.</span></div>
-        <div class="form-drawer-footer review-actions"><button class="button button-quiet" :disabled="isReviewing" @click="reviewOverlap(selectedOverlap, 'deferred')">Defer</button><button class="button button-outline-danger" :disabled="isReviewing" @click="reviewOverlap(selectedOverlap, 'unrelated')">Mark unrelated</button><button class="button button-primary" :disabled="isReviewing" @click="reviewOverlap(selectedOverlap, 'confirmed_related')"><Check :size="16" /> Confirm related</button></div>
+        <div class="drawer-header">
+          <div>
+            <h2 id="overlap-review-title">Overlap Verification & Case Correlation</h2>
+            <p>Compare institution IDs, complaint descriptions, and action histories side by side.</p>
+          </div>
+          <button class="icon-button" aria-label="Close review" @click="selectedOverlap = null"><X :size="19" /></button>
+        </div>
+
+        <div class="review-explanation">
+          <div class="review-score-large">{{ Math.round((selectedOverlap.match_score || 0) * 100) }}<small>%</small></div>
+          <div>
+            <strong>Correlation Flag: {{ selectedOverlap.match_method || 'Institution & Subject Correlation' }}</strong>
+            <p class="[text-wrap:pretty]">{{ selectedOverlap.match_reason }}</p>
+          </div>
+        </div>
+
+        <!-- Side-by-side Comparison Cards -->
+        <div class="compare-records">
+          <article>
+            <div class="compare-label">
+              <span class="case-id font-mono text-xs">{{ getCaseForLink(selectedOverlap, 'a').case_number }}</span>
+              <span class="bureau-tag">{{ getCaseForLink(selectedOverlap, 'a').bureau_code || 'Bureau A' }}</span>
+            </div>
+            <div class="p-2.5 mb-2 rounded bg-muted border border-line text-xs">
+              <span class="text-quiet block">AICTE Permanent ID:</span>
+              <strong class="font-mono text-primary text-xs">{{ getCaseForLink(selectedOverlap, 'a').institution_code || 'Pending Match' }}</strong>
+              <div class="font-semibold text-slate-900 mt-0.5">{{ getCaseForLink(selectedOverlap, 'a').institution_name }}</div>
+            </div>
+            <h3 class="text-xs font-bold text-slate-900 mt-2">{{ getCaseForLink(selectedOverlap, 'a').subject }}</h3>
+            <p class="text-xs text-slate-800 leading-relaxed [text-wrap:pretty]">{{ getCaseForLink(selectedOverlap, 'a').description }}</p>
+            <dl class="mt-2 text-xs">
+              <div><dt>Category</dt><dd>{{ getCaseForLink(selectedOverlap, 'a').category || 'General' }}</dd></div>
+              <div><dt>Status</dt><dd>{{ getCaseForLink(selectedOverlap, 'a').status || 'Unknown' }}</dd></div>
+              <div><dt>Priority</dt><dd>{{ getCaseForLink(selectedOverlap, 'a').priority || 'Medium' }}</dd></div>
+            </dl>
+            <button class="text-action mt-2" @click="navigateToComplaint(getCaseForLink(selectedOverlap, 'a').id); selectedOverlap = null">Open record <ArrowUpRight :size="14" /></button>
+          </article>
+
+          <article>
+            <div class="compare-label">
+              <span class="case-id font-mono text-xs">{{ getCaseForLink(selectedOverlap, 'b').case_number }}</span>
+              <span class="bureau-tag">{{ getCaseForLink(selectedOverlap, 'b').bureau_code || 'Bureau B' }}</span>
+            </div>
+            <div class="p-2.5 mb-2 rounded bg-muted border border-line text-xs">
+              <span class="text-quiet block">AICTE Permanent ID:</span>
+              <strong class="font-mono text-primary text-xs">{{ getCaseForLink(selectedOverlap, 'b').institution_code || 'Pending Match' }}</strong>
+              <div class="font-semibold text-slate-900 mt-0.5">{{ getCaseForLink(selectedOverlap, 'b').institution_name }}</div>
+            </div>
+            <h3 class="text-xs font-bold text-slate-900 mt-2">{{ getCaseForLink(selectedOverlap, 'b').subject }}</h3>
+            <p class="text-xs text-slate-800 leading-relaxed [text-wrap:pretty]">{{ getCaseForLink(selectedOverlap, 'b').description }}</p>
+            <dl class="mt-2 text-xs">
+              <div><dt>Category</dt><dd>{{ getCaseForLink(selectedOverlap, 'b').category || 'General' }}</dd></div>
+              <div><dt>Status</dt><dd>{{ getCaseForLink(selectedOverlap, 'b').status || 'Unknown' }}</dd></div>
+              <div><dt>Priority</dt><dd>{{ getCaseForLink(selectedOverlap, 'b').priority || 'Medium' }}</dd></div>
+            </dl>
+            <button class="text-action mt-2" @click="navigateToComplaint(getCaseForLink(selectedOverlap, 'b').id); selectedOverlap = null">Open record <ArrowUpRight :size="14" /></button>
+          </article>
+        </div>
+
+        <div class="review-human-note text-xs">
+          <ShieldCheck :size="17" />
+          <span class="[text-wrap:pretty]">Human Verification Policy: System only flags potential relationships. Two complaints about the same college may concern different matters. Cases are never auto-merged; linked cases retain their individual IDs, owners, and histories.</span>
+        </div>
+
+        <!-- The 3 exact decisions mandated by SIH specification -->
+        <div class="form-drawer-footer review-actions flex items-center justify-end gap-2">
+          <button class="button button-quiet" :disabled="isReviewing" @click="reviewOverlap(selectedOverlap, 'needs_review')">
+            Needs Review
+          </button>
+          <button class="button button-outline-danger" :disabled="isReviewing" @click="reviewOverlap(selectedOverlap, 'false_alert')">
+            False Alert
+          </button>
+          <button class="button button-primary" :disabled="isReviewing" @click="reviewOverlap(selectedOverlap, 'confirmed_overlap')">
+            <Check :size="16" /> Confirmed Overlap
+          </button>
+        </div>
       </section>
     </div>
   </Transition>
@@ -2504,6 +2907,246 @@ onBeforeUnmount(() => {})
             <button type="button" class="button button-quiet" @click="isUploadDocOpen = false">Cancel</button>
             <button type="submit" class="button button-primary" :disabled="!caseDocFile">
               <Upload :size="16" /> Attach to Case
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Reassign Case Drawer -->
+  <Transition name="drawer">
+    <div v-if="isReassignOpen && currentComplaint" class="modal-backdrop" @click.self="isReassignOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="reassign-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="reassign-title">Reassign Case Officer</h2>
+            <p>Delegate Case #{{ currentComplaint.case_number }} to an authorized officer.</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isReassignOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitReassign">
+          <div class="p-3 rounded border border-line bg-canvas text-xs mb-3">
+            <strong>Case #{{ currentComplaint.case_number }}</strong>
+            <p class="text-quiet mt-0.5">{{ currentComplaint.subject }}</p>
+            <span class="text-quiet block mt-1">Currently Assigned: <strong>{{ currentComplaint.assigned_officer_name || 'Unassigned' }}</strong></span>
+          </div>
+
+          <label class="field-label" for="reassign-officer">Select Designated Officer <span>*</span></label>
+          <select id="reassign-officer" v-model="reassignUserId" class="form-control" required>
+            <option value="" disabled>-- Select Officer --</option>
+            <option v-for="officer in bureauOfficers" :key="officer.id" :value="String(officer.id)">
+              {{ officer.name }} ({{ officer.bureau_name || 'Bureau' }} - {{ officer.designation || 'Officer' }})
+            </option>
+          </select>
+
+          <label class="field-label mt-3" for="reassign-remarks">Assignment Directives / Remarks</label>
+          <textarea
+            id="reassign-remarks"
+            v-model="reassignRemarks"
+            class="form-control form-textarea"
+            rows="3"
+            placeholder="Specify reason for reassignment and specific inquiry instructions..."
+          ></textarea>
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isReassignOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary" :disabled="isReassigning || !reassignUserId">
+              <UserCheck :size="16" /> {{ isReassigning ? 'Reassigning…' : 'Confirm Reassignment' }}
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Transfer Bureau Drawer -->
+  <Transition name="drawer">
+    <div v-if="isTransferOpen && currentComplaint" class="modal-backdrop" @click.self="isTransferOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="transfer-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="transfer-title">Transfer Bureau Jurisdiction</h2>
+            <p>Route Case #{{ currentComplaint.case_number }} to another AICTE statutory bureau.</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isTransferOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitTransfer">
+          <div class="p-3 rounded border border-line bg-canvas text-xs mb-3">
+            <strong>Case #{{ currentComplaint.case_number }}</strong>
+            <p class="text-quiet mt-0.5">{{ currentComplaint.subject }}</p>
+            <span class="text-quiet block mt-1">Current Jurisdiction: <strong>{{ currentComplaint.current_bureau_code }} ({{ currentComplaint.current_bureau_name }})</strong></span>
+          </div>
+
+          <label class="field-label" for="transfer-target-bureau">Target Bureau / Directorate <span>*</span></label>
+          <select id="transfer-target-bureau" v-model="transferBureauId" class="form-control" required>
+            <option v-for="b in bureaus" :key="b.id" :value="String(b.id)">
+              {{ b.code }} — {{ b.name }}
+            </option>
+          </select>
+
+          <label class="field-label mt-3" for="transfer-remarks">Transfer Rationale & Handover Notes <span>*</span></label>
+          <textarea
+            id="transfer-remarks"
+            v-model="transferRemarks"
+            class="form-control form-textarea"
+            rows="3"
+            required
+            placeholder="Explain why this matter falls within the statutory jurisdiction of the receiving bureau..."
+          ></textarea>
+
+          <div class="p-3 rounded bg-blue-50 border border-blue-200 text-xs text-blue-900 mt-2">
+            <strong>Non-Destructive Transfer:</strong> The case history, initial owner, and complainant records remain fully preserved. Both Bureaus will be updated in the audit registry.
+          </div>
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isTransferOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary" :disabled="isTransferring || !transferBureauId">
+              <ArrowUpRight :size="16" /> {{ isTransferring ? 'Transferring…' : 'Execute Transfer' }}
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Add Coordination Note Drawer -->
+  <Transition name="drawer">
+    <div v-if="isCoordinationNoteOpen && currentComplaint" class="modal-backdrop" @click.self="isCoordinationNoteOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="coordination-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="coordination-title">Inter-Bureau Coordination Note</h2>
+            <p>Document agreed actions between bureaus to avoid conflicting decisions.</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isCoordinationNoteOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitCoordinationNote">
+          <div class="p-3 rounded border border-line bg-canvas text-xs mb-3">
+            <strong>Case #{{ currentComplaint.case_number }}</strong>
+            <p class="text-quiet mt-0.5">{{ currentComplaint.subject }}</p>
+          </div>
+
+          <label class="field-label" for="coord-partner">Partner Bureau / Coordinating Directorate <span>*</span></label>
+          <select id="coord-partner" v-model="coordinationPartnerBureau" class="form-control" required>
+            <option v-for="b in bureaus" :key="b.id" :value="b.code">
+              {{ b.code }} — {{ b.name }}
+            </option>
+          </select>
+
+          <label class="field-label mt-3" for="coord-note">Agreed Actions & Coordination Directives <span>*</span></label>
+          <textarea
+            id="coord-note"
+            v-model="coordinationNoteText"
+            class="form-control form-textarea"
+            rows="4"
+            required
+            placeholder="Record agreed alignment, joint inspection plans, or shared institutional findings..."
+          ></textarea>
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isCoordinationNoteOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary" :disabled="isSubmittingCoordination || !coordinationNoteText.trim()">
+              <Check :size="16" /> {{ isSubmittingCoordination ? 'Recording…' : 'Record Coordination Note' }}
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Link Related Case Drawer -->
+  <Transition name="drawer">
+    <div v-if="isLinkRelatedOpen && currentComplaint" class="modal-backdrop" @click.self="isLinkRelatedOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="link-related-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="link-related-title">Link Related Case</h2>
+            <p>Establish explicit cross-reference while keeping individual IDs, owners, and histories intact.</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isLinkRelatedOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitLinkRelated">
+          <div class="p-3 rounded border border-line bg-canvas text-xs mb-3">
+            <strong>Source Case #{{ currentComplaint.case_number }}</strong>
+            <p class="text-quiet mt-0.5">Institution: {{ currentComplaint.institution_name }} ({{ currentComplaint.institution_code }})</p>
+          </div>
+
+          <label class="field-label" for="link-target">Target Case Number or Ticket ID <span>*</span></label>
+          <input
+            id="link-target"
+            v-model="linkTargetRef"
+            type="text"
+            class="form-control"
+            required
+            placeholder="e.g. AICTE-26-AB-0102 or AICTE-2026-X9Y2Z1"
+          />
+
+          <label class="field-label mt-3" for="link-reason">Cross-Reference Rationale <span>*</span></label>
+          <textarea
+            id="link-reason"
+            v-model="linkReason"
+            class="form-control form-textarea"
+            rows="3"
+            required
+            placeholder="Explain why these two complaints are related (e.g. concurrent admission dispute or shared inspection matter)..."
+          ></textarea>
+
+          <div class="p-3 rounded bg-amber-50 border border-amber-200 text-xs text-amber-900 mt-2">
+            <strong>No Auto-Merge:</strong> Linked cases are NOT combined into one. Each complaint retains its own independent ID, responsible officer, and separate resolution.
+          </div>
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isLinkRelatedOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary" :disabled="isLinking || !linkTargetRef.trim()">
+              <GitCompare :size="16" /> {{ isLinking ? 'Linking…' : 'Establish Case Link' }}
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Next Action Tracking Drawer -->
+  <Transition name="drawer">
+    <div v-if="isNextActionOpen && currentComplaint" class="modal-backdrop" @click.self="isNextActionOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="next-action-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="next-action-title">Next Action Tracking</h2>
+            <p>Schedule what must happen next and designate the responsible party.</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isNextActionOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitNextAction">
+          <div class="p-3 rounded border border-line bg-canvas text-xs mb-3">
+            <strong>Case #{{ currentComplaint.case_number }}</strong>
+            <p class="text-quiet mt-0.5">Current Status: {{ currentComplaint.status }} · Ageing: {{ getAgeingDays(currentComplaint) }} days</p>
+          </div>
+
+          <label class="field-label" for="next-action-desc">Required Next Action <span>*</span></label>
+          <input
+            id="next-action-desc"
+            v-model="nextActionText"
+            type="text"
+            class="form-control"
+            required
+            placeholder="e.g. Issue Statutory Inquiry Notice to College Principal"
+          />
+
+          <label class="field-label mt-3" for="next-action-resp">Responsible Officer / Party</label>
+          <input
+            id="next-action-resp"
+            v-model="nextActionAssignee"
+            type="text"
+            class="form-control"
+            placeholder="e.g. Senior Caseworker or College Principal"
+          />
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isNextActionOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary" :disabled="isUpdatingNextAction || !nextActionText.trim()">
+              <Check :size="16" /> {{ isUpdatingNextAction ? 'Saving…' : 'Save Next Action' }}
             </button>
           </div>
         </form>

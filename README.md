@@ -207,39 +207,55 @@ docker-compose up --build
 
 ---
 
-## 6. Official Demonstration Credentials
+## 6. Official Demonstration Credentials & 3 Distinct Roles
 
-The application provides a **1-click quick credentials switcher** on the sign-in screen:
+The portal supports three distinct login roles, each with its dedicated dashboard, workflows, and backend-enforced authorization:
 
-| Role | Email | Password | Permissions & Scoping |
-| :--- | :--- | :--- | :--- |
-| **System Administrator** | `admin@aicte.gov.in` | `Admin@12345` | Global oversight, all Bureaus, system configuration, audit logs |
-| **PGRC Officer** | `officer.pgrc@aicte.gov.in` | `Officer@12345` | Public Grievance cases, case assignments, status updates |
-| **Approval Bureau Officer** | `officer.ab@aicte.gov.in` | `Officer@12345` | Approval Bureau regulatory cases, Extension of Approval reviews |
-| **Senior Read-Only Authority** | `director.monitoring@aicte.gov.in` | `Director@12345` | High-level analytics, institutional history, read-only audit access |
+| Role | Quick Demo Login | Official Email Login | Password | Designated Dashboard & Scope |
+| :--- | :--- | :--- | :--- | :--- |
+| **System Administrator** | `admin` | `admin@aicte.gov.in` | `admin` / `Admin@12345` | Global oversight, system analytics, user management, SLA configuration, audit logs |
+| **AICTE Bureau Official** | `industry` | `officer.pgrc@aicte.gov.in` | `industry` / `Officer@12345` | Assigned cases, bureau management, overlap verification side-by-side, coordination notes, transfers |
+| **Public Complainant** | `user` | `student@example.com` | `user` / `User@12345` | File complaint, track ticket, respond to inquiries without new complaint, printable acknowledgement |
+
+*Tip: The login page includes 1-click quick-fill role buttons (`System Administrator`, `Bureau Official`, `Public Complainant`) for instantaneous testing.*
 
 ---
 
-## 7. Demonstration Scenarios (Pre-Seeded)
+## 7. Role-Wise Feature Walkthrough
 
-The portal comes pre-loaded with realistic scenarios designed for hackathon evaluation:
+### Role 1: Public User / Complainant Dashboard (`/user`)
+- **File a New Complaint (`/register`)**: Select AICTE approved institution (with AICTE Permanent ID), specify category, describe grievance, attach supporting evidence.
+- **Track Existing Complaints (`/track`)**: Real-time status lookup using Complaint Number / Ticket ID, showing current status, responsible Bureau/Cell, submission date, and latest public update.
+- **Additional Information Requests (`/respond`)**: Complainants can directly submit clarifications and upload missing documents in response to an official inquiry **WITHOUT filing a new complaint**.
+- **Downloadable Acknowledgement and Status Summary**: One-click printable formal acknowledgement slip with Government of India and AICTE letterhead, verification seal, and current status summary.
+- **Complaint History**: Consolidated list of all complaints lodged by the user with their recorded outcomes.
+- **Backend-Enforced Privacy & Isolation**: Complainants strictly see **ONLY** their own complaints. Internal Bureau remarks, sensitive investigative notes, and other citizens' records are completely blocked at the API level (HTTP 403).
 
-- **Scenario A — Cross-Bureau Potential Overlap**:
-  - `AICTE-2026-PGRC-0001` (Public Grievance Cell) and `AICTE-2026-AB-0002` (Approval Bureau) both concern *Apex Institute of Technology and Management* regarding unapproved capitation fee extortion.
-  - The overlap pipeline flags this pair with a **100% match score** (exact AICTE Permanent ID match + identical CPGRAMS external ref + shared salient keywords `#capitation`, `#caution`, `#withholding`).
-  - Officials can open the **Overlap Review Queue**, inspect side-by-side case cards, and click **Confirm Related**, **Mark Unrelated**, or **Defer Decision**.
-- **Scenario B — Same Institution, Unrelated Complaints**:
-  - Complaints `AICTE-2026-AB-0003` (Chemistry lab safety) and `AICTE-2026-RPC-0004` (Hostel anti-ragging) both concern *National Institute of Technical Excellence (Pune)*.
-  - The engine recognizes the shared institution but categorizes them as distinct operational matters rather than duplicates.
-- **Scenario C — Overdue Complaint**:
-  - Complaint `AICTE-2026-PAPB-0005` (Kalinga Academy) has breached its statutory SLA deadline.
-  - Highlighted with red urgency badges, prominent overdue banners, and automated escalation notifications.
-- **Scenario D — Resolved Complaint with Audit Trail**:
-  - Complaint `AICTE-2026-PGRC-0006` (Delhi Polytechnic) contains an immutable chronological history from intake, through inspection directives, to formal disposal with RTGS payment proof.
-- **Scenario E — Enforced Bureau Isolation**:
-  - A PGRC Officer attempting to modify or assign cases belonging to the Approval Bureau is strictly rejected by the backend with HTTP `403 Forbidden`.
-- **Scenario F — Safe CSV Import Preview**:
-  - The CSV Ingestion wizard previews uploaded batches row-by-row, flagging invalid institution references or missing fields without corrupting active records.
+### Role 2: AICTE Bureau Official Dashboard (`/complaints`)
+- **My Assigned Cases**: Fast filter for cases assigned to the logged-in officer, displaying priority, status, deadline, and next action required.
+- **Bureau-Wide Case Management & Reassignment**: View all complaints within the officer's Bureau jurisdiction, inspect caseworker allocation, and reassign cases to authorized caseworkers with custom instructions.
+- **Overlap Detection and Verification**: Side-by-side comparison drawer showing AICTE Permanent IDs, complaint descriptions, and action histories. Officer selects one of three exact canonical decisions:
+  1. **Confirmed Overlap** (establishes mutual case links, dispatches dual bureau notifications, and records coordination action)
+  2. **False Alert** (records dismissal rationale)
+  3. **Needs Review** (flags for supervisory inspection)
+- **Institution-Wise Case Timeline / 360° Profile (`/institutions`)**: Search by AICTE Permanent ID to inspect all cross-bureau complaints, historical actions, and regulatory sanctions in one unified timeline.
+- **Deadline and Overdue Alerts**: Real-time identification of cases nearing statutory SLA deadlines and overdue alerts with visual indicators.
+- **Case Ageing Indicator**: Displays pending duration in days (`X days pending`) to monitor stalled matters.
+- **Next Action Tracking**: Dedicated modal and audit trail to schedule the next procedural requirement and identify the responsible officer.
+- **Transfer Bureau Jurisdiction**: Formal hand-off to another AICTE Bureau with mandatory rationale, preserving the original complaint ID, history, and ownership.
+- **Inter-Bureau Coordination Notes**: Document agreed decisions between bureaus to prevent conflicting directives.
+- **Related Case Linking**: Cross-reference related complaints while keeping individual IDs, owners, and histories intact (**never auto-merging**).
+- **Advanced Search & Filters**: Filter by status, priority, bureau, ageing, and keyword.
+
+### Role 3: System Administrator Dashboard (`/admin` & `/reports`)
+- **System-Wide Analytics**: High-level metrics for received, under-process, disposed, transferred, and overdue cases with Bureau-wise and region-wise breakdowns.
+- **Institution and Case Overview**: Search cross-institution records with AICTE Permanent IDs.
+- **User and Role Management**: Create new accounts, assign officers to Bureaus, toggle active status, and manage designations.
+- **Deadline & Escalation Configuration**: Configure statutory SLA days per priority level (`Critical`, `High`, `Medium`, `Low`).
+- **Reports and CSV Export (`/reports`)**: Generate monthly and quarterly reports on disposal rates, ageing, bureau workloads, and recurring complaints; export clean CSV data with one click.
+- **Audit Logs & System Health**: Immutable audit trail of status changes, assignments, transfers, and overlap reviews, with live PostgreSQL health checks.
+- **Data Import & Validation**: CSV ingestion wizard that detects missing AICTE Permanent IDs, invalid categories, and duplicate records prior to committing.
+- **Configurable Categories & Bureaus**: Add or edit complaint categories and Bureaus dynamically without code modifications.
 
 ---
 

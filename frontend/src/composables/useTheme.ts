@@ -20,14 +20,9 @@ export function useTheme() {
   }
 
   function initTheme() {
-    const saved = localStorage.getItem('aicte_theme') as Theme | null
-    if (saved === 'dark' || saved === 'light') {
-      setTheme(saved)
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark')
-    } else {
-      setTheme('light')
-    }
+    document.documentElement.classList.remove('dark')
+    currentTheme.value = 'light'
+    localStorage.removeItem('aicte_theme')
   }
 
   return {

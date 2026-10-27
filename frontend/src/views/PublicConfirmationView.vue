@@ -15,6 +15,7 @@ import {
   FileText
 } from 'lucide-vue-next'
 import PublicNav from '@/components/PublicNav.vue'
+import GigwFooter from '@/components/GigwFooter.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -172,11 +173,6 @@ function goToRegister() {
       </div>
     </main>
 
-    <footer class="public-footer">
-      <div class="public-container public-footer-inner">
-        <span>All India Council for Technical Education · Grievance Redressal Portal</span>
-        <span>SIH 2026 Problem Statement 26264</span>
-      </div>
-    </footer>
+    <GigwFooter />
   </div>
 </template>
