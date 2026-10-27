@@ -11,7 +11,8 @@ import {
   CircleAlert, Clock3, Download, FileSearch, FileSpreadsheet, Filter, CheckCircle2,
   GitCompare, Layers3, ListFilter, LoaderCircle, Plus, RefreshCw, Search,
   ShieldCheck, Upload, X, ClipboardCheck, FileText, Database,
-  KeyRound, UserPlus, Sliders, Trash2,
+  KeyRound, UserPlus, Sliders, Trash2, Edit3, Paperclip, MessageSquare, AlertTriangle,
+  UserCheck, Calendar
 } from 'lucide-vue-next'
 
 
@@ -95,6 +96,11 @@ const refreshing = ref(false)
 const newComplaintOpen = ref(false)
 const activeFilter = ref('All cases')
 const statusFilter = ref('All statuses')
+const priorityFilter = ref('All priorities')
+const categoryFilter = ref('All categories')
+const institutionFilter = ref('All institutions')
+const dateFilter = ref('All time')
+const overdueOnly = ref(false)
 const bureauFilter = ref('All Bureaus')
 const overlapFilter = ref('pending')
 const institutionTypeFilter = ref('All types')
@@ -123,6 +129,18 @@ const adminSettings = ref<Row>({
   sla_days: { Critical: 7, High: 15, Medium: 30, Low: 45 }
 })
 const newCategoryInput = ref('')
+
+// Officer Action Modals
+const isAddResponseOpen = ref(false)
+const officerResponseText = ref('')
+const officerResolutionSummary = ref('')
+const markResolvedOnResponse = ref(false)
+
+const isUploadDocOpen = ref(false)
+const caseDocFile = ref<File | null>(null)
+const caseDocNote = ref('')
+
+// Industry Account Modals
 const isCreateIndustryOpen = ref(false)
 const newIndustryUser = reactive({
   name: '',
@@ -132,10 +150,40 @@ const newIndustryUser = reactive({
   designation: 'Departmental Caseworker',
   role: 'INDUSTRY'
 })
+const isEditIndustryOpen = ref(false)
+const selectedEditIndustry = ref<Row | null>(null)
+const editIndustryForm = reactive({
+  name: '',
+  designation: '',
+  bureau_id: '1'
+})
 const isResetPasswordOpen = ref(false)
 const selectedResetUser = ref<Row | null>(null)
 const newPasswordInput = ref('')
 const userRoleFilter = ref('ALL')
+
+// Confirmation Modal State
+const confirmModal = reactive({
+  isOpen: false,
+  title: '',
+  message: '',
+  actionLabel: 'Confirm',
+  isDestructive: false,
+  onConfirm: () => {}
+})
+
+function requestConfirm(options: { title: string; message: string; actionLabel?: string; isDestructive?: boolean; onConfirm: () => void }) {
+  confirmModal.title = options.title
+  confirmModal.message = options.message
+  confirmModal.actionLabel = options.actionLabel || 'Confirm'
+  confirmModal.isDestructive = Boolean(options.isDestructive)
+  confirmModal.onConfirm = () => {
+    confirmModal.isOpen = false
+    options.onConfirm()
+  }
+  confirmModal.isOpen = true
+}
+
 const toastLocal = (message: string, kind: 'success' | 'error' | 'info' = 'success') => ui.toast(message, kind)
 
 
@@ -164,7 +212,7 @@ const page = computed(() => {
   return 'dashboard'
 })
 const pageHeading = computed(() => ({
-  dashboard: 'Casework overview', complaints: 'Complaints register', detail: 'Complaint record', institutions: 'Institution directory', institution: 'Institution profile', overlaps: 'Overlap review', reports: 'Reports & analysis', notifications: 'Notifications', imports: 'Data imports', admin: 'Administration',
+  dashboard: 'Casework overview', complaints: 'Complaints register', detail: 'Complaint record', institutions: 'Institution directory', institution: 'Institution profile', overlaps: 'Related complaints', reports: 'Reports & analysis', notifications: 'Notifications', imports: 'Data imports', admin: 'System administration',
 }[page.value] || 'Casework overview'))
 const pageSubheading = computed(() => ({
   dashboard: 'A consolidated view of open work, deadlines and cases that need a decision.',
@@ -172,11 +220,11 @@ const pageSubheading = computed(() => ({
   detail: 'Review the case, its current owner and the actions already recorded.',
   institutions: 'Institution identities and the complaint history attached to each record.',
   institution: 'The case history across departments, brought into one place.',
-  overlaps: 'Review potential case relationships before recording a decision.',
+  overlaps: 'Review potential related complaints to coordinate action and avoid duplicated efforts.',
   reports: 'Case distribution, ageing and workload from the current register.',
-  notifications: 'Operational alerts for deadlines, assignments and overlap reviews.',
+  notifications: 'Operational alerts for deadlines, assignments and related case updates.',
   imports: 'Validate a CSV file before adding records to the complaint register.',
-  admin: 'Manage access, review audit activity and check system connectivity.',
+  admin: 'Manage system overview, industries, complaints, institutions, and platform settings.',
 }[page.value] || ''))
 const currentComplaintId = computed(() => Number(route.params.id || 0))
 const currentInstitutionId = computed(() => Number(route.params.id || 0))
@@ -217,7 +265,21 @@ const visibleComplaints = computed(() => {
   let rows = [...complaints.value]
   if (globalQuery.value) rows = rows.filter((item) => [item.case_number, item.subject, item.institution_name, item.institution_code, item.category, item.current_bureau_name].some((value) => String(value || '').toLowerCase().includes(globalQuery.value)))
   if (statusFilter.value !== 'All statuses') rows = rows.filter((item) => item.status === statusFilter.value)
+  if (priorityFilter.value !== 'All priorities') rows = rows.filter((item) => item.priority === priorityFilter.value)
+  if (categoryFilter.value !== 'All categories') rows = rows.filter((item) => item.category === categoryFilter.value)
+  if (institutionFilter.value !== 'All institutions') rows = rows.filter((item) => item.institution_name === institutionFilter.value || String(item.institution_id) === institutionFilter.value)
   if (bureauFilter.value !== 'All Bureaus') rows = rows.filter((item) => (item.current_bureau_code || item.receiving_bureau_code) === bureauFilter.value)
+  if (overdueOnly.value) rows = rows.filter((item) => item.is_overdue || (item.due_at && new Date(item.due_at).getTime() < Date.now() && !['Disposed', 'Closed'].includes(item.status)))
+  if (dateFilter.value === 'Last 7 days') {
+    const t = Date.now() - 7 * 86400000
+    rows = rows.filter((item) => new Date(item.received_at || item.created_at).getTime() >= t)
+  } else if (dateFilter.value === 'Last 30 days') {
+    const t = Date.now() - 30 * 86400000
+    rows = rows.filter((item) => new Date(item.received_at || item.created_at).getTime() >= t)
+  } else if (dateFilter.value === 'Last 90 days') {
+    const t = Date.now() - 90 * 86400000
+    rows = rows.filter((item) => new Date(item.received_at || item.created_at).getTime() >= t)
+  }
   if (activeFilter.value === 'Open cases') rows = rows.filter((item) => !['Disposed', 'Closed'].includes(item.status))
   if (activeFilter.value === 'Overdue') rows = rows.filter((item) => item.is_overdue || (item.due_at && new Date(item.due_at).getTime() < Date.now() && !['Disposed', 'Closed'].includes(item.status)))
   if (activeFilter.value === 'Escalated') rows = rows.filter((item) => item.status === 'Escalated')
@@ -688,9 +750,227 @@ function downloadTemplate() {
 }
 function institutionCaseCount(id: number) { return complaints.value.filter((item) => Number(item.institution_id) === Number(id)).length }
 function openReview(link: Row) { selectedOverlap.value = link }
-function setStatusFilter(value: string) { statusFilter.value = value; pageNumber.value = 1 }
-function setBureauFilter(value: string) { bureauFilter.value = value; pageNumber.value = 1 }
-function clearFilters() { statusFilter.value = 'All statuses'; bureauFilter.value = 'All Bureaus'; activeFilter.value = 'All cases'; ui.globalSearch = ''; pageNumber.value = 1 }
+function clearFilters() {
+  statusFilter.value = 'All statuses'
+  priorityFilter.value = 'All priorities'
+  categoryFilter.value = 'All categories'
+  institutionFilter.value = 'All institutions'
+  dateFilter.value = 'All time'
+  overdueOnly.value = false
+  bureauFilter.value = 'All Bureaus'
+  activeFilter.value = 'All cases'
+  ui.globalSearch = ''
+  pageNumber.value = 1
+}
+
+function getRequiredAction(comp: Row): string {
+  if (!comp) return 'Standard review in progress.'
+  if (['Disposed', 'Closed', 'Resolved'].includes(comp.status)) {
+    return 'Case concluded. Archival and compliance directives published.'
+  }
+  if (comp.is_overdue) {
+    return 'URGENT: Statutory deadline exceeded. Issue formal show-cause directive to institution.'
+  }
+  if (comp.status === 'Received' || comp.status === 'New') {
+    return 'Initial intake required. Examine jurisdictional grounds and allocate caseworker.'
+  }
+  if (comp.status === 'Under Review') {
+    return 'Conduct factual inquiry into fee schedule / faculty qualifications and request institutional reply.'
+  }
+  if (comp.status === 'Action Required') {
+    return 'Substantive response received from institution; assess compliance against AICTE norms.'
+  }
+  if (comp.status === 'Awaiting Response') {
+    return 'Awaiting formal clarification from institutional registrar / management.'
+  }
+  if (comp.status === 'Escalated') {
+    return 'High-level committee review required under Ragging / Approval Fraud guidelines.'
+  }
+  return 'Standard departmental follow-up in progress.'
+}
+
+async function takeCase() {
+  const item = currentComplaint.value
+  if (!item) return
+  const officerName = auth.user?.name || 'Department Officer'
+  try {
+    if (!ui.isDemoMode) {
+      await apiClient.post(`/complaints/${item.id}/assign`, {
+        user_id: auth.user?.id || 1
+      })
+    }
+    item.assigned_officer_name = officerName
+    item.assigned_user_id = auth.user?.id || 1
+    if (item.status === 'Received' || item.status === 'New') {
+      item.status = 'Under Review'
+    }
+    complaints.value = complaints.value.map((row) => Number(row.id) === Number(item.id) ? { ...row, ...item } : row)
+    persistDemoData()
+    toastLocal(`Case #${item.case_number} assigned to you.`)
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to assign case.', 'error')
+  }
+}
+
+function openAddResponseModal() {
+  const item = currentComplaint.value
+  if (!item) return
+  officerResponseText.value = ''
+  officerResolutionSummary.value = item.resolution_summary || ''
+  markResolvedOnResponse.value = false
+  isAddResponseOpen.value = true
+}
+
+async function submitOfficerResponse() {
+  const item = currentComplaint.value
+  if (!item || (!officerResponseText.value.trim() && !officerResolutionSummary.value.trim())) {
+    toastLocal('Please enter response notes or resolution summary.', 'error')
+    return
+  }
+  try {
+    const newStatus = markResolvedOnResponse.value ? 'Disposed' : (item.status === 'Received' ? 'Under Review' : item.status)
+    const remarks = officerResponseText.value.trim() || 'Officer update recorded.'
+    const resolution = officerResolutionSummary.value.trim()
+
+    if (!ui.isDemoMode) {
+      await apiClient.post(`/complaints/${item.id}/actions`, {
+        status: newStatus,
+        remarks: remarks,
+        resolution_summary: resolution || undefined
+      })
+    }
+    item.status = newStatus
+    if (resolution) item.resolution_summary = resolution
+    if (newStatus === 'Disposed') item.disposed_at = new Date().toISOString()
+    item.last_action_at = new Date().toISOString()
+    if (!item.actions) item.actions = []
+    item.actions.unshift({
+      id: Date.now(),
+      action_type: markResolvedOnResponse.value ? 'case_disposal' : 'officer_response',
+      description: remarks + (resolution ? ` Resolution: ${resolution}` : ''),
+      performed_by_name: auth.user?.name || 'Authorized Officer',
+      created_at: new Date().toISOString()
+    })
+    complaints.value = complaints.value.map((row) => Number(row.id) === Number(item.id) ? { ...row, ...item } : row)
+    persistDemoData()
+    isAddResponseOpen.value = false
+    officerResponseText.value = ''
+    officerResolutionSummary.value = ''
+    markResolvedOnResponse.value = false
+    toastLocal(newStatus === 'Disposed' ? 'Case resolved and official directives published.' : 'Response added to case history.')
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to record response.', 'error')
+  }
+}
+
+function openUploadDocModal() {
+  caseDocFile.value = null
+  caseDocNote.value = ''
+  isUploadDocOpen.value = true
+}
+
+function onCaseDocPicked(event: Event) {
+  const input = event.target as HTMLInputElement
+  caseDocFile.value = input.files?.[0] || null
+}
+
+async function submitCaseDocument() {
+  const item = currentComplaint.value
+  if (!item || !caseDocFile.value) {
+    toastLocal('Please select a file to attach.', 'error')
+    return
+  }
+  try {
+    const filename = caseDocFile.value.name
+    item.supporting_document_name = filename
+    item.has_supporting_document = true
+    if (!item.actions) item.actions = []
+    item.actions.unshift({
+      id: Date.now(),
+      action_type: 'document_uploaded',
+      description: `Case document uploaded: ${filename}. ${caseDocNote.value ? 'Note: ' + caseDocNote.value : ''}`,
+      performed_by_name: auth.user?.name || 'Authorized Officer',
+      created_at: new Date().toISOString()
+    })
+    complaints.value = complaints.value.map((row) => Number(row.id) === Number(item.id) ? { ...row, ...item } : row)
+    persistDemoData()
+    isUploadDocOpen.value = false
+    caseDocFile.value = null
+    caseDocNote.value = ''
+    toastLocal(`Document '${filename}' attached to case.`)
+  } catch {
+    toastLocal('Failed to attach document.', 'error')
+  }
+}
+
+function scrollToRelated() {
+  const el = document.getElementById('related-cases-section')
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+  } else {
+    router.push('/overlaps')
+  }
+}
+
+function confirmToggleUserStatus(u: Row) {
+  const willDeactivate = u.is_active
+  requestConfirm({
+    title: willDeactivate ? 'Disable Account' : 'Enable Account',
+    message: willDeactivate
+      ? `Are you sure you want to deactivate ${u.name} (${u.email})? This user will immediately lose system access.`
+      : `Re-enable account for ${u.name}? They will be able to log in again.`,
+    actionLabel: willDeactivate ? 'Disable Account' : 'Enable Account',
+    isDestructive: willDeactivate,
+    onConfirm: () => toggleUserStatus(u)
+  })
+}
+
+function openEditIndustry(u: Row) {
+  selectedEditIndustry.value = u
+  editIndustryForm.name = u.name || ''
+  editIndustryForm.designation = u.designation || 'Departmental Caseworker'
+  const matchingBureau = bureaus.value.find((b: Row) => b.name === u.bureau_name || b.code === u.bureau_code)
+  editIndustryForm.bureau_id = String(matchingBureau?.id || bureaus.value[0]?.id || 1)
+  isEditIndustryOpen.value = true
+}
+
+async function submitEditIndustry() {
+  if (!selectedEditIndustry.value || !editIndustryForm.name.trim()) return
+  try {
+    const targetBureau = bureaus.value.find((b: Row) => String(b.id) === editIndustryForm.bureau_id)
+    if (!ui.isDemoMode) {
+      await apiClient.patch(`/admin/users/${selectedEditIndustry.value.id}`, {
+        name: editIndustryForm.name.trim(),
+        designation: editIndustryForm.designation.trim(),
+        bureau_id: Number(editIndustryForm.bureau_id)
+      })
+    }
+    selectedEditIndustry.value.name = editIndustryForm.name.trim()
+    selectedEditIndustry.value.designation = editIndustryForm.designation.trim()
+    if (targetBureau) {
+      selectedEditIndustry.value.bureau_name = targetBureau.name
+      selectedEditIndustry.value.bureau_code = targetBureau.code
+    }
+    isEditIndustryOpen.value = false
+    toastLocal(`Updated account details for ${editIndustryForm.name}.`)
+  } catch (err: any) {
+    toastLocal(err?.response?.data?.error || 'Failed to update account.', 'error')
+  }
+}
+
+// 8 Clear Administrative Sections
+const adminActiveSection = computed<'overview' | 'industries' | 'complaints' | 'institutions' | 'reports' | 'notifications' | 'data' | 'settings'>({
+  get: () => {
+    const sec = (route.query.section as string || '').toLowerCase()
+    if (['industries', 'complaints', 'institutions', 'reports', 'notifications', 'data', 'settings'].includes(sec)) {
+      return sec as any
+    }
+    return 'overview'
+  },
+  set: (val) => {
+    router.push({ path: '/admin', query: { section: val } })
+  }
+})
 
 watch(() => route.query.action, (action) => { if (action === 'new') openNewComplaint() }, { immediate: true })
 watch(() => route.path, (path) => {
@@ -864,26 +1144,129 @@ onBeforeUnmount(() => {})
 
     <!-- COMPLAINT REGISTER -->
     <template v-else-if="page === 'complaints'">
-      <section class="filter-bar">
+      <!-- Enhanced Multi-Filter Bar -->
+      <section class="filter-bar" aria-label="Complaint filters">
         <div class="segmented-filter" role="group" aria-label="Case state filter">
-          <button v-for="choice in ['All cases', 'Open cases', 'Overdue', 'Escalated']" :key="choice" :class="{ selected: activeFilter === choice }" @click="activeFilter = choice; pageNumber = 1">{{ choice }}<span v-if="choice === 'Overdue'">{{ overdueComplaints.length }}</span></button>
+          <button v-for="choice in ['All cases', 'Open cases', 'Overdue', 'Escalated']" :key="choice" :class="{ selected: activeFilter === choice }" @click="activeFilter = choice; pageNumber = 1">{{ choice }}<span v-if="choice === 'Overdue' && overdueComplaints.length">{{ overdueComplaints.length }}</span></button>
         </div>
         <div class="filter-controls">
-          <label class="select-control"><Filter :size="15" /><select v-model="statusFilter" aria-label="Filter by status"><option>All statuses</option><option>Received</option><option>Under Review</option><option>Action Required</option><option>Awaiting Response</option><option>Escalated</option><option>Disposed</option><option>Closed</option></select><ChevronDown :size="14" /></label>
-          <label class="select-control"><Layers3 :size="15" /><select v-model="bureauFilter" aria-label="Filter by Bureau"><option>All Bureaus</option><option v-for="bureau in bureaus" :key="bureau.code" :value="bureau.code">{{ bureau.code }}</option></select><ChevronDown :size="14" /></label>
-          <button class="button button-quiet button-small" @click="clearFilters"><X :size="14" /> Clear</button>
+          <!-- Status Filter -->
+          <label class="select-control" title="Filter by status">
+            <Filter :size="15" />
+            <select v-model="statusFilter" aria-label="Filter by status">
+              <option>All statuses</option>
+              <option>Received</option>
+              <option>Under Review</option>
+              <option>Action Required</option>
+              <option>Awaiting Response</option>
+              <option>Escalated</option>
+              <option>Disposed</option>
+              <option>Closed</option>
+            </select>
+            <ChevronDown :size="14" />
+          </label>
+
+          <!-- Priority Filter -->
+          <label class="select-control" title="Filter by priority">
+            <Layers3 :size="15" />
+            <select v-model="priorityFilter" aria-label="Filter by priority">
+              <option>All priorities</option>
+              <option>Critical</option>
+              <option>High</option>
+              <option>Medium</option>
+              <option>Low</option>
+            </select>
+            <ChevronDown :size="14" />
+          </label>
+
+          <!-- Category Filter -->
+          <label class="select-control" title="Filter by category">
+            <select v-model="categoryFilter" aria-label="Filter by category">
+              <option>All categories</option>
+              <option v-for="cat in adminSettings.categories" :key="cat" :value="cat">{{ cat }}</option>
+            </select>
+            <ChevronDown :size="14" />
+          </label>
+
+          <!-- Department / Bureau Filter -->
+          <label class="select-control" title="Filter by Department">
+            <Building2 :size="15" />
+            <select v-model="bureauFilter" aria-label="Filter by Bureau">
+              <option>All Bureaus</option>
+              <option v-for="bureau in bureaus" :key="bureau.code" :value="bureau.code">{{ bureau.code }}</option>
+            </select>
+            <ChevronDown :size="14" />
+          </label>
+
+          <!-- Date Filter -->
+          <label class="select-control" title="Filter by submission date">
+            <Calendar :size="15" />
+            <select v-model="dateFilter" aria-label="Filter by date">
+              <option>All time</option>
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last 90 days</option>
+            </select>
+            <ChevronDown :size="14" />
+          </label>
+
+          <!-- Overdue Quick Filter -->
+          <button
+            type="button"
+            class="button button-small"
+            :class="overdueOnly ? 'button-outline-danger' : 'button-quiet'"
+            @click="overdueOnly = !overdueOnly"
+            title="Toggle overdue complaints only"
+          >
+            <Clock3 :size="14" />
+            <span>Overdue Only</span>
+            <span v-if="overdueComplaints.length" class="ml-1">({{ overdueComplaints.length }})</span>
+          </button>
+
+          <button class="button button-quiet button-small" @click="clearFilters" title="Reset all filters">
+            <X :size="14" /> Reset
+          </button>
         </div>
       </section>
+
       <section class="content-section register-table-section">
-        <div class="section-heading table-title-row"><div><h2>Case register</h2><p>{{ visibleComplaints.length }} records match the current filters</p></div><button class="button button-quiet button-small" @click="exportCsv"><Download :size="15" /> Export</button></div>
+        <div class="section-heading table-title-row">
+          <div>
+            <h2>Complaints register</h2>
+            <p>{{ visibleComplaints.length }} cases match the current filter criteria</p>
+          </div>
+          <button class="button button-quiet button-small" @click="exportCsv">
+            <Download :size="15" /> Export CSV
+          </button>
+        </div>
         <div class="table-wrap">
           <table class="data-table register-table">
-            <thead><tr><th>Case ID</th><th>Institution</th><th>Complaint</th><th>Bureau</th><th>Status</th><th>Priority</th><th>Received</th><th>Due date</th><th></th></tr></thead>
+            <thead>
+              <tr>
+                <th>Case ID</th>
+                <th>Institution</th>
+                <th>Complaint Subject</th>
+                <th>Bureau</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Received</th>
+                <th>Due date</th>
+                <th></th>
+              </tr>
+            </thead>
             <tbody>
               <tr v-for="item in pagedComplaints" :key="item.id" class="clickable-row" @click="navigateToComplaint(item.id)">
                 <td><span class="case-id">{{ item.case_number }}</span></td>
-                <td><button class="table-link" @click.stop="navigateToInstitution(item.institution_id)">{{ item.institution_name }}</button><small class="table-subline">{{ item.institution_code }}</small></td>
-                <td><div class="case-cell"><strong>{{ item.subject }}</strong><small>{{ item.category }}</small></div></td>
+                <td>
+                  <button class="table-link" @click.stop="navigateToInstitution(item.institution_id)">{{ item.institution_name }}</button>
+                  <small class="table-subline">{{ item.institution_code }}</small>
+                </td>
+                <td>
+                  <div class="case-cell">
+                    <strong>{{ item.subject }}</strong>
+                    <small>{{ item.category }}</small>
+                  </div>
+                </td>
                 <td><span class="bureau-tag">{{ item.current_bureau_code || item.receiving_bureau_code }}</span></td>
                 <td><span class="status-label" :class="statusClass(item.status)"><i></i>{{ item.status }}</span></td>
                 <td><span class="priority-label" :class="priorityClass(item.priority)">{{ item.priority }}</span></td>
@@ -891,11 +1274,27 @@ onBeforeUnmount(() => {})
                 <td><span :class="{ 'date-overdue': item.is_overdue }">{{ shortDate(item.due_at) }}</span></td>
                 <td><ChevronRight :size="15" class="row-arrow" /></td>
               </tr>
-              <tr v-if="!pagedComplaints.length"><td colspan="9" class="empty-cell">No cases match these filters. <button class="inline-link" @click.stop="clearFilters">Clear filters</button></td></tr>
+              <tr v-if="!pagedComplaints.length">
+                <td colspan="9" class="empty-cell">
+                  No complaints match these filter settings.
+                  <button class="inline-link ml-2" @click.stop="clearFilters">Reset filters</button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
-        <div class="pagination-row"><span>Page {{ pageNumber }} of {{ complaintPageCount }}</span><div class="pagination-controls"><button class="icon-button" :disabled="pageNumber <= 1" aria-label="Previous page" @click="pageNumber--"><ChevronLeft :size="17" /></button><button class="page-number">{{ pageNumber }}</button><button class="icon-button" :disabled="pageNumber >= complaintPageCount" aria-label="Next page" @click="pageNumber++"><ChevronRight :size="17" /></button></div></div>
+        <div class="pagination-row">
+          <span>Page {{ pageNumber }} of {{ complaintPageCount }}</span>
+          <div class="pagination-controls">
+            <button class="icon-button" :disabled="pageNumber <= 1" aria-label="Previous page" @click="pageNumber--">
+              <ChevronLeft :size="17" />
+            </button>
+            <button class="page-number">{{ pageNumber }}</button>
+            <button class="icon-button" :disabled="pageNumber >= complaintPageCount" aria-label="Next page" @click="pageNumber++">
+              <ChevronRight :size="17" />
+            </button>
+          </div>
+        </div>
       </section>
     </template>
 
@@ -903,26 +1302,243 @@ onBeforeUnmount(() => {})
     <template v-else-if="page === 'detail'">
       <div v-if="currentComplaint" class="detail-layout">
         <div class="detail-main-column">
-          <section class="content-section detail-summary">
-            <div class="detail-topline"><button class="back-link" @click="router.push('/complaints')"><ChevronLeft :size="15" /> All complaints</button><span class="case-id">{{ currentComplaint.case_number }}</span></div>
-            <div class="detail-title-row"><div><h2>{{ currentComplaint.subject }}</h2><p>{{ currentComplaint.institution_name }} <span class="meta-dot"></span> {{ currentComplaint.category }}</p></div><span class="status-label" :class="statusClass(currentComplaint.status)"><i></i>{{ currentComplaint.status }}</span></div>
-            <div class="detail-meta-grid"><div><span>Received</span><strong>{{ shortDate(currentComplaint.received_at) }}</strong></div><div><span>Due date</span><strong :class="{ 'date-overdue': currentComplaint.is_overdue }">{{ shortDate(currentComplaint.due_at) }}</strong></div><div><span>Current Bureau</span><strong>{{ currentComplaint.current_bureau_name || currentComplaint.current_bureau_code }}</strong></div><div><span>Assigned officer</span><strong>{{ currentComplaint.assigned_officer_name || 'Unassigned' }}</strong></div></div>
-            <div class="detail-description"><h3>Complaint summary</h3><p>{{ currentComplaint.description }}</p></div>
-          </section>
-          <section class="content-section timeline-section">
-            <div class="section-heading"><div><h2>Case history</h2><p>Recorded actions and status changes</p></div></div>
-            <div v-if="currentComplaint.actions?.length" class="timeline-list">
-              <div v-for="action in currentComplaint.actions" :key="action.id" class="timeline-item"><span class="timeline-point"></span><div><div class="timeline-item-head"><strong>{{ action.action_type || 'Case action' }}</strong><span>{{ dateTime(action.created_at) }}</span></div><p>{{ action.description }}</p><small>{{ action.performed_by_name || 'Authorized officer' }}</small></div></div>
+          <!-- Top Navigation Back -->
+          <div class="detail-topline mb-3">
+            <button class="back-link" @click="router.push('/complaints')">
+              <ChevronLeft :size="15" /> All complaints
+            </button>
+            <span class="case-id font-mono text-sm font-semibold">{{ currentComplaint.case_number }}</span>
+          </div>
+
+          <!-- PROMINENT OFFICER ACTION TOOLBAR -->
+          <div class="content-section action-toolbar-card mb-4" style="padding: 16px 20px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line);">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div>
+                <span class="text-xs uppercase tracking-wider text-quiet font-semibold block">Case Actions</span>
+                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100">Casework Operations</span>
+              </div>
+
+              <div class="flex items-center flex-wrap gap-2">
+                <!-- Take Case Button -->
+                <button
+                  type="button"
+                  class="button button-primary button-small"
+                  :disabled="currentComplaint.assigned_user_id === auth.user?.id"
+                  @click="takeCase"
+                  title="Assign this complaint to yourself"
+                >
+                  <UserCheck :size="15" />
+                  <span>{{ currentComplaint.assigned_user_id === auth.user?.id ? 'Assigned to You' : 'Take Case' }}</span>
+                </button>
+
+                <!-- Update Status Inline Selector -->
+                <div class="inline-status-wrap flex items-center gap-1.5 px-2 py-1 rounded border border-line bg-canvas">
+                  <span class="text-xs text-quiet font-semibold">Status:</span>
+                  <select
+                    id="case-status-quick"
+                    class="bg-transparent border-0 text-xs font-semibold text-slate-800 dark:text-slate-200 outline-none cursor-pointer"
+                    :value="currentComplaint.status"
+                    @change="changeStatus(($event.target as HTMLSelectElement).value)"
+                  >
+                    <option>Received</option>
+                    <option>Under Review</option>
+                    <option>Action Required</option>
+                    <option>Awaiting Response</option>
+                    <option>Escalated</option>
+                    <option>Disposed</option>
+                    <option>Closed</option>
+                  </select>
+                </div>
+
+                <!-- Add Response Button -->
+                <button type="button" class="button button-quiet button-small" @click="openAddResponseModal">
+                  <MessageSquare :size="15" />
+                  <span>Add Response</span>
+                </button>
+
+                <!-- Upload Document Button -->
+                <button type="button" class="button button-quiet button-small" @click="openUploadDocModal">
+                  <Paperclip :size="15" />
+                  <span>Upload Document</span>
+                </button>
+
+                <!-- View Related Cases Button -->
+                <button type="button" class="button button-quiet button-small" @click="scrollToRelated">
+                  <GitCompare :size="15" />
+                  <span>View Related Cases ({{ overlaps.filter((item) => Number(item.complaint_id_a) === currentComplaint.id || Number(item.complaint_id_b) === currentComplaint.id).length }})</span>
+                </button>
+              </div>
             </div>
-            <div v-else class="timeline-empty"><span class="timeline-point"></span><div><strong>Complaint registered</strong><p>The case record was created on {{ shortDate(currentComplaint.created_at || currentComplaint.received_at) }}.</p><small>Further actions will appear here when recorded.</small></div></div>
+          </div>
+
+          <!-- 7-POINT OPERATIONAL SUMMARY CARD -->
+          <section class="content-section detail-summary mb-4">
+            <div class="detail-title-row">
+              <div>
+                <h2>{{ currentComplaint.subject }}</h2>
+                <p>{{ currentComplaint.institution_name }} <span class="meta-dot"></span> {{ currentComplaint.category }}</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="priority-label" :class="priorityClass(currentComplaint.priority)">{{ currentComplaint.priority }}</span>
+                <span class="status-label" :class="statusClass(currentComplaint.status)"><i></i>{{ currentComplaint.status }}</span>
+              </div>
+            </div>
+
+            <!-- Operational Key Grid -->
+            <div class="detail-meta-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 14px; gap: 14px;">
+              <div>
+                <span>Institution</span>
+                <strong>{{ currentComplaint.institution_name || 'N/A' }}</strong>
+                <small v-if="currentComplaint.institution_code" class="text-xs text-quiet block mt-0.5">ID: {{ currentComplaint.institution_code }}</small>
+              </div>
+              <div>
+                <span>Submitted Date</span>
+                <strong>{{ shortDate(currentComplaint.received_at || currentComplaint.created_at) }}</strong>
+                <small class="text-xs text-quiet block mt-0.5">Due: {{ shortDate(currentComplaint.due_at) }}</small>
+              </div>
+              <div>
+                <span>Assigned Department</span>
+                <strong>{{ currentComplaint.current_bureau_code }} ({{ currentComplaint.current_bureau_name || 'Bureau' }})</strong>
+                <small class="text-xs text-quiet block mt-0.5">Officer: {{ currentComplaint.assigned_officer_name || 'Unassigned' }}</small>
+              </div>
+              <div>
+                <span>Priority</span>
+                <strong>{{ currentComplaint.priority }}</strong>
+                <small :class="{ 'date-overdue': currentComplaint.is_overdue }" class="text-xs block mt-0.5">
+                  {{ currentComplaint.is_overdue ? 'Overdue' : 'Within statutory timeline' }}
+                </small>
+              </div>
+            </div>
+
+            <!-- EXPLICIT REQUIRED ACTION BANNER -->
+            <div class="mt-4 p-3.5 rounded border border-line bg-canvas flex items-start gap-3">
+              <AlertTriangle v-if="currentComplaint.is_overdue" :size="18" class="text-critical mt-0.5 flex-none" />
+              <ShieldCheck v-else :size="18" class="text-primary mt-0.5 flex-none" />
+              <div>
+                <strong class="text-xs uppercase tracking-wider font-semibold block text-slate-900 dark:text-slate-100">
+                  Required Action
+                </strong>
+                <p class="text-xs text-slate-700 dark:text-slate-300 mt-0.5 [text-wrap:pretty]">
+                  {{ getRequiredAction(currentComplaint) }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="detail-description mt-4">
+              <h3>Complaint Description</h3>
+              <p class="[text-wrap:pretty]">{{ currentComplaint.description }}</p>
+
+              <div v-if="currentComplaint.supporting_document_name" class="mt-3 p-2.5 rounded border border-line bg-canvas inline-flex items-center gap-2 text-xs">
+                <Paperclip :size="14" class="text-primary" />
+                <span>Attached Document: <strong>{{ currentComplaint.supporting_document_name }}</strong></span>
+              </div>
+            </div>
+
+            <!-- Resolution Summary if already recorded -->
+            <div v-if="currentComplaint.resolution_summary" class="mt-4 p-4 rounded border border-emerald-500/30 bg-emerald-500/10 dark:bg-emerald-950/20">
+              <div class="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-semibold text-xs mb-1">
+                <CheckCircle2 :size="16" />
+                <span>Recorded Resolution Summary</span>
+              </div>
+              <p class="text-xs text-emerald-900 dark:text-emerald-200 [text-wrap:pretty]">
+                {{ currentComplaint.resolution_summary }}
+              </p>
+              <small v-if="currentComplaint.disposed_at" class="text-xs text-emerald-700 dark:text-emerald-400 block mt-1">
+                Concluded on {{ shortDate(currentComplaint.disposed_at) }}
+              </small>
+            </div>
+          </section>
+
+          <!-- Timeline Section -->
+          <section class="content-section timeline-section">
+            <div class="section-heading">
+              <div>
+                <h2>Case history & actions</h2>
+                <p>Recorded officer entries, inquiries, and status transitions</p>
+              </div>
+            </div>
+            <div v-if="currentComplaint.actions?.length" class="timeline-list">
+              <div v-for="action in currentComplaint.actions" :key="action.id" class="timeline-item">
+                <span class="timeline-point"></span>
+                <div>
+                  <div class="timeline-item-head">
+                    <strong>{{ action.action_type || 'Case action' }}</strong>
+                    <span>{{ dateTime(action.created_at) }}</span>
+                  </div>
+                  <p class="[text-wrap:pretty]">{{ action.description }}</p>
+                  <small>{{ action.performed_by_name || 'Authorized officer' }}</small>
+                </div>
+              </div>
+            </div>
+            <div v-else class="timeline-empty">
+              <span class="timeline-point"></span>
+              <div>
+                <strong>Complaint registered</strong>
+                <p>The case record was officially logged on {{ shortDate(currentComplaint.created_at || currentComplaint.received_at) }}.</p>
+                <small>Further actions will appear here when recorded.</small>
+              </div>
+            </div>
+          </section>
+
+          <!-- RELATED CASES SECTION (Directly accessible via button) -->
+          <section id="related-cases-section" class="content-section mt-4">
+            <div class="section-heading">
+              <div>
+                <h2>Related complaints</h2>
+                <p>Potential cross-department overlaps for this institution or subject</p>
+              </div>
+            </div>
+
+            <div v-for="link in overlaps.filter((item) => Number(item.complaint_id_a) === currentComplaint.id || Number(item.complaint_id_b) === currentComplaint.id)" :key="link.id" class="p-3.5 rounded border border-line bg-canvas flex items-center justify-between mb-2 text-xs">
+              <div class="flex items-center gap-3">
+                <GitCompare :size="18" class="text-primary flex-none" />
+                <div>
+                  <strong>Case #{{ getCaseForLink(link, Number(link.complaint_id_a) === currentComplaint.id ? 'b' : 'a').case_number }}</strong>
+                  <p class="text-quiet mt-0.5">{{ link.match_reason }}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="status-label" :class="statusClass(link.review_status)"><i></i>{{ link.review_status || 'Pending' }}</span>
+                <button type="button" class="button button-quiet button-small" @click="openReview(link)">
+                  <span>Compare</span>
+                  <ArrowRight :size="13" />
+                </button>
+              </div>
+            </div>
+
+            <div v-if="!overlaps.some((item) => Number(item.complaint_id_a) === currentComplaint.id || Number(item.complaint_id_b) === currentComplaint.id)" class="quiet-empty">
+              <span>No related cases found for this complaint.</span>
+            </div>
           </section>
         </div>
+
+        <!-- Sidebar Column for Institution Summary -->
         <aside class="detail-side-column">
-          <section class="content-section action-panel"><div class="section-heading"><div><h2>Update case</h2><p>Record a status change</p></div></div><label class="field-label" for="case-status">New status</label><select id="case-status" class="form-control" :value="currentComplaint.status" @change="changeStatus(($event.target as HTMLSelectElement).value)"><option>Received</option><option>Under Review</option><option>Action Required</option><option>Awaiting Response</option><option>Escalated</option><option>Disposed</option><option>Closed</option></select><p class="form-hint">Changes are stored in the API when connected. Local demo changes stay in this browser.</p><button class="button button-primary button-full" @click="router.push('/institutions/' + currentComplaint.institution_id)"><Building2 :size="16" /> View institution profile</button></section>
-          <section class="content-section related-panel"><div class="section-heading"><div><h2>Related records</h2><p>Potential overlap signals</p></div></div><div v-for="link in overlaps.filter((item) => Number(item.complaint_id_a) === currentComplaint.id || Number(item.complaint_id_b) === currentComplaint.id)" :key="link.id" class="related-row"><span class="related-icon"><GitCompare :size="16" /></span><div><strong>{{ getCaseForLink(link, Number(link.complaint_id_a) === currentComplaint.id ? 'b' : 'a').case_number }}</strong><small>{{ link.review_status === 'pending' ? 'Awaiting review' : link.review_status }}</small></div><button class="icon-button" aria-label="Review relationship" @click="openReview(link)"><ArrowUpRight :size="16" /></button></div><div v-if="!overlaps.some((item) => Number(item.complaint_id_a) === currentComplaint.id || Number(item.complaint_id_b) === currentComplaint.id)" class="quiet-empty"><span>No related records flagged.</span></div></section>
+          <section class="content-section action-panel">
+            <div class="section-heading">
+              <div>
+                <h2>Institution summary</h2>
+                <p>Institution profile and directory details</p>
+              </div>
+            </div>
+            <div class="p-3 rounded border border-line bg-canvas text-xs mb-3">
+              <strong class="text-sm block">{{ currentComplaint.institution_name }}</strong>
+              <span class="text-quiet block mt-1">Code: {{ currentComplaint.institution_code || 'N/A' }}</span>
+              <span v-if="currentComplaint.institution_state" class="text-quiet block mt-0.5">{{ currentComplaint.institution_state }}</span>
+            </div>
+            <button class="button button-primary button-full" @click="router.push('/institutions/' + currentComplaint.institution_id)">
+              <Building2 :size="16" /> View institution profile
+            </button>
+          </section>
         </aside>
       </div>
-      <section v-else class="content-section not-found"><CircleAlert :size="25" /><h2>Case not found</h2><p>This case is not in the currently loaded register.</p><button class="button button-primary" @click="router.push('/complaints')">Return to complaints</button></section>
+      <section v-else class="content-section not-found">
+        <CircleAlert :size="25" />
+        <h2>Case not found</h2>
+        <p>This complaint is not in the currently loaded case register.</p>
+        <button class="button button-primary" @click="router.push('/complaints')">Return to complaints</button>
+      </section>
     </template>
 
     <!-- INSTITUTION DIRECTORY -->
@@ -941,11 +1557,11 @@ onBeforeUnmount(() => {})
       <section v-else class="content-section not-found"><Building2 :size="25" /><h2>Institution not found</h2><p>The institution may not be in the currently loaded directory.</p><button class="button button-primary" @click="router.push('/institutions')">Return to directory</button></section>
     </template>
 
-    <!-- OVERLAP REVIEW -->
+    <!-- RELATED COMPLAINTS -->
     <template v-else-if="page === 'overlaps'">
-      <section class="overlap-intro"><div class="overlap-intro-icon"><GitCompare :size="20" /></div><div><strong>Potential relationship is not a duplicate finding.</strong><p>Use the identifiers, subjects and descriptions below to decide whether coordination is appropriate. Original records remain separate.</p></div></section>
-      <section class="filter-bar"><div class="segmented-filter" role="group" aria-label="Filter overlap review status"><button v-for="choice in [{ label: 'Awaiting review', value: 'pending' }, { label: 'Confirmed', value: 'confirmed' }, { label: 'Dismissed', value: 'dismissed' }, { label: 'All records', value: 'all' }]" :key="choice.value" :class="{ selected: overlapFilter === choice.value }" @click="overlapFilter = choice.value">{{ choice.label }}</button></div><span class="filter-result-count">{{ visibleOverlaps.length }} relationships</span></section>
-      <section class="content-section overlap-table-section"><div class="section-heading"><div><h2>Relationship queue</h2><p>Order reflects the matching signal, not a probability of duplication</p></div></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Cases being compared</th><th>Matching evidence</th><th>Signal</th><th>Review status</th><th>Date flagged</th><th></th></tr></thead><tbody><tr v-for="link in visibleOverlaps" :key="link.id" class="clickable-row" @click="openReview(link)"><td><div class="comparison-cases"><span class="case-id">{{ getCaseForLink(link, 'a').case_number }}</span><span class="compare-divider">↔</span><span class="case-id">{{ getCaseForLink(link, 'b').case_number }}</span><small>{{ getCaseForLink(link, 'a').bureau_code || 'Bureau' }} / {{ getCaseForLink(link, 'b').bureau_code || 'Bureau' }}</small></div></td><td><div class="case-cell"><strong>{{ link.match_method || 'Review suggested' }}</strong><small>{{ link.match_reason }}</small></div></td><td><div class="signal-meter"><strong>{{ Math.round((link.match_score || 0) * 100) }}%</strong><span><i :style="{ width: `${Math.min(100, (link.match_score || 0) * 100)}%` }"></i></span></div></td><td><span class="status-label" :class="statusClass(link.review_status || 'pending')"><i></i>{{ link.review_status || 'pending' }}</span></td><td>{{ shortDate(link.created_at) }}</td><td><button class="button button-quiet button-small" @click.stop="openReview(link)">Compare <ArrowRight :size="14" /></button></td></tr><tr v-if="!visibleOverlaps.length"><td colspan="6" class="empty-cell">No relationship records in this view.</td></tr></tbody></table></div></section>
+      <section class="overlap-intro"><div class="overlap-intro-icon"><GitCompare :size="20" /></div><div><strong>Related complaints coordination</strong><p class="[text-wrap:pretty]">Review complaints that may be related due to common institutions, topics, or references. Coordinating actions prevents duplicated inquiries while keeping individual complaints intact.</p></div></section>
+      <section class="filter-bar"><div class="segmented-filter" role="group" aria-label="Filter related complaints review status"><button v-for="choice in [{ label: 'Awaiting review', value: 'pending' }, { label: 'Confirmed related', value: 'confirmed' }, { label: 'Unrelated', value: 'dismissed' }, { label: 'All records', value: 'all' }]" :key="choice.value" :class="{ selected: overlapFilter === choice.value }" @click="overlapFilter = choice.value">{{ choice.label }}</button></div><span class="filter-result-count">{{ visibleOverlaps.length }} related case pairs</span></section>
+      <section class="content-section overlap-table-section"><div class="section-heading"><div><h2>Related complaints queue</h2><p>Examine complaints across departments that may share common grounds or institutions</p></div></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Complaints being compared</th><th>Relationship reason</th><th>Match signal</th><th>Review status</th><th>Date flagged</th><th></th></tr></thead><tbody><tr v-for="link in visibleOverlaps" :key="link.id" class="clickable-row" @click="openReview(link)"><td><div class="comparison-cases"><span class="case-id">{{ getCaseForLink(link, 'a').case_number }}</span><span class="compare-divider">↔</span><span class="case-id">{{ getCaseForLink(link, 'b').case_number }}</span><small>{{ getCaseForLink(link, 'a').bureau_code || 'Bureau' }} / {{ getCaseForLink(link, 'b').bureau_code || 'Bureau' }}</small></div></td><td><div class="case-cell"><strong>{{ link.match_method || 'Review suggested' }}</strong><small>{{ link.match_reason }}</small></div></td><td><div class="signal-meter"><strong>{{ Math.round((link.match_score || 0) * 100) }}%</strong><span><i :style="{ width: `${Math.min(100, (link.match_score || 0) * 100)}%` }"></i></span></div></td><td><span class="status-label" :class="statusClass(link.review_status || 'pending')"><i></i>{{ link.review_status || 'pending' }}</span></td><td>{{ shortDate(link.created_at) }}</td><td><button class="button button-quiet button-small" @click.stop="openReview(link)">Compare <ArrowRight :size="14" /></button></td></tr><tr v-if="!visibleOverlaps.length"><td colspan="6" class="empty-cell">No related complaint records in this view.</td></tr></tbody></table></div></section>
     </template>
 
     <!-- REPORTS -->
@@ -968,282 +1584,669 @@ onBeforeUnmount(() => {})
 
     <!-- ADMINISTRATION -->
     <template v-else-if="page === 'admin'">
-      <div class="admin-status-row">
-        <section class="content-section system-status-panel">
-          <div class="system-status-title">
-            <span class="system-status-icon"><Activity :size="19" /></span>
-            <div>
-              <h2>System status</h2>
-              <p>Authoritative connectivity and platform status</p>
-            </div>
-          </div>
-          <div class="system-status-grid">
-            <div>
-              <span>API service</span>
-              <strong><i :class="ui.isDemoMode ? 'led-warn' : 'led-good'"></i>{{ ui.isDemoMode ? 'Not reachable' : 'Responding' }}</strong>
-            </div>
-            <div>
-              <span>PostgreSQL Database</span>
-              <strong><i :class="systemStatus?.database?.toLowerCase().includes('healthy') ? 'led-good' : 'led-warn'"></i>{{ systemStatus?.database || 'Connected' }}</strong>
-            </div>
-            <div>
-              <span>Platform Version</span>
-              <strong>{{ systemStatus?.portal_version || 'AICTE-CMP v2.0' }}</strong>
-            </div>
-          </div>
-          <button class="button button-quiet button-small" @click="loadWorkspace"><RefreshCw :size="14" /> Refresh health</button>
-        </section>
-
-        <section class="content-section admin-note-panel">
-          <ShieldCheck :size="20" />
-          <h2>Three-tier access model</h2>
-          <p>Access control is strictly enforced in Python/Flask at the API layer. System Admin governs the platform; Industries manage complaints across all departments; Citizens register and track their tickets.</p>
-        </section>
+      <!-- 8-Section Navigation Tabs -->
+      <div class="admin-section-tabs mb-4 flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-line" role="tablist" aria-label="System Administration Sections">
+        <button
+          v-for="sec in [
+            { id: 'overview', label: 'System Overview' },
+            { id: 'industries', label: 'Industries' },
+            { id: 'complaints', label: 'Complaints' },
+            { id: 'institutions', label: 'Institutions' },
+            { id: 'reports', label: 'Reports' },
+            { id: 'notifications', label: 'Notifications' },
+            { id: 'data', label: 'Data Management' },
+            { id: 'settings', label: 'System Settings' }
+          ]"
+          :key="sec.id"
+          type="button"
+          role="tab"
+          :aria-selected="adminActiveSection === sec.id"
+          class="px-3.5 py-2 rounded text-xs font-semibold whitespace-nowrap transition-colors"
+          :class="adminActiveSection === sec.id ? 'bg-primary text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-surface hover:text-slate-900 dark:hover:text-slate-100'"
+          @click="adminActiveSection = sec.id as any"
+        >
+          {{ sec.label }}
+        </button>
       </div>
 
-      <!-- System Accounts Management -->
-      <section class="content-section admin-users-section">
-        <div class="section-heading table-title-row">
-          <div>
-            <h2>Platform accounts & credentials</h2>
-            <p>{{ filteredAdminUsers.length }} accounts matching current filter criteria</p>
-          </div>
-          <button class="button button-primary button-small" @click="openCreateIndustryModal">
-            <UserPlus :size="15" /> Create Industry Account
-          </button>
-        </div>
-
-        <div class="filter-bar" style="margin-bottom: 12px; border: none; padding: 0;">
-          <div class="segmented-filter" role="group" aria-label="Role filter">
-            <button :class="{ selected: userRoleFilter === 'ALL' }" @click="userRoleFilter = 'ALL'">
-              All accounts ({{ adminUsers.length }})
-            </button>
-            <button :class="{ selected: userRoleFilter === 'INDUSTRY' }" @click="userRoleFilter = 'INDUSTRY'">
-              Industry ({{ adminUsers.filter((u: Row) => ['INDUSTRY', 'OFFICER'].includes(String(u.role).toUpperCase())).length }})
-            </button>
-            <button :class="{ selected: userRoleFilter === 'SYSTEM_ADMIN' }" @click="userRoleFilter = 'SYSTEM_ADMIN'">
-              System Admin ({{ adminUsers.filter((u: Row) => ['SYSTEM_ADMIN', 'ADMIN'].includes(String(u.role).toUpperCase())).length }})
-            </button>
-            <button :class="{ selected: userRoleFilter === 'USER' }" @click="userRoleFilter = 'USER'">
-              Complainants ({{ adminUsers.filter((u: Row) => String(u.role).toUpperCase() === 'USER').length }})
-            </button>
-          </div>
-        </div>
-
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Official Email</th>
-                <th>Canonical Role</th>
-                <th>Department / Bureau</th>
-                <th>Account Status</th>
-                <th>Credentials</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="user in filteredAdminUsers" :key="user.id">
-                <td>
-                  <div class="user-table-cell">
-                    <span class="user-table-avatar">{{ (user.name || 'U').split(' ').map((x: string) => x[0]).join('').slice(0,2) }}</span>
-                    <div>
-                      <strong>{{ user.name }}</strong>
-                      <small style="display: block; color: var(--muted); font-size: 11px;">{{ user.designation || 'Staff Officer' }}</small>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">{{ user.email }}</span></td>
-                <td>
-                  <span
-                    class="status-label"
-                    :class="String(user.role).toUpperCase().includes('ADMIN') ? 'status-critical' : String(user.role).toUpperCase().includes('INDUSTRY') || String(user.role).toUpperCase().includes('OFFICER') ? 'status-pending' : 'status-good'"
-                  >
-                    <i></i>{{ String(user.role || '').toUpperCase() }}
-                  </span>
-                </td>
-                <td><span class="bureau-tag">{{ user.bureau_name || user.bureau_code || 'All Bureaus' }}</span></td>
-                <td>
-                  <button
-                    class="button button-quiet button-small"
-                    style="min-height: 26px; padding: 0 8px; font-size: 11px;"
-                    :title="user.is_active ? 'Click to disable account' : 'Click to enable account'"
-                    @click="toggleUserStatus(user)"
-                  >
-                    <span class="status-label" :class="user.is_active ? 'status-good' : 'status-critical'" style="padding: 0; background: transparent; border: none;">
-                      <i></i>{{ user.is_active ? 'Active' : 'Disabled' }}
-                    </span>
-                  </button>
-                </td>
-                <td>
-                  <button class="button button-quiet button-small" @click="openResetPassword(user)">
-                    <KeyRound :size="13" /> Reset password
-                  </button>
-                </td>
-              </tr>
-              <tr v-if="!filteredAdminUsers.length">
-                <td colspan="6" class="empty-cell">No accounts found in this role.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- All Industries / Departments Directory -->
-      <section class="content-section admin-industries-section" style="margin-top: 20px;">
-        <div class="section-heading table-title-row">
-          <div>
-            <h2>All industries & departments</h2>
-            <p>Bureaus, cell heads and current grievance workload</p>
-          </div>
-          <span class="subtle-note">{{ adminIndustries.length }} departments registered</span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Bureau Code</th>
-                <th>Department / Bureau Name</th>
-                <th>Assigned Head / Lead</th>
-                <th>Caseworkers</th>
-                <th>Total Grievances</th>
-                <th>Active Cases</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="bureau in adminIndustries" :key="bureau.id">
-                <td><span class="bureau-tag">{{ bureau.code }}</span></td>
-                <td><strong>{{ bureau.name }}</strong></td>
-                <td>{{ bureau.lead || 'Bureau Director' }}</td>
-                <td><strong>{{ bureau.users_count || 1 }}</strong></td>
-                <td>{{ bureau.total_complaints || complaints.filter((c: Row) => (c.current_bureau_code || c.receiving_bureau_code) === bureau.code).length }}</td>
-                <td>
-                  <span class="open-count">
-                    {{ bureau.open_complaints || complaints.filter((c: Row) => (c.current_bureau_code || c.receiving_bureau_code) === bureau.code && !['Disposed', 'Closed'].includes(c.status)).length }}
-                  </span>
-                </td>
-                <td>
-                  <button class="button button-quiet button-small" @click="bureauFilter = bureau.code; router.push('/complaints')">
-                    View complaints <ChevronRight :size="13" />
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- System Settings & Grievance Categories -->
-      <div class="lower-grid" style="margin-top: 20px;">
-        <section class="content-section admin-sla-section">
-          <div class="section-heading">
-            <div>
-              <h2>Statutory resolution timelines (SLAs)</h2>
-              <p>Platform default service level agreements</p>
-            </div>
-            <Sliders :size="16" style="color: var(--muted);" />
-          </div>
-          <div style="padding: 12px 18px 18px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-              <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
-                <div style="font-size: 11px; color: var(--critical); font-weight: 700; text-transform: uppercase;">Critical Priority</div>
-                <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.Critical || 7 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
-                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Immediate safety & compliance</div>
-              </div>
-              <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
-                <div style="font-size: 11px; color: var(--caution); font-weight: 700; text-transform: uppercase;">High Priority</div>
-                <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.High || 15 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
-                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Institutional fee & admission</div>
-              </div>
-              <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
-                <div style="font-size: 11px; color: var(--primary); font-weight: 700; text-transform: uppercase;">Medium Priority</div>
-                <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.Medium || 30 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
-                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">General grievances & queries</div>
-              </div>
-              <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
-                <div style="font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase;">Low Priority</div>
-                <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.Low || 45 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
-                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Informational submissions</div>
-              </div>
-            </div>
-            <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between;">
+      <!-- SECTION 1: SYSTEM OVERVIEW -->
+      <template v-if="adminActiveSection === 'overview'">
+        <div class="admin-status-row">
+          <section class="content-section system-status-panel">
+            <div class="system-status-title">
+              <span class="system-status-icon"><Activity :size="19" /></span>
               <div>
-                <strong style="font-size: 12px; display: block;">Cross-Industry Overlap Engine</strong>
-                <span style="font-size: 11px; color: var(--muted);">Sensitivity threshold: {{ Math.round((adminSettings.overlap_threshold || 0.65) * 100) }}% (TF-IDF + Entity Matching)</span>
+                <h2>System status</h2>
+                <p>Authoritative connectivity and platform status</p>
               </div>
-              <span class="status-label status-good"><i></i>Active</span>
             </div>
+            <div class="system-status-grid">
+              <div>
+                <span>API service</span>
+                <strong><i :class="ui.isDemoMode ? 'led-warn' : 'led-good'"></i>{{ ui.isDemoMode ? 'Not reachable' : 'Responding' }}</strong>
+              </div>
+              <div>
+                <span>PostgreSQL Database</span>
+                <strong><i :class="systemStatus?.database?.toLowerCase().includes('healthy') ? 'led-good' : 'led-warn'"></i>{{ systemStatus?.database || 'Connected' }}</strong>
+              </div>
+              <div>
+                <span>Platform Version</span>
+                <strong>{{ systemStatus?.portal_version || 'AICTE-CMP v2.0' }}</strong>
+              </div>
+            </div>
+            <button class="button button-quiet button-small" @click="loadWorkspace"><RefreshCw :size="14" /> Refresh health</button>
+          </section>
+
+          <section class="content-section admin-note-panel">
+            <ShieldCheck :size="20" />
+            <h2>Three-tier access model</h2>
+            <p>Access control is strictly enforced at the API layer. System Admin governs the platform; Industries manage complaints across all departments; Citizens register and track their tickets.</p>
+          </section>
+        </div>
+
+        <!-- Metric Summary Strip -->
+        <section class="metric-strip" aria-label="System Metrics" style="margin-top: 20px;">
+          <div class="metric-cell">
+            <span class="metric-label">Total complaints</span>
+            <strong class="metric-value">{{ totalCount }}</strong>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label">Open complaints</span>
+            <strong class="metric-value">{{ openCount }}</strong>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label">Disposed complaints</span>
+            <strong class="metric-value">{{ disposedCount }}</strong>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label">Overdue complaints</span>
+            <strong class="metric-value" :class="{ 'metric-danger': overdueCount > 0 }">{{ overdueCount }}</strong>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label">Industries & Bureaus</span>
+            <strong class="metric-value">{{ adminIndustries.length }}</strong>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label">Registered Accounts</span>
+            <strong class="metric-value">{{ adminUsers.length }}</strong>
           </div>
         </section>
 
-        <!-- Complaint Categories Manager -->
-        <section class="content-section admin-categories-section">
+        <!-- Audit Activity Log -->
+        <section class="content-section admin-audit-section" style="margin-top: 20px;">
           <div class="section-heading">
             <div>
-              <h2>Grievance categories</h2>
-              <p>Taxonomy for complaint filing and routing</p>
+              <h2>Recent audit activity</h2>
+              <p>Authoritative log of administrative, assignment, and status modifications</p>
             </div>
-            <span class="subtle-note">{{ (adminSettings.categories || []).length }} categories</span>
           </div>
-          <div style="padding: 14px 18px 18px;">
-            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
-              <span
-                v-for="cat in adminSettings.categories"
-                :key="cat"
-                style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line); font-size: 12px;"
-              >
-                <span>{{ cat }}</span>
-                <button
-                  type="button"
-                  style="border: none; background: transparent; cursor: pointer; color: var(--muted); padding: 0; display: grid; place-items: center;"
-                  title="Remove category"
-                  @click="removeCategory(cat)"
-                >
-                  <X :size="12" />
-                </button>
-              </span>
+          <div v-if="auditLogs.length" class="audit-list">
+            <div v-for="log in auditLogs.slice(0, 10)" :key="log.id" class="audit-row">
+              <div class="audit-icon"><ClipboardCheck :size="16" /></div>
+              <div>
+                <strong>{{ log.action || log.action_type || 'Recorded action' }}</strong>
+                <p>{{ log.description || log.entity_type || 'Administrative event' }}</p>
+              </div>
+              <span>{{ dateTime(log.created_at) }}</span>
             </div>
-
-            <form @submit.prevent="addCategory" style="display: flex; gap: 8px;">
-              <input
-                v-model="newCategoryInput"
-                class="form-control"
-                placeholder="New category name (e.g. Hostels & Mess)"
-                style="flex: 1;"
-                required
-              />
-              <button type="submit" class="button button-primary button-small" style="flex: none;">
-                <Plus :size="14" /> Add category
-              </button>
-            </form>
+          </div>
+          <div v-else class="quiet-empty">
+            <Database :size="18" />
+            <span>{{ ui.isDemoMode ? 'Audit events are not available while running in local demo mode.' : 'No audit events recorded yet.' }}</span>
           </div>
         </section>
-      </div>
+      </template>
 
-      <!-- Audit Activity Log -->
-      <section class="content-section admin-audit-section" style="margin-top: 20px;">
-        <div class="section-heading">
-          <div>
-            <h2>Recent audit activity</h2>
-            <p>Authoritative log of administrative, assignment, and status modifications</p>
-          </div>
-        </div>
-        <div v-if="auditLogs.length" class="audit-list">
-          <div v-for="log in auditLogs.slice(0, 10)" :key="log.id" class="audit-row">
-            <div class="audit-icon"><ClipboardCheck :size="16" /></div>
+      <!-- SECTION 2: INDUSTRIES -->
+      <template v-else-if="adminActiveSection === 'industries'">
+        <!-- System Accounts Management -->
+        <section class="content-section admin-users-section">
+          <div class="section-heading table-title-row">
             <div>
-              <strong>{{ log.action || log.action_type || 'Recorded action' }}</strong>
-              <p>{{ log.description || log.entity_type || 'Administrative event' }}</p>
+              <h2>Industry accounts & credentials</h2>
+              <p>{{ filteredAdminUsers.length }} accounts matching current filter criteria</p>
             </div>
-            <span>{{ dateTime(log.created_at) }}</span>
+            <button class="button button-primary button-small" @click="openCreateIndustryModal">
+              <UserPlus :size="15" /> Create Industry Account
+            </button>
           </div>
+
+          <div class="filter-bar" style="margin-bottom: 12px; border: none; padding: 0;">
+            <div class="segmented-filter" role="group" aria-label="Role filter">
+              <button :class="{ selected: userRoleFilter === 'ALL' }" @click="userRoleFilter = 'ALL'">
+                All accounts ({{ adminUsers.length }})
+              </button>
+              <button :class="{ selected: userRoleFilter === 'INDUSTRY' }" @click="userRoleFilter = 'INDUSTRY'">
+                Industry ({{ adminUsers.filter((u: Row) => ['INDUSTRY', 'OFFICER'].includes(String(u.role).toUpperCase())).length }})
+              </button>
+              <button :class="{ selected: userRoleFilter === 'SYSTEM_ADMIN' }" @click="userRoleFilter = 'SYSTEM_ADMIN'">
+                System Admin ({{ adminUsers.filter((u: Row) => ['SYSTEM_ADMIN', 'ADMIN'].includes(String(u.role).toUpperCase())).length }})
+              </button>
+              <button :class="{ selected: userRoleFilter === 'USER' }" @click="userRoleFilter = 'USER'">
+                Complainants ({{ adminUsers.filter((u: Row) => String(u.role).toUpperCase() === 'USER').length }})
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Official Email</th>
+                  <th>Canonical Role</th>
+                  <th>Department / Bureau</th>
+                  <th>Account Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="user in filteredAdminUsers" :key="user.id">
+                  <td>
+                    <div class="user-table-cell">
+                      <span class="user-table-avatar">{{ (user.name || 'U').split(' ').map((x: string) => x[0]).join('').slice(0,2) }}</span>
+                      <div>
+                        <strong>{{ user.name }}</strong>
+                        <small style="display: block; color: var(--muted); font-size: 11px;">{{ user.designation || 'Staff Officer' }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">{{ user.email }}</span></td>
+                  <td>
+                    <span
+                      class="status-label"
+                      :class="String(user.role).toUpperCase().includes('ADMIN') ? 'status-critical' : String(user.role).toUpperCase().includes('INDUSTRY') || String(user.role).toUpperCase().includes('OFFICER') ? 'status-pending' : 'status-good'"
+                    >
+                      <i></i>{{ String(user.role || '').toUpperCase() }}
+                    </span>
+                  </td>
+                  <td><span class="bureau-tag">{{ user.bureau_name || user.bureau_code || 'All Bureaus' }}</span></td>
+                  <td>
+                    <button
+                      class="button button-quiet button-small"
+                      style="min-height: 26px; padding: 0 8px; font-size: 11px;"
+                      :title="user.is_active ? 'Click to disable account' : 'Click to enable account'"
+                      @click="confirmToggleUserStatus(user)"
+                    >
+                      <span class="status-label" :class="user.is_active ? 'status-good' : 'status-critical'" style="padding: 0; background: transparent; border: none;">
+                        <i></i>{{ user.is_active ? 'Active' : 'Disabled' }}
+                      </span>
+                    </button>
+                  </td>
+                  <td>
+                    <div class="flex items-center gap-1.5">
+                      <button class="button button-quiet button-small" title="Edit account details" @click="openEditIndustry(user)">
+                        <Edit3 :size="13" /> Edit
+                      </button>
+                      <button class="button button-quiet button-small" title="Reset user password" @click="openResetPassword(user)">
+                        <KeyRound :size="13" /> Reset password
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="!filteredAdminUsers.length">
+                  <td colspan="6" class="empty-cell">No accounts found in this role.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- All Industries / Departments Directory -->
+        <section class="content-section admin-industries-section" style="margin-top: 20px;">
+          <div class="section-heading table-title-row">
+            <div>
+              <h2>All industries & departments</h2>
+              <p>Bureaus, cell heads and current grievance workload</p>
+            </div>
+            <span class="subtle-note">{{ adminIndustries.length }} departments registered</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Bureau Code</th>
+                  <th>Department / Bureau Name</th>
+                  <th>Assigned Head / Lead</th>
+                  <th>Caseworkers</th>
+                  <th>Total Complaints</th>
+                  <th>Active Cases</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="bureau in adminIndustries" :key="bureau.id">
+                  <td><span class="bureau-tag">{{ bureau.code }}</span></td>
+                  <td><strong>{{ bureau.name }}</strong></td>
+                  <td>{{ bureau.lead || 'Bureau Director' }}</td>
+                  <td><strong>{{ bureau.users_count || 1 }}</strong></td>
+                  <td>{{ bureau.total_complaints || complaints.filter((c: Row) => (c.current_bureau_code || c.receiving_bureau_code) === bureau.code).length }}</td>
+                  <td>
+                    <span class="open-count">
+                      {{ bureau.open_complaints || complaints.filter((c: Row) => (c.current_bureau_code || c.receiving_bureau_code) === bureau.code && !['Disposed', 'Closed'].includes(c.status)).length }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="button button-quiet button-small" @click="bureauFilter = bureau.code; router.push('/complaints')">
+                      View complaints <ChevronRight :size="13" />
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </template>
+
+      <!-- SECTION 3: COMPLAINTS -->
+      <template v-else-if="adminActiveSection === 'complaints'">
+        <section class="filter-bar" aria-label="Complaint filters">
+          <div class="segmented-filter" role="group" aria-label="Case state filter">
+            <button v-for="choice in ['All cases', 'Open cases', 'Overdue', 'Escalated']" :key="choice" :class="{ selected: activeFilter === choice }" @click="activeFilter = choice; pageNumber = 1">{{ choice }}<span v-if="choice === 'Overdue' && overdueComplaints.length">{{ overdueComplaints.length }}</span></button>
+          </div>
+          <div class="filter-controls">
+            <label class="select-control" title="Filter by status">
+              <Filter :size="15" />
+              <select v-model="statusFilter" aria-label="Filter by status">
+                <option>All statuses</option>
+                <option>Received</option>
+                <option>Under Review</option>
+                <option>Action Required</option>
+                <option>Awaiting Response</option>
+                <option>Escalated</option>
+                <option>Disposed</option>
+                <option>Closed</option>
+              </select>
+              <ChevronDown :size="14" />
+            </label>
+
+            <label class="select-control" title="Filter by priority">
+              <Layers3 :size="15" />
+              <select v-model="priorityFilter" aria-label="Filter by priority">
+                <option>All priorities</option>
+                <option>Critical</option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </select>
+              <ChevronDown :size="14" />
+            </label>
+
+            <button class="button button-quiet button-small" @click="clearFilters" title="Reset all filters">
+              <X :size="14" /> Reset
+            </button>
+          </div>
+        </section>
+
+        <section class="content-section register-table-section">
+          <div class="section-heading table-title-row">
+            <div>
+              <h2>Global complaints register</h2>
+              <p>{{ visibleComplaints.length }} complaints match administrative filter criteria</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="button button-quiet button-small" @click="exportCsv">
+                <Download :size="15" /> Export CSV
+              </button>
+              <button class="button button-primary button-small" @click="openNewComplaint">
+                <Plus :size="15" /> Register complaint
+              </button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table register-table">
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Institution</th>
+                  <th>Complaint Subject</th>
+                  <th>Bureau</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Received</th>
+                  <th>Due date</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in pagedComplaints" :key="item.id" class="clickable-row" @click="navigateToComplaint(item.id)">
+                  <td><span class="case-id">{{ item.case_number }}</span></td>
+                  <td>
+                    <button class="table-link" @click.stop="navigateToInstitution(item.institution_id)">{{ item.institution_name }}</button>
+                    <small class="table-subline">{{ item.institution_code }}</small>
+                  </td>
+                  <td>
+                    <div class="case-cell">
+                      <strong>{{ item.subject }}</strong>
+                      <small>{{ item.category }}</small>
+                    </div>
+                  </td>
+                  <td><span class="bureau-tag">{{ item.current_bureau_code || item.receiving_bureau_code }}</span></td>
+                  <td><span class="status-label" :class="statusClass(item.status)"><i></i>{{ item.status }}</span></td>
+                  <td><span class="priority-label" :class="priorityClass(item.priority)">{{ item.priority }}</span></td>
+                  <td>{{ shortDate(item.received_at) }}</td>
+                  <td><span :class="{ 'date-overdue': item.is_overdue }">{{ shortDate(item.due_at) }}</span></td>
+                  <td><ChevronRight :size="15" class="row-arrow" /></td>
+                </tr>
+                <tr v-if="!pagedComplaints.length">
+                  <td colspan="9" class="empty-cell">
+                    No complaints match these filter settings.
+                    <button class="inline-link ml-2" @click.stop="clearFilters">Reset filters</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination-row">
+            <span>Page {{ pageNumber }} of {{ complaintPageCount }}</span>
+            <div class="pagination-controls">
+              <button class="icon-button" :disabled="pageNumber <= 1" aria-label="Previous page" @click="pageNumber--">
+                <ChevronLeft :size="17" />
+              </button>
+              <button class="page-number">{{ pageNumber }}</button>
+              <button class="icon-button" :disabled="pageNumber >= complaintPageCount" aria-label="Next page" @click="pageNumber++">
+                <ChevronRight :size="17" />
+              </button>
+            </div>
+          </div>
+        </section>
+      </template>
+
+      <!-- SECTION 4: INSTITUTIONS -->
+      <template v-else-if="adminActiveSection === 'institutions'">
+        <section class="filter-bar institution-filter-bar">
+          <div class="filter-intro">
+            <Building2 :size="19" />
+            <span>{{ visibleInstitutions.length }} institutions in the master directory</span>
+          </div>
+          <div class="filter-controls">
+            <label class="select-control">
+              <Filter :size="15" />
+              <select v-model="institutionTypeFilter" aria-label="Filter by institution type">
+                <option v-for="type in institutionTypeOptions" :key="type">{{ type }}</option>
+              </select>
+              <ChevronDown :size="14" />
+            </label>
+          </div>
+        </section>
+
+        <section class="content-section directory-section">
+          <div class="section-heading">
+            <div>
+              <h2>Institution directory</h2>
+              <p>Master registry of affiliated colleges, universities, and polytechnics</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Institution</th>
+                  <th>Permanent ID</th>
+                  <th>Location</th>
+                  <th>Cases</th>
+                  <th>Open</th>
+                  <th>Bureaus involved</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="institution in visibleInstitutions" :key="institution.id" class="clickable-row" @click="navigateToInstitution(institution.id)">
+                  <td>
+                    <div class="institution-name-cell">
+                      <span class="institution-avatar"><Building2 :size="17" /></span>
+                      <span><strong>{{ institution.name }}</strong><small>{{ institution.institution_type }}</small></span>
+                    </div>
+                  </td>
+                  <td><span class="case-id">{{ institution.institution_code }}</span></td>
+                  <td>{{ institution.district ? `${institution.district}, ` : '' }}{{ institution.state }}</td>
+                  <td><strong>{{ institution.total_complaints ?? institutionCaseCount(institution.id) }}</strong></td>
+                  <td><span class="open-count">{{ institution.open_complaints ?? complaints.filter((item) => Number(item.institution_id) === Number(institution.id) && !['Disposed', 'Closed'].includes(item.status)).length }}</span></td>
+                  <td><div class="bureau-stack"><span v-for="code in (institution.bureaus_involved || []).slice(0, 3)" :key="code">{{ code }}</span></div></td>
+                  <td><ChevronRight :size="16" class="row-arrow" /></td>
+                </tr>
+                <tr v-if="!visibleInstitutions.length">
+                  <td colspan="7" class="empty-cell">No institutions match your search.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </template>
+
+      <!-- SECTION 5: REPORTS -->
+      <template v-else-if="adminActiveSection === 'reports'">
+        <section class="metric-strip report-metrics">
+          <div class="metric-cell"><span class="metric-label">Registered complaints</span><strong class="metric-value">{{ totalCount }}</strong><span class="metric-note">Across the loaded dataset</span></div>
+          <div class="metric-cell"><span class="metric-label">Open cases</span><strong class="metric-value">{{ openCount }}</strong><span class="metric-note">Still in progress</span></div>
+          <div class="metric-cell"><span class="metric-label">Disposed</span><strong class="metric-value">{{ disposedCount }}</strong><span class="metric-note">Recorded as complete</span></div>
+          <div class="metric-cell"><span class="metric-label">Past due</span><strong class="metric-value metric-danger">{{ overdueCount }}</strong><span class="metric-note">Require attention</span></div>
+        </section>
+        <div class="reports-grid" style="margin-top: 20px;">
+          <section class="content-section report-bureau">
+            <div class="section-heading"><div><h2>Bureau distribution</h2><p>Cases by current handling department</p></div></div>
+            <div class="report-bars">
+              <div v-for="bureau in bureauWorkload" :key="bureau.code" class="report-bar-row">
+                <div class="report-bar-head"><span>{{ bureau.name }}</span><strong>{{ bureau.total }}</strong></div>
+                <div class="report-bar-track"><span :style="{ width: `${Math.max(2, bureau.total / Math.max(1, ...bureauWorkload.map((b: Row) => b.total)) * 100)}%` }"></span></div>
+                <small>{{ bureau.open }} open · {{ bureau.overdue }} past due</small>
+              </div>
+            </div>
+          </section>
+          <section class="content-section report-status">
+            <div class="section-heading"><div><h2>Case status</h2><p>Current composition of the register</p></div></div>
+            <div class="status-breakdown">
+              <div v-for="status in ['Received', 'Under Review', 'Action Required', 'Awaiting Response', 'Escalated', 'Disposed']" :key="status" class="status-breakdown-row">
+                <span class="status-label" :class="statusClass(status)"><i></i>{{ status }}</span>
+                <div class="status-breakdown-track"><span :style="{ width: `${Math.max(0, complaints.filter((item) => item.status === status).length / Math.max(1, complaints.length) * 100)}%` }"></span></div>
+                <strong>{{ complaints.filter((item) => item.status === status).length }}</strong>
+              </div>
+            </div>
+          </section>
         </div>
-        <div v-else class="quiet-empty">
-          <Database :size="18" />
-          <span>{{ ui.isDemoMode ? 'Audit events are not available while running in local demo mode.' : 'No audit events recorded yet.' }}</span>
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+          <button class="button button-primary" @click="exportCsv"><Download :size="16" /> Export Master CSV</button>
         </div>
-      </section>
+      </template>
+
+      <!-- SECTION 6: NOTIFICATIONS -->
+      <template v-else-if="adminActiveSection === 'notifications'">
+        <section class="filter-bar">
+          <div class="segmented-filter">
+            <button :class="{ selected: notificationFilter === 'all' }" @click="notificationFilter = 'all'">All activity</button>
+            <button :class="{ selected: notificationFilter === 'unread' }" @click="notificationFilter = 'unread'">Unread <span>{{ unreadCount }}</span></button>
+          </div>
+          <button class="text-action" @click="markAllRead"><CheckCheck :size="15" /> Mark all read</button>
+        </section>
+        <section class="content-section notification-list-section">
+          <div class="section-heading"><div><h2>Operational alerts & broadcasts</h2><p>Platform notifications across all sectors</p></div></div>
+          <div v-for="item in visibleNotifications" :key="item.id" class="notification-row" :class="{ 'notification-unread': !item.is_read && !item.read_at }">
+            <div class="notification-icon" :class="item.notification_type === 'deadline' ? 'notification-icon-danger' : item.notification_type === 'overlap' ? 'notification-icon-caution' : ''">
+              <CalendarClock v-if="item.notification_type === 'deadline'" :size="18" />
+              <GitCompare v-else-if="item.notification_type === 'overlap'" :size="18" />
+              <Activity v-else :size="18" />
+            </div>
+            <div class="notification-copy">
+              <div class="notification-title-line"><strong>{{ item.title }}</strong><span>{{ dateTime(item.created_at) }}</span></div>
+              <p>{{ item.message }}</p>
+              <button v-if="item.related_complaint_id" class="inline-link" @click="navigateToComplaint(item.related_complaint_id)">Open case <ArrowRight :size="13" /></button>
+            </div>
+            <button v-if="!item.is_read && !item.read_at" class="button button-quiet button-small" @click="markRead(item)"><Check :size="14" /> Mark read</button>
+            <span v-else class="read-state">Read</span>
+          </div>
+          <div v-if="!visibleNotifications.length" class="empty-state-block">
+            <CheckCircle2 :size="24" />
+            <strong>You're all caught up</strong>
+            <p>No notifications match this view.</p>
+          </div>
+        </section>
+      </template>
+
+      <!-- SECTION 7: DATA MANAGEMENT -->
+      <template v-else-if="adminActiveSection === 'data'">
+        <div class="import-layout">
+          <section class="content-section import-main">
+            <div class="section-heading">
+              <div>
+                <h2>Bulk data management & imports</h2>
+                <p>Upload CSV batches, check validation results, and commit records</p>
+              </div>
+            </div>
+            <div class="import-dropzone" :class="{ 'import-file-loaded': selectedFile }">
+              <input id="admin-csv-file" type="file" accept=".csv,text/csv" aria-label="Choose CSV file" @change="onFilePicked" />
+              <div class="import-upload-icon"><FileSpreadsheet :size="24" /></div>
+              <strong>{{ selectedFile ? selectedFile.name : 'Choose a CSV file' }}</strong>
+              <p>{{ selectedFile ? `${(selectedFile.size / 1024).toFixed(1)} KB · Ready to preview` : 'CSV format · Keep identifiers and column headings intact' }}</p>
+              <label class="button button-quiet" for="admin-csv-file">Browse files</label>
+              <span class="import-supported">Files are validated before any records are committed.</span>
+            </div>
+            <div class="import-action-row">
+              <button class="text-action" @click="downloadTemplate"><Download :size="15" /> Download CSV template</button>
+              <button class="button button-primary" :disabled="!selectedFile" @click="previewImport"><FileSearch :size="16" /> Validate file</button>
+            </div>
+            <div v-if="importPreview" class="import-preview">
+              <div class="import-preview-header">
+                <div>
+                  <CheckCircle2 v-if="importPreview.is_valid" :size="19" />
+                  <AlertCircle v-else :size="19" />
+                  <strong>{{ importPreview.local_demo ? 'Local preview complete' : 'Import validation result' }}</strong>
+                </div>
+                <span class="status-label" :class="importPreview.is_valid ? 'status-good' : 'status-critical'"><i></i>{{ importPreview.is_valid ? 'Ready to review' : 'Needs corrections' }}</span>
+              </div>
+              <div class="import-counts">
+                <div><span>Rows found</span><strong>{{ importPreview.total_rows ?? importPreview.total_count ?? 0 }}</strong></div>
+                <div><span>Valid rows</span><strong>{{ importPreview.success_rows ?? importPreview.valid_rows?.length ?? 0 }}</strong></div>
+                <div><span>Errors</span><strong>{{ importPreview.failed_rows ?? importPreview.errors?.length ?? 0 }}</strong></div>
+              </div>
+              <p v-if="importPreview.local_demo" class="form-hint">This is a basic local preview. Start the Flask API for authoritative validation and commit.</p>
+              <button class="button button-primary" :disabled="!importPreview.is_valid" @click="commitImport">Confirm import <ArrowRight :size="15" /></button>
+            </div>
+          </section>
+
+          <aside class="content-section import-guide">
+            <div class="section-heading"><div><h2>Import directives</h2><p>Data integrity standards</p></div></div>
+            <ol class="import-steps">
+              <li><span>1</span><div><strong>Use the template</strong><p>Keep column headings unchanged so fields map correctly.</p></div></li>
+              <li><span>2</span><div><strong>Check institution IDs</strong><p>Use permanent IDs already present in the directory.</p></div></li>
+              <li><span>3</span><div><strong>Review the preview</strong><p>Fix errors before committing changes.</p></div></li>
+            </ol>
+            <div class="import-safety"><ShieldCheck :size="17" /><span>Only import authorized government records.</span></div>
+          </aside>
+        </div>
+
+        <section v-if="importHistory.length" class="content-section import-history" style="margin-top: 20px;">
+          <div class="section-heading"><div><h2>Recent import batches</h2><p>Audit of past batch commits</p></div></div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>File</th><th>Status</th><th>Rows processed</th><th>Created by</th><th>Date</th></tr></thead>
+              <tbody>
+                <tr v-for="batch in importHistory" :key="batch.id">
+                  <td><strong>{{ batch.filename }}</strong></td>
+                  <td><span class="status-label" :class="statusClass(batch.status)"><i></i>{{ batch.status }}</span></td>
+                  <td>{{ batch.success_rows }} / {{ batch.total_rows }}</td>
+                  <td>{{ batch.created_by_name }}</td>
+                  <td>{{ shortDate(batch.created_at) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </template>
+
+      <!-- SECTION 8: SYSTEM SETTINGS -->
+      <template v-else-if="adminActiveSection === 'settings'">
+        <div class="lower-grid">
+          <section class="content-section admin-sla-section">
+            <div class="section-heading">
+              <div>
+                <h2>Statutory resolution timelines (SLAs)</h2>
+                <p>Platform default service level agreements</p>
+              </div>
+              <Sliders :size="16" style="color: var(--muted);" />
+            </div>
+            <div style="padding: 12px 18px 18px;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
+                  <div style="font-size: 11px; color: var(--critical); font-weight: 700; text-transform: uppercase;">Critical Priority</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.Critical || 7 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
+                  <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Immediate safety & compliance</div>
+                </div>
+                <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
+                  <div style="font-size: 11px; color: var(--caution); font-weight: 700; text-transform: uppercase;">High Priority</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.High || 15 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
+                  <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Institutional fee & admission</div>
+                </div>
+                <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
+                  <div style="font-size: 11px; color: var(--primary); font-weight: 700; text-transform: uppercase;">Medium Priority</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.Medium || 30 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
+                  <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">General grievances & queries</div>
+                </div>
+                <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line);">
+                  <div style="font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase;">Low Priority</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; font-family: 'IBM Plex Mono', monospace;">{{ adminSettings.sla_days?.Low || 45 }} <small style="font-size: 12px; font-weight: 500;">Days</small></div>
+                  <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Informational submissions</div>
+                </div>
+              </div>
+              <div style="padding: 12px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <strong style="font-size: 12px; display: block;">Related Complaints Correlation Engine</strong>
+                  <span style="font-size: 11px; color: var(--muted);">Sensitivity threshold: {{ Math.round((adminSettings.overlap_threshold || 0.65) * 100) }}% (TF-IDF + Entity Matching)</span>
+                </div>
+                <span class="status-label status-good"><i></i>Active</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Complaint Categories Manager -->
+          <section class="content-section admin-categories-section">
+            <div class="section-heading">
+              <div>
+                <h2>Complaint categories taxonomy</h2>
+                <p>Configured categories for complaint filing and routing</p>
+              </div>
+              <span class="subtle-note">{{ (adminSettings.categories || []).length }} categories</span>
+            </div>
+            <div style="padding: 14px 18px 18px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+                <span
+                  v-for="cat in adminSettings.categories"
+                  :key="cat"
+                  style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; background: var(--canvas); border: 1px solid var(--line); font-size: 12px;"
+                >
+                  <span>{{ cat }}</span>
+                  <button
+                    type="button"
+                    style="border: none; background: transparent; cursor: pointer; color: var(--muted); padding: 0; display: grid; place-items: center;"
+                    title="Remove category"
+                    @click="requestConfirm({
+                      title: 'Remove Category',
+                      message: `Are you sure you want to remove '${cat}' from the category taxonomy?`,
+                      actionLabel: 'Remove',
+                      isDestructive: true,
+                      onConfirm: () => removeCategory(cat)
+                    })"
+                  >
+                    <X :size="12" />
+                  </button>
+                </span>
+              </div>
+
+              <form @submit.prevent="addCategory" style="display: flex; gap: 8px;">
+                <input
+                  v-model="newCategoryInput"
+                  class="form-control"
+                  placeholder="New category name (e.g. Hostels & Mess)"
+                  style="flex: 1;"
+                  required
+                />
+                <button type="submit" class="button button-primary button-small" style="flex: none;">
+                  <Plus :size="14" /> Add category
+                </button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </template>
     </template>
   </div>
 
@@ -1342,6 +2345,166 @@ onBeforeUnmount(() => {})
           <div class="form-drawer-footer">
             <button type="button" class="button button-quiet" @click="isResetPasswordOpen = false">Cancel</button>
             <button type="submit" class="button button-primary"><KeyRound :size="16" /> Save New Password</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Reusable Confirmation Dialog for Destructive / Important Actions -->
+  <Transition name="drawer">
+    <div v-if="confirmModal.isOpen" class="modal-backdrop" @click.self="confirmModal.isOpen = false">
+      <div class="confirm-dialog-card" role="dialog" aria-modal="true">
+        <div class="confirm-dialog-header">
+          <div class="confirm-icon-wrap" :class="{ 'confirm-icon-danger': confirmModal.isDestructive }">
+            <AlertTriangle v-if="confirmModal.isDestructive" :size="20" />
+            <ShieldCheck v-else :size="20" />
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ confirmModal.title }}</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 [text-wrap:pretty]">{{ confirmModal.message }}</p>
+          </div>
+        </div>
+        <div class="confirm-dialog-footer">
+          <button type="button" class="button button-quiet button-small" @click="confirmModal.isOpen = false">
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="button button-small"
+            :class="confirmModal.isDestructive ? 'button-danger' : 'button-primary'"
+            @click="confirmModal.onConfirm"
+          >
+            {{ confirmModal.actionLabel }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </Transition>
+
+  <!-- Edit Industry Account Drawer -->
+  <Transition name="drawer">
+    <div v-if="isEditIndustryOpen && selectedEditIndustry" class="modal-backdrop" @click.self="isEditIndustryOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="edit-industry-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="edit-industry-title">Edit Industry Account</h2>
+            <p>Update profile details for {{ selectedEditIndustry.name }}</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isEditIndustryOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitEditIndustry">
+          <label class="field-label" for="edit-ind-name">Full Name <span>*</span></label>
+          <input id="edit-ind-name" v-model="editIndustryForm.name" class="form-control" required />
+
+          <label class="field-label" for="edit-ind-email">Email (Immutable)</label>
+          <input id="edit-ind-email" :value="selectedEditIndustry.email" class="form-control" disabled style="opacity: 0.7; cursor: not-allowed;" />
+
+          <label class="field-label" for="edit-ind-bureau">Assigned Department / Bureau <span>*</span></label>
+          <select id="edit-ind-bureau" v-model="editIndustryForm.bureau_id" class="form-control" required>
+            <option v-for="bureau in bureaus" :key="bureau.id" :value="String(bureau.id)">{{ bureau.code }} — {{ bureau.name }}</option>
+          </select>
+
+          <label class="field-label" for="edit-ind-designation">Designation / Role Title <span>*</span></label>
+          <input id="edit-ind-designation" v-model="editIndustryForm.designation" class="form-control" required />
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isEditIndustryOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary"><Check :size="16" /> Save Changes</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Add Case Response Modal -->
+  <Transition name="drawer">
+    <div v-if="isAddResponseOpen && currentComplaint" class="modal-backdrop" @click.self="isAddResponseOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="add-response-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="add-response-title">Add Official Response</h2>
+            <p>Record case response notes or final resolution directives.</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isAddResponseOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitOfficerResponse">
+          <div class="p-3 rounded border border-line bg-canvas text-xs mb-3">
+            <strong>Case #{{ currentComplaint.case_number }}</strong>
+            <p class="text-quiet mt-0.5">{{ currentComplaint.subject }}</p>
+          </div>
+
+          <label class="field-label" for="resp-notes">Action / Response Notes <span>*</span></label>
+          <textarea
+            id="resp-notes"
+            v-model="officerResponseText"
+            class="form-control form-textarea"
+            rows="4"
+            placeholder="Record inquiry findings, institutional communications, or action directives..."
+            required
+          ></textarea>
+
+          <label class="field-label" for="resp-resolution">Resolution Summary (Optional)</label>
+          <textarea
+            id="resp-resolution"
+            v-model="officerResolutionSummary"
+            class="form-control form-textarea"
+            rows="3"
+            placeholder="Final resolution summary to publish to the complainant..."
+          ></textarea>
+
+          <div class="flex items-center gap-2 mt-2">
+            <input id="resp-mark-resolved" v-model="markResolvedOnResponse" type="checkbox" class="rounded border-line" />
+            <label for="resp-mark-resolved" class="text-xs font-semibold cursor-pointer">
+              Mark complaint as Resolved / Disposed upon saving
+            </label>
+          </div>
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isAddResponseOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary"><Check :size="16" /> Submit Response</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </Transition>
+
+  <!-- Attach Case Document Modal -->
+  <Transition name="drawer">
+    <div v-if="isUploadDocOpen && currentComplaint" class="modal-backdrop" @click.self="isUploadDocOpen = false">
+      <section class="form-drawer" role="dialog" aria-modal="true" aria-labelledby="upload-doc-title">
+        <div class="drawer-header">
+          <div>
+            <h2 id="upload-doc-title">Attach Case Document</h2>
+            <p>Upload inquiry reports, institutional replies, or inspection notices.</p>
+          </div>
+          <button class="icon-button" aria-label="Close form" @click="isUploadDocOpen = false"><X :size="19" /></button>
+        </div>
+        <form class="new-complaint-form" @submit.prevent="submitCaseDocument">
+          <label class="field-label" for="case-doc-input">Select Document <span>*</span></label>
+          <input
+            id="case-doc-input"
+            type="file"
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+            class="form-control"
+            required
+            @change="onCaseDocPicked"
+          />
+          <p class="text-xs text-quiet mt-1">Accepted: PDF, Word, JPEG, PNG (up to 16MB)</p>
+
+          <label class="field-label mt-3" for="case-doc-note">Document Description / Note</label>
+          <input
+            id="case-doc-note"
+            v-model="caseDocNote"
+            class="form-control"
+            placeholder="e.g. Institutional reply letter dated 2026-10-25"
+          />
+
+          <div class="form-drawer-footer">
+            <button type="button" class="button button-quiet" @click="isUploadDocOpen = false">Cancel</button>
+            <button type="submit" class="button button-primary" :disabled="!caseDocFile">
+              <Upload :size="16" /> Attach to Case
+            </button>
           </div>
         </form>
       </section>

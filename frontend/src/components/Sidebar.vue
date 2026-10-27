@@ -18,30 +18,45 @@ const auth = useAuthStore()
 
 // Navigation for Public Complainants (USER role)
 const userLinks = [
-  { label: 'My Grievances', to: '/user', icon: ClipboardList },
-  { label: 'Register Grievance', to: '/register', icon: PlusCircle },
-  { label: 'Track by Ticket', to: '/track', icon: Search },
+  { label: 'My Complaints', to: '/user', icon: ClipboardList },
+  { label: 'Register Complaint', to: '/register', icon: PlusCircle },
+  { label: 'Track Complaint', to: '/track', icon: Search },
 ]
 
-// Navigation for Industry Caseworkers & System Admin
-const primaryLinks = [
-  { label: 'Overview', to: '/', icon: LayoutDashboard },
+// Navigation for Industry / Department Caseworkers
+const industryLinks = [
+  { label: 'Dashboard', to: '/', icon: LayoutDashboard },
   { label: 'Complaints', to: '/complaints', icon: ClipboardList },
   { label: 'Institutions', to: '/institutions', icon: Building2 },
-  { label: 'Overlap review', to: '/overlaps', icon: FileSearch, count: true },
+  { label: 'Overlap Review', to: '/overlaps', icon: FileSearch, count: true },
+  { label: 'Reports', to: '/reports', icon: BarChart3 },
+  { label: 'Notifications', to: '/notifications', icon: Bell },
+  { label: 'Data Imports', to: '/imports', icon: Database },
 ]
 
-const operationsLinks = computed(() => [
+// Navigation for System Admin
+const adminLinks = [
+  { label: 'Dashboard', to: '/', icon: LayoutDashboard },
+  { label: 'Complaints', to: '/complaints', icon: ClipboardList },
+  { label: 'Industries', to: '/admin?section=industries', icon: Building2 },
+  { label: 'Institutions', to: '/institutions', icon: Building2 },
+  { label: 'Overlap Review', to: '/overlaps', icon: FileSearch, count: true },
   { label: 'Reports', to: '/reports', icon: BarChart3 },
-  { label: 'Data imports', to: '/imports', icon: Database },
   { label: 'Notifications', to: '/notifications', icon: Bell },
-  ...(auth.isSystemAdmin ? [{ label: 'Administration', to: '/admin', icon: Settings2 }] : []),
-])
+  { label: 'Data Management', to: '/admin?section=data', icon: Database },
+  { label: 'Administration', to: '/admin?section=system', icon: Settings2 },
+]
 
-const currentPath = computed(() => route.path)
 function active(to: string) {
-  if (to === '/') return currentPath.value === '/'
-  return currentPath.value === to || currentPath.value.startsWith(`${to}/`)
+  if (to.includes('?')) {
+    const [pathPart, queryPart] = to.split('?')
+    const params = new URLSearchParams(queryPart)
+    const expectedSection = params.get('section')
+    return route.path === pathPart && route.query.section === expectedSection
+  }
+  if (to === '/') return route.path === '/'
+  if (to === '/admin') return route.path === '/admin' && (!route.query.section || route.query.section === 'system')
+  return route.path === to || route.path.startsWith(`${to}/`)
 }
 function go(to: string) {
   router.push(to)
@@ -49,9 +64,9 @@ function go(to: string) {
 }
 
 const subtitleDisplay = computed(() => {
-  if (auth.isUser) return 'Citizen portal'
+  if (auth.isUser) return 'Citizen Portal'
   if (auth.isSystemAdmin) return 'System Administration'
-  return 'Department casework'
+  return 'Department Casework'
 })
 </script>
 
@@ -68,8 +83,8 @@ const subtitleDisplay = computed(() => {
 
     <!-- Complainant Navigation (USER role) -->
     <template v-if="auth.isUser">
-      <div class="nav-caption">GRIEVANCES</div>
-      <nav class="nav-group">
+      <div class="nav-caption">COMPLAINTS</div>
+      <nav class="nav-group" aria-label="Complainant menu">
         <button v-for="item in userLinks" :key="item.to" class="nav-link" :class="{ 'nav-active': active(item.to) }" @click="go(item.to)">
           <component :is="item.icon" :size="18" :stroke-width="1.8" />
           <span>{{ item.label }}</span>
@@ -78,23 +93,27 @@ const subtitleDisplay = computed(() => {
       </nav>
     </template>
 
-    <!-- Industry / System Admin Navigation -->
-    <template v-else>
-      <div class="nav-caption">WORKSPACE</div>
-      <nav class="nav-group">
-        <button v-for="item in primaryLinks" :key="item.to" class="nav-link" :class="{ 'nav-active': active(item.to) }" @click="go(item.to)">
+    <!-- System Admin Navigation -->
+    <template v-else-if="auth.isSystemAdmin">
+      <div class="nav-caption">ADMINISTRATION</div>
+      <nav class="nav-group" aria-label="System Admin menu">
+        <button v-for="item in adminLinks" :key="item.to" class="nav-link" :class="{ 'nav-active': active(item.to) }" @click="go(item.to)">
           <component :is="item.icon" :size="18" :stroke-width="1.8" />
           <span>{{ item.label }}</span>
           <span v-if="item.count" class="nav-indicator" aria-label="Review queue" />
           <ChevronRight v-if="active(item.to)" class="nav-chevron" :size="14" />
         </button>
       </nav>
+    </template>
 
-      <div class="nav-caption nav-caption-spaced">OPERATIONS</div>
-      <nav class="nav-group">
-        <button v-for="item in operationsLinks" :key="item.to" class="nav-link" :class="{ 'nav-active': active(item.to) }" @click="go(item.to)">
+    <!-- Industry / Department Navigation -->
+    <template v-else>
+      <div class="nav-caption">OPERATIONS</div>
+      <nav class="nav-group" aria-label="Industry Department menu">
+        <button v-for="item in industryLinks" :key="item.to" class="nav-link" :class="{ 'nav-active': active(item.to) }" @click="go(item.to)">
           <component :is="item.icon" :size="18" :stroke-width="1.8" />
           <span>{{ item.label }}</span>
+          <span v-if="item.count" class="nav-indicator" aria-label="Review queue" />
           <ChevronRight v-if="active(item.to)" class="nav-chevron" :size="14" />
         </button>
       </nav>

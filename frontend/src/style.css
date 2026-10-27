@@ -888,6 +888,204 @@ button:not(:disabled) { cursor: pointer; }
   font-size: 12px;
 }
 
+.flow-steps-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  background: #f0f4f1;
+  border: 1px solid #d8e2dc;
+  overflow-x: auto;
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.flow-step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ccdcd2;
+  color: #2b665b;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+.flow-step-active .flow-step-num {
+  background: #2b665b;
+  color: #fffefa;
+}
+.flow-step-text strong {
+  display: block;
+  font-size: 12px;
+  color: #202a2d;
+  line-height: 1.2;
+}
+.flow-step-text small {
+  display: block;
+  font-size: 12px;
+  color: #475551;
+}
+.flow-arrow {
+  color: #92a49b;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.field-error-text {
+  color: #a84231;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 3px;
+}
+.field-hint-text {
+  color: #475551;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+.input-has-error {
+  border-color: #a84231 !important;
+  background: #fff8f7 !important;
+}
+.input-has-error:focus {
+  box-shadow: 0 0 0 3px rgba(168, 66, 49, 0.15) !important;
+}
+.textarea-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+.char-count-valid {
+  color: #2b665b;
+}
+.file-drop-dragging {
+  border-color: #2b665b !important;
+  background: #eef6f2 !important;
+}
+
+.stage-announcement-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 6px;
+  background: #eef5f1;
+  border: 1px solid #c9ded2;
+}
+.stage-announcement-icon {
+  color: #2b665b;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.stage-announcement-copy strong {
+  font-size: 13px;
+  color: #1e3f36;
+  display: block;
+}
+.stage-announcement-copy p {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: #2c4a40;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.track-stepper-container {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  padding: 16px;
+  border-radius: 8px;
+  background: #fbfcf9;
+  border: 1px solid #dce2da;
+  position: relative;
+}
+@media (max-width: 768px) {
+  .track-stepper-container {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+.stepper-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  position: relative;
+}
+@media (max-width: 768px) {
+  .stepper-step {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+.stepper-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+.step-done .stepper-circle {
+  background: #2b665b;
+  color: #fffefa;
+  border: 1px solid #2b665b;
+}
+.step-current .stepper-circle {
+  background: #e2ede7;
+  color: #2b665b;
+  border: 2px solid #2b665b;
+  box-shadow: 0 0 0 3px rgba(43, 102, 91, 0.15);
+}
+.step-upcoming .stepper-circle {
+  background: #eaeee9;
+  color: #475551;
+  border: 1px solid #ccd5cb;
+}
+.stepper-label-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stepper-title {
+  font-size: 12px;
+  color: #202a2d;
+  line-height: 1.3;
+}
+.step-current .stepper-title {
+  color: #2b665b;
+  font-weight: 700;
+}
+.stepper-desc {
+  margin: 0;
+  font-size: 12px;
+  color: #475551;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+.stepper-date {
+  color: #475551;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.result-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .public-form-card,
 .track-search-card,
 .track-result-card,
@@ -2586,6 +2784,59 @@ html.dark .timeline-stepper {
   border-color: var(--line);
   background: #14181a;
 }
+html.dark .flow-steps-bar {
+  background: #17211e;
+  border-color: #2c3a35;
+}
+html.dark .flow-step-num {
+  background: #2b3e36;
+  color: #7bc4b2;
+}
+html.dark .flow-step-active .flow-step-num {
+  background: #2b665b;
+  color: #ffffff;
+}
+html.dark .flow-step-text strong {
+  color: #e5ede8;
+}
+html.dark .flow-step-text small {
+  color: #989898;
+}
+html.dark .stage-announcement-card {
+  background: #192723;
+  border-color: #294038;
+}
+html.dark .stage-announcement-icon {
+  color: #7bc4b2;
+}
+html.dark .stage-announcement-copy strong {
+  color: #d8ece4;
+}
+html.dark .stage-announcement-copy p {
+  color: #b0c9be;
+}
+html.dark .track-stepper-container {
+  background: #17211e;
+  border-color: #2c3a35;
+}
+html.dark .stepper-title {
+  color: #e2eae5;
+}
+html.dark .step-current .stepper-title {
+  color: #7bc4b2;
+}
+html.dark .stepper-desc {
+  color: #989898;
+}
+html.dark .step-upcoming .stepper-circle {
+  background: #222f2b;
+  color: #989898;
+  border-color: #374742;
+}
+html.dark .input-has-error {
+  border-color: #e06a55 !important;
+  background: #2b1c19 !important;
+}
 html.dark .stepper-step {
   border-color: var(--line);
 }
@@ -2701,5 +2952,59 @@ html.dark .citizen-switch-line {
 html.dark .citizen-switch-line a {
   color: #5cb6a2;
 }
+
+.button-danger {
+  background: var(--critical);
+  color: #fffefa;
+  border-color: var(--critical);
+}
+.button-danger:hover:not(:disabled) {
+  background: #a91b1b;
+  border-color: #a91b1b;
+}
+
+.confirm-dialog-card {
+  margin: auto;
+  width: min(440px, calc(100vw - 32px));
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.confirm-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.confirm-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: rgba(43, 102, 91, 0.12);
+  color: var(--primary);
+}
+.confirm-icon-danger {
+  background: rgba(220, 38, 38, 0.12);
+  color: var(--critical);
+}
+.confirm-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+html.dark .confirm-dialog-card {
+  background: #181d1f;
+  border-color: #273135;
+}
+
 
 

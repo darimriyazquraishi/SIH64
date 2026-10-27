@@ -13,19 +13,19 @@ const route = useRoute()
       <router-link to="/register" class="public-brand">
         <img :src="aicteLogo" alt="AICTE" class="public-nav-logo" />
         <div class="public-brand-text">
-          <span class="public-brand-title"><strong>AICTE</strong> grievance portal</span>
-          <span class="public-brand-subtitle">Public citizen & student redressal</span>
+          <span class="public-brand-title"><strong>AICTE</strong> Complaint Portal</span>
+          <span class="public-brand-subtitle">Student & Public Redressal Service</span>
         </div>
       </router-link>
 
-      <nav class="public-nav-links">
+      <nav class="public-nav-links" aria-label="Public portal navigation">
         <router-link
           to="/register"
           class="public-nav-link"
           :class="{ 'public-nav-active': route.path === '/register' }"
         >
           <FilePlus2 :size="15" />
-          <span>Register grievance</span>
+          <span>Register Complaint</span>
         </router-link>
 
         <router-link
@@ -34,7 +34,7 @@ const route = useRoute()
           :class="{ 'public-nav-active': route.path === '/track' }"
         >
           <Search :size="15" />
-          <span>Track status</span>
+          <span>Track Complaint</span>
         </router-link>
 
         <ThemeToggle />
@@ -43,7 +43,7 @@ const route = useRoute()
 
         <router-link to="/login" class="public-staff-btn">
           <LockKeyhole :size="14" />
-          <span>Casework sign in</span>
+          <span>Official Sign In</span>
         </router-link>
       </nav>
     </div>

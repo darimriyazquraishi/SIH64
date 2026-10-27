@@ -79,15 +79,15 @@ function goToRegister() {
               <CheckCircle2 :size="28" />
             </div>
             <div class="confirmation-heading">
-              <h1>Grievance registered</h1>
-              <p>Your complaint has been recorded in the AICTE case register.</p>
+              <h1>Complaint Submitted Successfully</h1>
+              <p>Your formal complaint has been recorded in the AICTE central register.</p>
             </div>
           </div>
 
           <!-- Highlight Ticket Box -->
           <div class="ticket-callout">
             <div class="ticket-callout-top">
-              <span class="ticket-label">TICKET NUMBER</span>
+              <span class="ticket-label">YOUR OFFICIAL TICKET NUMBER</span>
             </div>
 
             <div class="ticket-value-row">
@@ -105,13 +105,13 @@ function goToRegister() {
             </div>
 
             <p class="ticket-instruction">
-              Save this ticket number to track progress, bureau responses, and final resolution.
+              <strong>Please save this ticket number.</strong> You will need it to track your complaint status, view departmental inquiries, and access official resolutions.
             </p>
           </div>
 
           <!-- Details Table -->
           <div class="confirmation-details">
-            <h2 class="confirmation-section-title">Submission summary</h2>
+            <h2 class="confirmation-section-title">Submission Summary</h2>
             <div class="summary-grid">
               <div class="summary-item">
                 <span class="summary-label"><Building2 :size="14" /> Institution</span>
@@ -124,12 +124,12 @@ function goToRegister() {
               </div>
 
               <div class="summary-item">
-                <span class="summary-label"><ShieldCheck :size="14" /> Assigned Bureau</span>
+                <span class="summary-label"><ShieldCheck :size="14" /> Handling Department</span>
                 <span class="summary-value">{{ bureauName }}</span>
               </div>
 
               <div class="summary-item">
-                <span class="summary-label"><FileText :size="14" /> Subject</span>
+                <span class="summary-label"><FileText :size="14" /> Complaint Subject</span>
                 <span class="summary-value">{{ subject }}</span>
               </div>
             </div>
@@ -137,16 +137,16 @@ function goToRegister() {
 
           <!-- Next Steps Guidance -->
           <div class="guidance-box">
-            <h3 class="guidance-title"><Clock :size="15" /> Next steps</h3>
+            <h3 class="guidance-title"><Clock :size="15" /> What happens next?</h3>
             <ol class="guidance-list">
               <li>
-                <strong>Bureau intake:</strong> The designated AICTE bureau reviews jurisdiction and determines required actions.
+                <strong>Initial Review:</strong> AICTE officers examine your submission and verify institutional records.
               </li>
               <li>
-                <strong>Inter-bureau check:</strong> Related complaints concerning the same institution are cross-referenced.
+                <strong>Departmental Query:</strong> If required, the institution is issued a formal query to respond within statutory deadlines.
               </li>
               <li>
-                <strong>Resolution:</strong> Directives and closure notes will appear on your tracking page.
+                <strong>Resolution & Notification:</strong> The final decision and official remarks will appear on your tracking timeline.
               </li>
             </ol>
           </div>
@@ -155,17 +155,17 @@ function goToRegister() {
           <div class="confirmation-actions">
             <button type="button" class="button button-primary" @click="goToTrack">
               <Search :size="15" />
-              <span>Track grievance</span>
+              <span>Track Complaint Now</span>
             </button>
 
             <button type="button" class="button button-quiet" @click="handlePrint">
               <Printer :size="15" />
-              <span>Print acknowledgment</span>
+              <span>Print Complaint Receipt</span>
             </button>
 
             <button type="button" class="button button-quiet" @click="goToRegister">
               <FilePlus2 :size="15" />
-              <span>Register another grievance</span>
+              <span>Submit Another Complaint</span>
             </button>
           </div>
         </div>
