@@ -2,6 +2,7 @@
 setlocal enabledelayedexpansion
 title AICTE Integrated Complaint Portal - Launcher
 cd /d "%~dp0"
+if exist "%~dp0pgsql\bin" set "PATH=%~dp0pgsql\bin;!PATH!"
 
 echo =========================================================================
 echo    AICTE Integrated Complaint Monitoring ^& Coordination Portal
@@ -173,15 +174,20 @@ if not exist "%~dp0backend\.venv\Scripts\python.exe" (
 set "VENV_PY=%~dp0backend\.venv\Scripts\python.exe"
 
 :: Check if core packages are installed
-"%VENV_PY%" -c "import flask, psycopg2, rapidfuzz, sqlalchemy" >nul 2>nul
+"%VENV_PY%" -c "import flask, rapidfuzz, sqlalchemy, importlib.util; exit(0 if importlib.util.find_spec('psycopg2') or importlib.util.find_spec('psycopg') else 1)" >nul 2>nul
 if %ERRORLEVEL% neq 0 (
     echo       Installing backend requirements from backend\requirements.txt...
     "%VENV_PY%" -m pip install --upgrade pip >nul 2>nul
     "%VENV_PY%" -m pip install -r "%~dp0backend\requirements.txt"
     if !ERRORLEVEL! neq 0 (
-        echo [ERROR] Failed to install backend requirements.
-        pause
-        exit /b 1
+        echo [WARNING] Standard requirement installation had an issue.
+        echo           Attempting fallback with modern pre-compiled psycopg binary package...
+        "%VENV_PY%" -m pip install "psycopg[binary]>=3.2.0" Flask==3.1.0 Flask-Cors==5.0.0 SQLAlchemy==2.0.38 Werkzeug==3.1.3 PyJWT==2.10.1 python-dotenv==1.0.1 rapidfuzz==3.12.1 alembic==1.14.1 Flask-Migrate==4.1.0
+        if !ERRORLEVEL! neq 0 (
+            echo [ERROR] Failed to install backend requirements.
+            pause
+            exit /b 1
+        )
     )
     echo       Backend requirements installed successfully.
 ) else (
